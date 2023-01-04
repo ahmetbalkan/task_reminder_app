@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:intro_slider/intro_slider.dart';
-import 'package:task_reminder_app/tools/Color.dart';
 
+import '../tools/extention.dart';
 import 'intro_slider_page.dart';
 
 class SplashScreen extends StatefulWidget {
@@ -21,17 +20,15 @@ class _SplashScreenState extends State<SplashScreen> {
   @override
   Widget build(BuildContext context) {
     return Container(
-        color: ColorClass.BackgroundColor,
+        color: context.BackgroundColor,
         child: Center(child: Image.asset("assets/logo.png")));
   }
 
   gotoPage() async {
     await Future.delayed(const Duration(seconds: 3)).then((value) {
-      Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (context) => const IntroSliderPage(),
-          ));
+      Navigator.of(context).pushAndRemoveUntil(
+          MaterialPageRoute(builder: (context) => const IntroSliderPage()),
+          (Route<dynamic> route) => false);
     });
   }
 }

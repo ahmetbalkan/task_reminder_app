@@ -1,0 +1,16 @@
+{
+    "skip":"Skip",
+    "next":"Next",
+    "back":"Back",
+    "login":"Login",
+    "createaccount":"Create Account",
+    "welcome":"Welcome to Task Reminder",
+    "welcomedesc":"Please login to your account or create new account to continue",
+    "getstarted":"Get Started",
+    "intro1title":"Manage your tasks",
+    "intro1desc":"You can easily manage all of your daily tasks in DoMe for free",
+    "intro2title":"Create daily routine",
+    "intro2desc":"In Uptodo  you can create your personalized routine to stay productive",
+    "intro3title":"Orgonaize your tasks",
+    "intro3desc":"You can organize your daily tasks by adding your tasks into separate categories"
+}

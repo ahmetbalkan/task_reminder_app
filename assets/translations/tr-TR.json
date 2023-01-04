@@ -1,0 +1,16 @@
+{
+    "skip":"Geç",
+    "next":"İleri",
+    "back":"Geri",
+    "login":"Giriş Yap",
+    "createaccount":"Kayıt Ol",
+    "welcome":"Task Reminder'a Hoşgeldiniz.",
+    "welcomedesc":"Devam etmek için lütfen hesabınıza giriş yapın veya yeni hesap oluşturun.",
+    "getstarted":"Başlayın",
+    "intro1title":"Görevlerinizi yönetin",
+    "intro1desc":"DoMe'de tüm günlük görevlerinizi ücretsiz olarak kolayca yönetebilirsiniz.",
+    "intro2title":"Günlük rutin oluşturun",
+    "intro2desc":"Uptodo'da üretken kalmak için kişiselleştirilmiş rutininizi oluşturabilirsiniz.",
+    "intro3title":"Görevlerinizi organize edin",
+    "intro3desc":"Görevlerinizi ayrı kategorilere ekleyerek günlük görevlerinizi düzenleyebilirsiniz"
+}

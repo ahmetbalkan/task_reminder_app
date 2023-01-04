@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:task_reminder_app/tools/Color.dart';
-
-import '../widget/intro_page/intro_pointer_widget.dart';
+import 'package:task_reminder_app/tools/extention.dart';
 
 class IntroSliderPage1 extends StatefulWidget {
   const IntroSliderPage1({super.key});
@@ -37,7 +35,7 @@ class _IntroSliderPageState extends State<IntroSliderPage1> {
                       decoration: BoxDecoration(
                           borderRadius: BorderRadius.all(Radius.circular(4)),
                           border: Border.all(
-                              color: ColorClass.PrimaryColor, width: 3)),
+                              color: context.primaryColor, width: 3)),
                       width: 90.w,
                       height: 48.h,
                       child: Center(
@@ -59,7 +57,7 @@ class _IntroSliderPageState extends State<IntroSliderPage1> {
                     child: Container(
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.all(Radius.circular(4)),
-                        color: ColorClass.PrimaryColor,
+                        color: context.primaryColor,
                       ),
                       width: 90.w,
                       height: 48.h,
