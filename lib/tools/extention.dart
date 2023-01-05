@@ -25,8 +25,8 @@ extension PaddingExtention on BuildContext {
 }
 
 extension ColorExtention on BuildContext {
-  Color get primaryColor => Color(0xFF8875FF);
-  Color get BackgroundColor => Color(0xFF121212);
+  Color get primaryColor => const Color(0xFF8875FF);
+  Color get backgroundColor => const Color(0xFF121212);
 }
 
 extension MaterialColorExtention on BuildContext {
@@ -49,5 +49,9 @@ extension MaterialColorExtention on BuildContext {
 
 extension TextStyleExtention on BuildContext {
   TextStyle fontStyleLato(Color color, double size) =>
-      GoogleFonts.lato(color: color, fontSize: size);
+      GoogleFonts.varela(color: color, fontSize: size);
+
+  TextStyle fontStyleLatoFontWeigt(
+          Color color, double size, FontWeight fontWeight) =>
+      GoogleFonts.varela(color: color, fontSize: size, fontWeight: fontWeight);
 }

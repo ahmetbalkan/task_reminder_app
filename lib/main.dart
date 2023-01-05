@@ -1,14 +1,11 @@
 import 'package:device_preview/device_preview.dart';
 import 'package:easy_localization/easy_localization.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:task_reminder_app/bloc/intropage_bloc/intropage_bloc.dart';
-
-import 'package:task_reminder_app/tools/extention.dart';
-
-import 'view/intro_slider_page.dart';
+import 'package:task_reminder_app/view/login_screen.dart';
+import 'package:task_reminder_app/view/register_screen.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -16,14 +13,14 @@ void main() async {
   runApp(
     EasyLocalization(
       path: 'assets/translations',
-      fallbackLocale: Locale('en', 'US'),
-      supportedLocales: [
+      fallbackLocale: const Locale('en', 'US'),
+      supportedLocales: const [
         Locale('tr', 'TR'),
         Locale('en', 'US'),
       ],
       child: DevicePreview(
         enabled: false,
-        builder: (context) => MyApp(), // Wrap your app
+        builder: (context) => const MyApp(), // Wrap your app
       ),
     ),
   );
@@ -53,10 +50,8 @@ class MyApp extends StatelessWidget {
               locale: context.locale,
               builder: DevicePreview.appBuilder,
               title: 'Task Reminder',
-              theme: ThemeData(
-                primarySwatch: context.primaryMaterialColor,
-              ),
-              home: const IntroSliderPage(),
+              theme: ThemeData.dark(),
+              home: const LoginPage(),
             ),
           );
         });

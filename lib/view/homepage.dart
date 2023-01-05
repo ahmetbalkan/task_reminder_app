@@ -28,12 +28,13 @@ class _IntroSliderPageState extends State<IntroSliderPage1> {
                   GestureDetector(
                     onTap: (() {
                       _pageController.previousPage(
-                          duration: Duration(milliseconds: 300),
+                          duration: const Duration(milliseconds: 300),
                           curve: Curves.easeIn);
                     }),
                     child: Container(
                       decoration: BoxDecoration(
-                          borderRadius: BorderRadius.all(Radius.circular(4)),
+                          borderRadius:
+                              const BorderRadius.all(Radius.circular(4)),
                           border: Border.all(
                               color: context.primaryColor, width: 3)),
                       width: 90.w,
@@ -51,12 +52,13 @@ class _IntroSliderPageState extends State<IntroSliderPage1> {
                   GestureDetector(
                     onTap: (() {
                       _pageController.nextPage(
-                          duration: Duration(milliseconds: 300),
+                          duration: const Duration(milliseconds: 300),
                           curve: Curves.easeIn);
                     }),
                     child: Container(
                       decoration: BoxDecoration(
-                        borderRadius: BorderRadius.all(Radius.circular(4)),
+                        borderRadius:
+                            const BorderRadius.all(Radius.circular(4)),
                         color: context.primaryColor,
                       ),
                       width: 90.w,
@@ -83,7 +85,7 @@ class _IntroSliderPageState extends State<IntroSliderPage1> {
                   GestureDetector(
                     onTap: (() {}),
                     child: Container(
-                      decoration: BoxDecoration(
+                      decoration: const BoxDecoration(
                         borderRadius: BorderRadius.all(Radius.circular(4)),
                       ),
                       width: 90.w,

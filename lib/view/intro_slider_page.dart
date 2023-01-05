@@ -2,11 +2,8 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 import 'package:task_reminder_app/bloc/intropage_bloc/intropage_bloc.dart';
-import 'package:task_reminder_app/view/register_screen.dart';
-
 import '../tools/extention.dart';
 import 'login_screen.dart';
 
@@ -40,9 +37,9 @@ class _IntroSliderPageState extends State<IntroSliderPage> {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
-          backgroundColor: context.BackgroundColor,
+          backgroundColor: context.backgroundColor,
           body: Column(mainAxisAlignment: MainAxisAlignment.start, children: [
-            Expanded(flex: 10, child: SkipButtonWidget(context)),
+            Expanded(flex: 10, child: skipButtonWidget(context)),
             Expanded(
               flex: 70,
               child: centerPageViewWidget(context),
@@ -57,16 +54,16 @@ class _IntroSliderPageState extends State<IntroSliderPage> {
                       activeDotColor: context.primaryColor)),
             ),
             Expanded(flex: 7, child: bottomButtonsWidget(context)),
-            Expanded(flex: 5, child: Center()),
+            const Expanded(flex: 5, child: Center()),
           ])),
     );
   }
 
-  Row SkipButtonWidget(BuildContext context) {
+  Row skipButtonWidget(BuildContext context) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.end,
       children: [
-        Spacer(
+        const Spacer(
           flex: 8,
         ),
         Expanded(
@@ -76,13 +73,13 @@ class _IntroSliderPageState extends State<IntroSliderPage> {
               Navigator.pushAndRemoveUntil(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => LoginPage(),
+                    builder: (context) => const LoginPage(),
                   ),
                   (route) => false);
             }),
             child: Container(
-              padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-              decoration: BoxDecoration(
+              padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+              decoration: const BoxDecoration(
                   borderRadius: BorderRadius.all(Radius.circular(8))),
               child: Text(
                 textAlign: TextAlign.center,
@@ -170,7 +167,7 @@ class _IntroSliderPageState extends State<IntroSliderPage> {
   Row bottomButtonsWidget(BuildContext context) {
     return Row(
       children: [
-        Spacer(
+        const Spacer(
           flex: 1,
         ),
         BlocBuilder<IntropageBloc, IntropageState>(
@@ -178,20 +175,28 @@ class _IntroSliderPageState extends State<IntroSliderPage> {
             return state.getCount == 0.0
                 ? Expanded(
                     flex: 5,
-                    child: GestureDetector(
-                        onTap: () {
-                          _pageController.nextPage(
-                              duration: Duration(milliseconds: 200),
-                              curve: Curves.easeInQuad);
+                    child: Container(
+                      decoration: BoxDecoration(
+                        color: context.primaryMaterialColor.shade100,
+                        borderRadius: BorderRadius.circular(8),
+                      ),
+                      child: Center(
+                          child: BlocBuilder<IntropageBloc, IntropageState>(
+                        builder: (context, state) {
+                          return Text(
+                            "Back",
+                            style: context.fontStyleLato(Colors.white, 14.sp),
+                          );
                         },
-                        child: Center()),
+                      )),
+                    ),
                   )
                 : Expanded(
                     flex: 5,
                     child: GestureDetector(
                       onTap: () {
                         _pageController.previousPage(
-                            duration: Duration(milliseconds: 200),
+                            duration: const Duration(milliseconds: 200),
                             curve: Curves.easeInQuad);
                       },
                       child: Container(
@@ -213,7 +218,7 @@ class _IntroSliderPageState extends State<IntroSliderPage> {
                   );
           },
         ),
-        Spacer(
+        const Spacer(
           flex: 1,
         ),
         BlocBuilder<IntropageBloc, IntropageState>(
@@ -226,13 +231,13 @@ class _IntroSliderPageState extends State<IntroSliderPage> {
                         Navigator.pushAndRemoveUntil(
                             context,
                             MaterialPageRoute(
-                              builder: (context) => LoginPage(),
+                              builder: (context) => const LoginPage(),
                             ),
                             (route) => false);
                       },
                       child: Container(
                         decoration: BoxDecoration(
-                          color: context.primaryColor,
+                          color: context.primaryMaterialColor.shade900,
                           borderRadius: BorderRadius.circular(8),
                         ),
                         child: Center(
@@ -252,7 +257,7 @@ class _IntroSliderPageState extends State<IntroSliderPage> {
                     child: GestureDetector(
                       onTap: () {
                         _pageController.nextPage(
-                            duration: Duration(milliseconds: 200),
+                            duration: const Duration(milliseconds: 200),
                             curve: Curves.easeInQuad);
                       },
                       child: Container(
@@ -274,7 +279,7 @@ class _IntroSliderPageState extends State<IntroSliderPage> {
                   );
           },
         ),
-        Spacer(
+        const Spacer(
           flex: 1,
         ),
       ],
