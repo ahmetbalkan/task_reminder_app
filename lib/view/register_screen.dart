@@ -41,13 +41,26 @@ class _RegisterPageState extends State<RegisterPage> {
                     Row(
                       children: [
                         Expanded(
-                            flex: 1, child: Icon(FontAwesomeIcons.circleLeft)),
+                            flex: 1,
+                            child: GestureDetector(
+                              onTap: () {
+                                Navigator.pop(context);
+                              },
+                              child: Icon(
+                                FontAwesomeIcons.angleLeft,
+                                size: 35,
+                              ),
+                            )),
                         Expanded(
-                          flex: 2,
+                          flex: 8,
                           child: Text(
                             "register".tr(),
+                            textAlign: TextAlign.center,
                             style: context.fontStyleLato(Colors.white, 32),
                           ),
+                        ),
+                        Spacer(
+                          flex: 1,
                         ),
                       ],
                     ),
