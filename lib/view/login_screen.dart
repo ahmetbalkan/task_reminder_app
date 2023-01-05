@@ -4,6 +4,7 @@ import 'package:flutter/services.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 import 'package:task_reminder_app/tools/extention.dart';
+import 'package:task_reminder_app/view/forgotpass_screen.dart';
 import 'package:task_reminder_app/view/login_screen.dart';
 import 'package:task_reminder_app/view/register_screen.dart';
 
@@ -48,7 +49,7 @@ class _LoginPageState extends State<LoginPage> {
                       "logindesc".tr(),
                       textAlign: TextAlign.center,
                       style: context.fontStyleLatoFontWeigt(
-                          Colors.white, 16, FontWeight.w100),
+                          Colors.white, 12, FontWeight.w100),
                     ),
                   ],
                 ),
@@ -57,15 +58,13 @@ class _LoginPageState extends State<LoginPage> {
             flex: 8,
             child: formMethod(),
           ),
-          Spacer(
-            flex: 1,
-          ),
           Expanded(
             flex: 1,
-            child: orMethod(context),
+            child: forgotPassMethod(context),
           ),
-          Spacer(
-            flex: 1,
+          Expanded(
+            flex: 2,
+            child: orMethod(context),
           ),
           Expanded(
             flex: 3,
@@ -109,7 +108,7 @@ class _LoginPageState extends State<LoginPage> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
             Spacer(
-              flex: 8,
+              flex: 7,
             ),
             Expanded(
               flex: 7,
@@ -178,6 +177,7 @@ class _LoginPageState extends State<LoginPage> {
                       onChanged: (value) {},
                       autofocus: false,
                       decoration: InputDecoration(
+                          errorStyle: TextStyle(fontSize: 14),
                           labelStyle: TextStyle(
                               color: context.primaryColor, fontSize: 14),
                           focusedBorder: OutlineInputBorder(
@@ -223,7 +223,7 @@ class _LoginPageState extends State<LoginPage> {
               flex: 1,
             ),
             Expanded(
-              flex: 7,
+              flex: 6,
               child: Column(
                 children: [
                   Expanded(
@@ -313,6 +313,27 @@ class _LoginPageState extends State<LoginPage> {
         ),
         const Expanded(child: Divider()),
       ]),
+    );
+  }
+
+  Padding forgotPassMethod(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 24.0),
+      child: GestureDetector(
+        onTap: () {
+          Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => ForgotPassPage(),
+              ));
+        },
+        child: Row(mainAxisAlignment: MainAxisAlignment.end, children: <Widget>[
+          Text(
+            "forgotpass".tr(),
+            style: context.fontStyleLato(context.primaryColor, 16),
+          ),
+        ]),
+      ),
     );
   }
 

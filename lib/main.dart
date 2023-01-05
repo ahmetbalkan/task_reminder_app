@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:task_reminder_app/bloc/intropage_bloc/intropage_bloc.dart';
+import 'package:task_reminder_app/view/forgotpass_screen.dart';
 import 'package:task_reminder_app/view/login_screen.dart';
 import 'package:task_reminder_app/view/register_screen.dart';
 
@@ -19,7 +20,7 @@ void main() async {
         Locale('en', 'US'),
       ],
       child: DevicePreview(
-        enabled: false,
+        enabled: true,
         builder: (context) => const MyApp(), // Wrap your app
       ),
     ),
@@ -51,7 +52,7 @@ class MyApp extends StatelessWidget {
               builder: DevicePreview.appBuilder,
               title: 'Task Reminder',
               theme: ThemeData.dark(),
-              home: const LoginPage(),
+              home: const ForgotPassPage(),
             ),
           );
         });

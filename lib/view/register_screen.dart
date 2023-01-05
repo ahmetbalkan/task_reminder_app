@@ -68,7 +68,7 @@ class _RegisterPageState extends State<RegisterPage> {
                     Text(
                       "registerdesc".tr(),
                       style: context.fontStyleLatoFontWeigt(
-                          Colors.white, 16, FontWeight.w100),
+                          Colors.white, 12, FontWeight.w100),
                     ),
                   ],
                 ),
