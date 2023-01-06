@@ -4,10 +4,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:task_reminder_app/bloc/intropage_bloc/intropage_bloc.dart';
+
 import 'package:task_reminder_app/view/forgotpass_screen.dart';
 import 'package:task_reminder_app/view/login_screen.dart';
 import 'package:task_reminder_app/view/register_screen.dart';
+
+import 'bloc/app_start_blocs/intropage_bloc/intropage_bloc.dart';
+import 'bloc/app_start_blocs/loginpage/loginpage_bloc.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -23,8 +26,8 @@ void main() async {
                 Locale('en', 'US'),
               ],
               child: DevicePreview(
-                enabled: true,
-                builder: (context) => const MyApp(), // Wrap your app
+                enabled: false,
+                builder: (context) => const MyApp(),
               ),
             ),
           ));
@@ -43,7 +46,9 @@ class MyApp extends StatelessWidget {
             providers: [
               BlocProvider(
                 create: (context) => IntropageBloc(),
-                child: Container(),
+              ),
+              BlocProvider(
+                create: (context) => LoginpageBloc(),
               )
             ],
             child: MaterialApp(

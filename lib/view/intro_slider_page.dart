@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
-import 'package:task_reminder_app/bloc/intropage_bloc/intropage_bloc.dart';
+import '../bloc/app_start_blocs/intropage_bloc/intropage_bloc.dart';
 import '../tools/extention.dart';
 import 'login_screen.dart';
 

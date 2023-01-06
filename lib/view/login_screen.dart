@@ -1,10 +1,13 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:task_reminder_app/tools/extention.dart';
 import 'package:task_reminder_app/view/forgotpass_screen.dart';
 import 'package:task_reminder_app/view/register_screen.dart';
+
+import '../bloc/app_start_blocs/loginpage/loginpage_bloc.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
@@ -13,8 +16,8 @@ class LoginPage extends StatefulWidget {
   State<LoginPage> createState() => _LoginPageState();
 }
 
-TextEditingController mail = TextEditingController();
-TextEditingController password2 = TextEditingController();
+TextEditingController email = TextEditingController();
+TextEditingController password = TextEditingController();
 bool _obscureText = true;
 
 class _LoginPageState extends State<LoginPage> {
@@ -36,12 +39,12 @@ class _LoginPageState extends State<LoginPage> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Spacer(
-                  flex: 2,
+                  flex: 1,
                 ),
                 Expanded(
-                  flex: 4,
+                  flex: 5,
                   child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
+                      mainAxisAlignment: MainAxisAlignment.end,
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
@@ -54,13 +57,16 @@ class _LoginPageState extends State<LoginPage> {
                         TextField(
                           autofocus: false,
                           cursorColor: context.primaryColor,
-                          controller: mail,
+                          controller: email,
                           cursorHeight: 25,
+                          keyboardType: TextInputType.emailAddress,
+                          onChanged: (value) {},
                           decoration: InputDecoration(
+                              errorText: null,
                               suffixIcon: GestureDetector(
                                   onTap: () {
                                     setState(() {
-                                      mail.text = "";
+                                      email.text = "";
                                     });
                                   },
                                   child: Container(
@@ -81,7 +87,6 @@ class _LoginPageState extends State<LoginPage> {
                                       BorderSide(color: context.primaryColor)),
                               focusColor: context.primaryColor,
                               isDense: true,
-                              errorText: "asd",
                               hintText: 'mailaddress'.tr(),
                               border:
                                   OutlineInputBorder(borderSide: BorderSide())),
@@ -96,50 +101,60 @@ class _LoginPageState extends State<LoginPage> {
                         SizedBox(
                           height: 10.h,
                         ),
-                        TextField(
-                          cursorColor: context.primaryColor,
-                          controller: password2,
-                          cursorHeight: 25,
-                          obscureText: _obscureText,
-                          enableSuggestions: false,
-                          autocorrect: false,
-                          keyboardType: TextInputType.visiblePassword,
-                          onChanged: (value) {},
-                          autofocus: false,
-                          decoration: InputDecoration(
-                              errorText: "asd",
-                              labelStyle: TextStyle(
-                                  color: context.primaryColor, fontSize: 14),
-                              focusedBorder: OutlineInputBorder(
-                                  borderSide:
-                                      BorderSide(color: context.primaryColor)),
-                              focusColor: context.primaryColor,
-                              prefixIcon: Icon(FontAwesomeIcons.key,
-                                  color: context.primaryColor),
-                              suffixIcon: GestureDetector(
-                                  onTap: () {
-                                    setState(() {
-                                      _obscureText = !_obscureText;
-                                    });
-                                  },
-                                  child: Container(
-                                    color: Colors.transparent,
-                                    child: Padding(
-                                      padding: const EdgeInsets.all(8.0),
-                                      child: Icon(
-                                        _obscureText
-                                            ? FontAwesomeIcons.eye
-                                            : FontAwesomeIcons.eyeSlash,
-                                        size: 20.0,
-                                        color: context.primaryColor,
-                                      ),
-                                    ),
-                                  )),
-                              isDense: true,
-                              hintText: 'password'.tr(),
-                              border: OutlineInputBorder(
-                                  borderSide:
-                                      BorderSide(color: context.primaryColor))),
+                        BlocBuilder<LoginpageBloc, LoginpageState>(
+                          builder: (context, state) {
+                            return TextField(
+                              cursorColor: context.primaryColor,
+                              controller: password,
+                              cursorHeight: 25,
+                              obscureText: _obscureText,
+                              enableSuggestions: false,
+                              autocorrect: false,
+                              keyboardType: TextInputType.visiblePassword,
+                              onChanged: (value) {
+                                context.read<LoginpageBloc>().add(
+                                    PasswordCheckEvent(password: value.trim()));
+                              },
+                              autofocus: false,
+                              decoration: InputDecoration(
+                                  errorText: state.passErrorText == ""
+                                      ? null
+                                      : state.passErrorText,
+                                  labelStyle: TextStyle(
+                                      color: context.primaryColor,
+                                      fontSize: 14),
+                                  focusedBorder: OutlineInputBorder(
+                                      borderSide: BorderSide(
+                                          color: context.primaryColor)),
+                                  focusColor: context.primaryColor,
+                                  prefixIcon: Icon(FontAwesomeIcons.key,
+                                      color: context.primaryColor),
+                                  suffixIcon: GestureDetector(
+                                      onTap: () {
+                                        setState(() {
+                                          _obscureText = !_obscureText;
+                                        });
+                                      },
+                                      child: Container(
+                                        color: Colors.transparent,
+                                        child: Padding(
+                                          padding: const EdgeInsets.all(8.0),
+                                          child: Icon(
+                                            _obscureText
+                                                ? FontAwesomeIcons.eye
+                                                : FontAwesomeIcons.eyeSlash,
+                                            size: 20.0,
+                                            color: context.primaryColor,
+                                          ),
+                                        ),
+                                      )),
+                                  isDense: true,
+                                  hintText: 'password'.tr(),
+                                  border: OutlineInputBorder(
+                                      borderSide: BorderSide(
+                                          color: context.primaryColor))),
+                            );
+                          },
                         ),
                         GestureDetector(
                           onTap: () {
@@ -150,13 +165,23 @@ class _LoginPageState extends State<LoginPage> {
                                 ));
                           },
                           child: Row(
+                              crossAxisAlignment: CrossAxisAlignment.end,
                               mainAxisAlignment: MainAxisAlignment.end,
                               children: <Widget>[
-                                Text(
-                                  "forgotpass".tr(),
-                                  style: context.fontStyleLato(
-                                      context.primaryColor, 16),
-                                ),
+                                TextButton(
+                                    onPressed: () {
+                                      Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                            builder: (context) =>
+                                                ForgotPassPage(),
+                                          ));
+                                    },
+                                    child: Text(
+                                      "forgotpass".tr(),
+                                      style: context.fontStyleLato(
+                                          context.primaryColor, 16),
+                                    ))
                               ]),
                         ),
                       ]),
@@ -167,18 +192,17 @@ class _LoginPageState extends State<LoginPage> {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         SizedBox(
-                          width: double.infinity,
-                          child: ElevatedButton(
-                            style: TextButton.styleFrom(
-                              backgroundColor: context.primaryColor,
-                              minimumSize: const Size.fromHeight(50),
-                            ),
-                            onPressed: () {},
-                            child: Text(
-                              "login".tr(),
-                            ),
-                          ),
-                        ),
+                            width: double.infinity,
+                            child: ElevatedButton(
+                              style: TextButton.styleFrom(
+                                backgroundColor: context.primaryColor,
+                                minimumSize: const Size.fromHeight(50),
+                              ),
+                              onPressed: () {},
+                              child: Text(
+                                "login".tr(),
+                              ),
+                            )),
                       ]),
                 ),
                 Expanded(

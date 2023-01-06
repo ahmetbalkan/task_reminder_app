@@ -29,6 +29,7 @@ class _RegisterPageState extends State<RegisterPage> {
             titleTextStyle: context.fontStyleLato(Colors.white, 24),
             title: Text("register".tr()),
             centerTitle: true,
+            toolbarHeight: 120,
           ),
           backgroundColor: context.backgroundColor,
           body: Padding(
@@ -39,7 +40,7 @@ class _RegisterPageState extends State<RegisterPage> {
                 Expanded(
                   flex: 6,
                   child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
+                      mainAxisAlignment: MainAxisAlignment.start,
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
