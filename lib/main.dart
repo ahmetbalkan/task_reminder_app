@@ -1,6 +1,7 @@
 import 'package:device_preview/device_preview.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:task_reminder_app/bloc/intropage_bloc/intropage_bloc.dart';
@@ -11,20 +12,22 @@ import 'package:task_reminder_app/view/register_screen.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await EasyLocalization.ensureInitialized();
-  runApp(
-    EasyLocalization(
-      path: 'assets/translations',
-      fallbackLocale: const Locale('en', 'US'),
-      supportedLocales: const [
-        Locale('tr', 'TR'),
-        Locale('en', 'US'),
-      ],
-      child: DevicePreview(
-        enabled: true,
-        builder: (context) => const MyApp(), // Wrap your app
-      ),
-    ),
-  );
+  SystemChrome.setPreferredOrientations(
+          [DeviceOrientation.portraitUp, DeviceOrientation.portraitDown])
+      .then((_) => runApp(
+            EasyLocalization(
+              path: 'assets/translations',
+              fallbackLocale: const Locale('en', 'US'),
+              supportedLocales: const [
+                Locale('tr', 'TR'),
+                Locale('en', 'US'),
+              ],
+              child: DevicePreview(
+                enabled: true,
+                builder: (context) => const MyApp(), // Wrap your app
+              ),
+            ),
+          ));
 }
 
 class MyApp extends StatelessWidget {
@@ -52,7 +55,7 @@ class MyApp extends StatelessWidget {
               builder: DevicePreview.appBuilder,
               title: 'Task Reminder',
               theme: ThemeData.dark(),
-              home: const ForgotPassPage(),
+              home: const LoginPage(),
             ),
           );
         });
