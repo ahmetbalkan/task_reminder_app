@@ -41,69 +41,75 @@ class _LoginPageState extends State<LoginPage> {
                 Spacer(
                   flex: 1,
                 ),
-                Expanded(
-                  flex: 5,
-                  child: Column(
-                      mainAxisAlignment: MainAxisAlignment.end,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          "mail".tr(),
-                          style: context.fontStyleLato(Colors.white, 16),
-                        ),
-                        SizedBox(
-                          height: 10.h,
-                        ),
-                        TextField(
-                          autofocus: false,
-                          cursorColor: context.primaryColor,
-                          controller: email,
-                          cursorHeight: 25,
-                          keyboardType: TextInputType.emailAddress,
-                          onChanged: (value) {},
-                          decoration: InputDecoration(
-                              errorText: null,
-                              suffixIcon: GestureDetector(
-                                  onTap: () {
-                                    setState(() {
-                                      email.text = "";
-                                    });
-                                  },
-                                  child: Container(
-                                    color: Colors.transparent,
-                                    child: Padding(
-                                      padding: const EdgeInsets.all(8.0),
-                                      child: Icon(
-                                        FontAwesomeIcons.circleXmark,
-                                        size: 20.0,
-                                        color: context.primaryColor,
-                                      ),
-                                    ),
-                                  )),
-                              prefixIcon: Icon(FontAwesomeIcons.user,
-                                  color: context.primaryColor),
-                              focusedBorder: OutlineInputBorder(
-                                  borderSide:
-                                      BorderSide(color: context.primaryColor)),
-                              focusColor: context.primaryColor,
-                              isDense: true,
-                              hintText: 'mailaddress'.tr(),
-                              border:
-                                  OutlineInputBorder(borderSide: BorderSide())),
-                        ),
-                        SizedBox(
-                          height: 10.h,
-                        ),
-                        Text(
-                          "passwordtitle".tr(),
-                          style: context.fontStyleLato(Colors.white, 16),
-                        ),
-                        SizedBox(
-                          height: 10.h,
-                        ),
-                        BlocBuilder<LoginpageBloc, LoginpageState>(
-                          builder: (context, state) {
-                            return TextField(
+                BlocBuilder<LoginpageBloc, LoginpageState>(
+                  builder: (context, state) {
+                    return Expanded(
+                      flex: 5,
+                      child: Column(
+                          mainAxisAlignment: MainAxisAlignment.end,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              "mail".tr(),
+                              style: context.fontStyleLato(Colors.white, 16),
+                            ),
+                            SizedBox(
+                              height: 10.h,
+                            ),
+                            TextField(
+                              autofocus: false,
+                              cursorColor: context.primaryColor,
+                              controller: email,
+                              cursorHeight: 25,
+                              keyboardType: TextInputType.emailAddress,
+                              onChanged: (value) {
+                                context
+                                    .read<LoginpageBloc>()
+                                    .add(EmailCheckEvent(email: value.trim()));
+                              },
+                              decoration: InputDecoration(
+                                  errorText: state.emailErrorText == ""
+                                      ? null
+                                      : state.emailErrorText,
+                                  suffixIcon: GestureDetector(
+                                      onTap: () {
+                                        setState(() {
+                                          email.text = "";
+                                        });
+                                      },
+                                      child: Container(
+                                        color: Colors.transparent,
+                                        child: Padding(
+                                          padding: const EdgeInsets.all(8.0),
+                                          child: Icon(
+                                            FontAwesomeIcons.circleXmark,
+                                            size: 20.0,
+                                            color: context.primaryColor,
+                                          ),
+                                        ),
+                                      )),
+                                  prefixIcon: Icon(FontAwesomeIcons.user,
+                                      color: context.primaryColor),
+                                  focusedBorder: OutlineInputBorder(
+                                      borderSide: BorderSide(
+                                          color: context.primaryColor)),
+                                  focusColor: context.primaryColor,
+                                  isDense: true,
+                                  hintText: 'mailaddress'.tr(),
+                                  border: OutlineInputBorder(
+                                      borderSide: BorderSide())),
+                            ),
+                            SizedBox(
+                              height: 10.h,
+                            ),
+                            Text(
+                              "passwordtitle".tr(),
+                              style: context.fontStyleLato(Colors.white, 16),
+                            ),
+                            SizedBox(
+                              height: 10.h,
+                            ),
+                            TextField(
                               cursorColor: context.primaryColor,
                               controller: password,
                               cursorHeight: 25,
@@ -153,38 +159,38 @@ class _LoginPageState extends State<LoginPage> {
                                   border: OutlineInputBorder(
                                       borderSide: BorderSide(
                                           color: context.primaryColor))),
-                            );
-                          },
-                        ),
-                        GestureDetector(
-                          onTap: () {
-                            Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (context) => ForgotPassPage(),
-                                ));
-                          },
-                          child: Row(
-                              crossAxisAlignment: CrossAxisAlignment.end,
-                              mainAxisAlignment: MainAxisAlignment.end,
-                              children: <Widget>[
-                                TextButton(
-                                    onPressed: () {
-                                      Navigator.push(
-                                          context,
-                                          MaterialPageRoute(
-                                            builder: (context) =>
-                                                ForgotPassPage(),
-                                          ));
-                                    },
-                                    child: Text(
-                                      "forgotpass".tr(),
-                                      style: context.fontStyleLato(
-                                          context.primaryColor, 16),
-                                    ))
-                              ]),
-                        ),
-                      ]),
+                            ),
+                            GestureDetector(
+                              onTap: () {
+                                Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) => ForgotPassPage(),
+                                    ));
+                              },
+                              child: Row(
+                                  crossAxisAlignment: CrossAxisAlignment.end,
+                                  mainAxisAlignment: MainAxisAlignment.end,
+                                  children: <Widget>[
+                                    TextButton(
+                                        onPressed: () {
+                                          Navigator.push(
+                                              context,
+                                              MaterialPageRoute(
+                                                builder: (context) =>
+                                                    ForgotPassPage(),
+                                              ));
+                                        },
+                                        child: Text(
+                                          "forgotpass".tr(),
+                                          style: context.fontStyleLato(
+                                              context.primaryColor, 16),
+                                        ))
+                                  ]),
+                            ),
+                          ]),
+                    );
+                  },
                 ),
                 Expanded(
                   flex: 1,
@@ -193,15 +199,24 @@ class _LoginPageState extends State<LoginPage> {
                       children: [
                         SizedBox(
                             width: double.infinity,
-                            child: ElevatedButton(
-                              style: TextButton.styleFrom(
-                                backgroundColor: context.primaryColor,
-                                minimumSize: const Size.fromHeight(50),
-                              ),
-                              onPressed: () {},
-                              child: Text(
-                                "login".tr(),
-                              ),
+                            child: BlocBuilder<LoginpageBloc, LoginpageState>(
+                              builder: (context, state) {
+                                return ElevatedButton(
+                                  style: TextButton.styleFrom(
+                                    backgroundColor:
+                                        state.isLoginComplete == false
+                                            ? Colors.grey
+                                            : context.primaryColor,
+                                    minimumSize: const Size.fromHeight(50),
+                                  ),
+                                  onPressed: state.isLoginComplete == false
+                                      ? null
+                                      : () {},
+                                  child: Text(
+                                    "login".tr(),
+                                  ),
+                                );
+                              },
                             )),
                       ]),
                 ),

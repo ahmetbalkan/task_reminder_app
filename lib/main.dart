@@ -26,7 +26,7 @@ void main() async {
                 Locale('en', 'US'),
               ],
               child: DevicePreview(
-                enabled: false,
+                enabled: true,
                 builder: (context) => const MyApp(),
               ),
             ),
