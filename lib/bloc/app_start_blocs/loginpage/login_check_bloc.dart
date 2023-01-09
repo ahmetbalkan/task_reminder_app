@@ -2,11 +2,11 @@ import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/cupertino.dart';
 
-part 'loginpage_event.dart';
-part 'loginpage_state.dart';
+part 'login_check_event.dart';
+part 'login_check_state.dart';
 
-class LoginpageBloc extends Bloc<LoginpageEvent, LoginpageState> {
-  LoginpageBloc()
+class LoginCheckBloc extends Bloc<LoginpageEvent, LoginpageState> {
+  LoginCheckBloc()
       : super(LoginpageInitial(
             passErrorText: "", emailErrorText: "", isLoginComplete: false)) {
     on<PasswordCheckEvent>((event, emit) {

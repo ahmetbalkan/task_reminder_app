@@ -22,7 +22,7 @@ class _IntroSliderPageState extends State<IntroSliderPage> {
     super.initState();
     _pageController.addListener(() {
       context
-          .read<IntropageBloc>()
+          .read<IntroPageBloc>()
           .add(SetIntroCountEvent(setCount: _pageController.page!));
     });
   }
@@ -170,7 +170,7 @@ class _IntroSliderPageState extends State<IntroSliderPage> {
         const Spacer(
           flex: 1,
         ),
-        BlocBuilder<IntropageBloc, IntropageState>(
+        BlocBuilder<IntroPageBloc, IntroPageState>(
           builder: (context, state) {
             return state.getCount == 0.0
                 ? Expanded(
@@ -181,7 +181,7 @@ class _IntroSliderPageState extends State<IntroSliderPage> {
                         borderRadius: BorderRadius.circular(8),
                       ),
                       child: Center(
-                          child: BlocBuilder<IntropageBloc, IntropageState>(
+                          child: BlocBuilder<IntroPageBloc, IntroPageState>(
                         builder: (context, state) {
                           return Text(
                             "Back",
@@ -205,7 +205,7 @@ class _IntroSliderPageState extends State<IntroSliderPage> {
                           borderRadius: BorderRadius.circular(8),
                         ),
                         child: Center(
-                            child: BlocBuilder<IntropageBloc, IntropageState>(
+                            child: BlocBuilder<IntroPageBloc, IntroPageState>(
                           builder: (context, state) {
                             return Text(
                               "Back",
@@ -221,7 +221,7 @@ class _IntroSliderPageState extends State<IntroSliderPage> {
         const Spacer(
           flex: 1,
         ),
-        BlocBuilder<IntropageBloc, IntropageState>(
+        BlocBuilder<IntroPageBloc, IntroPageState>(
           builder: (context, state) {
             return state.getCount == 2.0
                 ? Expanded(
@@ -241,7 +241,7 @@ class _IntroSliderPageState extends State<IntroSliderPage> {
                           borderRadius: BorderRadius.circular(8),
                         ),
                         child: Center(
-                            child: BlocBuilder<IntropageBloc, IntropageState>(
+                            child: BlocBuilder<IntroPageBloc, IntroPageState>(
                           builder: (context, state) {
                             return Text(
                               "Let's Start",
@@ -266,7 +266,7 @@ class _IntroSliderPageState extends State<IntroSliderPage> {
                           borderRadius: BorderRadius.circular(8),
                         ),
                         child: Center(
-                            child: BlocBuilder<IntropageBloc, IntropageState>(
+                            child: BlocBuilder<IntroPageBloc, IntroPageState>(
                           builder: (context, state) {
                             return Text(
                               "Next",

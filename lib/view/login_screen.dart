@@ -7,7 +7,7 @@ import 'package:task_reminder_app/tools/extention.dart';
 import 'package:task_reminder_app/view/forgotpass_screen.dart';
 import 'package:task_reminder_app/view/register_screen.dart';
 
-import '../bloc/app_start_blocs/loginpage/loginpage_bloc.dart';
+import '../bloc/app_start_blocs/loginpage/login_check_bloc.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
@@ -41,7 +41,7 @@ class _LoginPageState extends State<LoginPage> {
                 Spacer(
                   flex: 1,
                 ),
-                BlocBuilder<LoginpageBloc, LoginpageState>(
+                BlocBuilder<LoginCheckBloc, LoginCheckState>(
                   builder: (context, state) {
                     return Expanded(
                       flex: 5,
@@ -64,7 +64,7 @@ class _LoginPageState extends State<LoginPage> {
                               keyboardType: TextInputType.emailAddress,
                               onChanged: (value) {
                                 context
-                                    .read<LoginpageBloc>()
+                                    .read<LoginCheckBloc>()
                                     .add(EmailCheckEvent(email: value.trim()));
                               },
                               decoration: InputDecoration(
@@ -118,7 +118,7 @@ class _LoginPageState extends State<LoginPage> {
                               autocorrect: false,
                               keyboardType: TextInputType.visiblePassword,
                               onChanged: (value) {
-                                context.read<LoginpageBloc>().add(
+                                context.read<LoginCheckBloc>().add(
                                     PasswordCheckEvent(password: value.trim()));
                               },
                               autofocus: false,
@@ -199,7 +199,7 @@ class _LoginPageState extends State<LoginPage> {
                       children: [
                         SizedBox(
                             width: double.infinity,
-                            child: BlocBuilder<LoginpageBloc, LoginpageState>(
+                            child: BlocBuilder<LoginCheckBloc, LoginCheckState>(
                               builder: (context, state) {
                                 return ElevatedButton(
                                   style: TextButton.styleFrom(
