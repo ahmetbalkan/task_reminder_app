@@ -33,6 +33,6 @@
     "lowercasedesc":"Şifre en az bir küçük harf içermelidir.",
     "uppercasedesc":"Şifre en az bir büyük harf içermelidir",
     "digitsec":"Şifre en az bir rakam içermelidir",
-    "symboldesc":"Şifre en az bir sembol içermelidir.",
-    "8digit":"Parola en az 8 karakterden oluşur."
+    "8digit":"Parola en az 8 karakterden oluşur.",
+    "mailerror":"Bu bir e-mail adresi değil."
 }
