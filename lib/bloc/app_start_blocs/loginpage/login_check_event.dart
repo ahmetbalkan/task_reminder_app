@@ -7,26 +7,6 @@ abstract class LoginCheckEvent extends Equatable {
   List<Object> get props => [];
 }
 
-class PasswordCheckEvent extends LoginCheckEvent {
-  final String email;
-  final String password;
-
-  PasswordCheckEvent({required this.email, required this.password});
-
-  @override
-  List<Object> get props => [password];
-}
-
-class EmailCheckEvent extends LoginCheckEvent {
-  final String email;
-  final String password;
-
-  EmailCheckEvent({required this.email, required this.password});
-
-  @override
-  List<Object> get props => [email];
-}
-
 class LoginUserPassEvent extends LoginCheckEvent {
   final String email;
   final String pass;

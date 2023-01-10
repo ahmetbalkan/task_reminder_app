@@ -84,17 +84,19 @@ class _LoginPageState extends State<LoginPage> {
                               cursorColor: context.primaryColor,
                               controller: email,
                               cursorHeight: 25,
+                              inputFormatters: [],
                               keyboardType: TextInputType.emailAddress,
                               onChanged: (value) {
                                 context.read<LoginCheckBloc>().add(
-                                    EmailCheckEvent(
-                                        password: password.text,
+                                    LoginUserPassEvent(
+                                        pass: password.text.trim(),
                                         email: value.trim()));
                               },
                               decoration: InputDecoration(
-                                  errorText: state.emailErrorText == ""
+                                  errorText: state.emailErrorText == "false"
                                       ? null
                                       : state.emailErrorText,
+                                  errorStyle: TextStyle(fontSize: 10),
                                   suffixIcon: GestureDetector(
                                       onTap: () {
                                         setState(() {
@@ -143,15 +145,16 @@ class _LoginPageState extends State<LoginPage> {
                               keyboardType: TextInputType.visiblePassword,
                               onChanged: (value) {
                                 context.read<LoginCheckBloc>().add(
-                                    PasswordCheckEvent(
-                                        email: email.text,
-                                        password: value.trim()));
+                                    LoginUserPassEvent(
+                                        pass: value.trim(),
+                                        email: email.text.trim()));
                               },
                               autofocus: false,
                               decoration: InputDecoration(
-                                  errorText: state.passErrorText == ""
+                                  errorText: state.passErrorText == "false"
                                       ? null
                                       : state.passErrorText,
+                                  errorStyle: TextStyle(fontSize: 10),
                                   labelStyle: TextStyle(
                                       color: context.primaryColor,
                                       fontSize: 14),
@@ -233,7 +236,14 @@ class _LoginPageState extends State<LoginPage> {
                                   builder: (context, checkstate) {
                                     return ElevatedButton(
                                         style: TextButton.styleFrom(
-                                          backgroundColor: context.primaryColor,
+                                          backgroundColor: checkstate
+                                                      .isEmailChecked ==
+                                                  false
+                                              ? Colors.grey
+                                              : checkstate.isPasswordChecked ==
+                                                      false
+                                                  ? Colors.grey
+                                                  : context.primaryColor,
                                           minimumSize:
                                               const Size.fromHeight(50),
                                         ),
@@ -249,7 +259,7 @@ class _LoginPageState extends State<LoginPage> {
                                                         password:
                                                             password.text));
                                                   },
-                                        child: Text("Giriş Yap"));
+                                        child: Text("login".tr()));
                                   },
                                 );
                               },
