@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:progress_indicators/progress_indicators.dart';
 import 'package:task_reminder_app/bloc/app_start_blocs/login_auth/login_auth_bloc.dart';
 
 import 'package:task_reminder_app/tools/extention.dart';
@@ -64,33 +65,26 @@ class _LoginPageState extends State<LoginPage> {
                 Spacer(
                   flex: 1,
                 ),
-                BlocBuilder<LoginCheckBloc, LoginCheckState>(
-                  builder: (context, state) {
-                    return Expanded(
-                      flex: 5,
-                      child: formMethod(context, state),
-                    );
-                  },
-                ),
+                Expanded(flex: 5, child: formMethod()),
                 Expanded(
                   flex: 1,
                   child: loginButtonMethod(dataBloc),
                 ),
                 Expanded(
                   flex: 1,
-                  child: orMethod(context),
+                  child: orMethod(),
                 ),
                 Expanded(
                   flex: 1,
-                  child: googleButtonMethod(context),
+                  child: googleButtonMethod(),
                 ),
                 Expanded(
                   flex: 1,
-                  child: AppleButtonMethod(context),
+                  child: AppleButtonMethod(),
                 ),
                 Expanded(
                   flex: 1,
-                  child: RegisterButtonMethod(context),
+                  child: RegisterButtonMethod(),
                 ),
               ],
             ),
@@ -98,7 +92,7 @@ class _LoginPageState extends State<LoginPage> {
     ));
   }
 
-  Column formMethod(BuildContext context, LoginCheckState state) {
+  Column formMethod() {
     return Column(
         mainAxisAlignment: MainAxisAlignment.end,
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -110,7 +104,7 @@ class _LoginPageState extends State<LoginPage> {
           SizedBox(
             height: 10.h,
           ),
-          mailTextFieldMethod(context, state),
+          mailTextFieldMethod(),
           SizedBox(
             height: 10.h,
           ),
@@ -121,105 +115,113 @@ class _LoginPageState extends State<LoginPage> {
           SizedBox(
             height: 10.h,
           ),
-          passwordTextFieldMethod(context, state),
+          passwordTextFieldMethod(),
           forgotPassMethod(context),
         ]);
   }
 
-  TextField mailTextFieldMethod(BuildContext context, LoginCheckState state) {
-    return TextField(
-      autofocus: false,
-      cursorColor: context.primaryColor,
-      controller: email,
-      cursorHeight: 25,
-      inputFormatters: [],
-      keyboardType: TextInputType.emailAddress,
-      onChanged: (value) {
-        context.read<LoginCheckBloc>().add(LoginUserPassEvent(
-            pass: password.text.trim(), email: value.trim()));
+  Widget mailTextFieldMethod() {
+    return BlocBuilder<LoginCheckBloc, LoginCheckState>(
+      builder: (context, state) {
+        return TextField(
+          autofocus: false,
+          cursorColor: context.primaryColor,
+          controller: email,
+          cursorHeight: 25,
+          keyboardType: TextInputType.emailAddress,
+          onChanged: (value) {
+            context.read<LoginCheckBloc>().add(LoginUserPassEvent(
+                pass: password.text.trim(), email: value.trim()));
+          },
+          decoration: InputDecoration(
+              errorText:
+                  state.emailErrorText == "false" ? null : state.emailErrorText,
+              errorStyle: TextStyle(fontSize: 10),
+              suffixIcon: GestureDetector(
+                  onTap: () {
+                    setState(() {
+                      email.text = "";
+                    });
+                  },
+                  child: Container(
+                    color: Colors.transparent,
+                    child: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Icon(
+                        FontAwesomeIcons.circleXmark,
+                        size: 20.0,
+                        color: context.primaryColor,
+                      ),
+                    ),
+                  )),
+              prefixIcon:
+                  Icon(FontAwesomeIcons.user, color: context.primaryColor),
+              focusedBorder: OutlineInputBorder(
+                  borderSide: BorderSide(color: context.primaryColor)),
+              focusColor: context.primaryColor,
+              isDense: true,
+              hintText: 'mailaddress'.tr(),
+              border: OutlineInputBorder(borderSide: BorderSide())),
+        );
       },
-      decoration: InputDecoration(
-          errorText:
-              state.emailErrorText == "false" ? null : state.emailErrorText,
-          errorStyle: TextStyle(fontSize: 10),
-          suffixIcon: GestureDetector(
-              onTap: () {
-                setState(() {
-                  email.text = "";
-                });
-              },
-              child: Container(
-                color: Colors.transparent,
-                child: Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Icon(
-                    FontAwesomeIcons.circleXmark,
-                    size: 20.0,
-                    color: context.primaryColor,
-                  ),
-                ),
-              )),
-          prefixIcon: Icon(FontAwesomeIcons.user, color: context.primaryColor),
-          focusedBorder: OutlineInputBorder(
-              borderSide: BorderSide(color: context.primaryColor)),
-          focusColor: context.primaryColor,
-          isDense: true,
-          hintText: 'mailaddress'.tr(),
-          border: OutlineInputBorder(borderSide: BorderSide())),
     );
   }
 
-  TextField passwordTextFieldMethod(
-      BuildContext context, LoginCheckState state) {
-    return TextField(
-      cursorColor: context.primaryColor,
-      controller: password,
-      cursorHeight: 25,
-      obscureText: _obscureText,
-      enableSuggestions: false,
-      autocorrect: false,
-      keyboardType: TextInputType.visiblePassword,
-      onChanged: (value) {
-        context.read<LoginCheckBloc>().add(
-            LoginUserPassEvent(pass: value.trim(), email: email.text.trim()));
+  Widget passwordTextFieldMethod() {
+    return BlocBuilder<LoginCheckBloc, LoginCheckState>(
+      builder: (context, state) {
+        return TextField(
+          cursorColor: context.primaryColor,
+          controller: password,
+          cursorHeight: 25,
+          obscureText: _obscureText,
+          enableSuggestions: false,
+          autocorrect: false,
+          keyboardType: TextInputType.visiblePassword,
+          onChanged: (value) {
+            context.read<LoginCheckBloc>().add(LoginUserPassEvent(
+                pass: value.trim(), email: email.text.trim()));
+          },
+          autofocus: false,
+          decoration: InputDecoration(
+              errorText:
+                  state.passErrorText == "false" ? null : state.passErrorText,
+              errorStyle: TextStyle(fontSize: 10),
+              labelStyle: TextStyle(color: context.primaryColor, fontSize: 14),
+              focusedBorder: OutlineInputBorder(
+                  borderSide: BorderSide(color: context.primaryColor)),
+              focusColor: context.primaryColor,
+              prefixIcon:
+                  Icon(FontAwesomeIcons.key, color: context.primaryColor),
+              suffixIcon: GestureDetector(
+                  onTap: () {
+                    setState(() {
+                      _obscureText = !_obscureText;
+                    });
+                  },
+                  child: Container(
+                    color: Colors.transparent,
+                    child: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Icon(
+                        _obscureText
+                            ? FontAwesomeIcons.eye
+                            : FontAwesomeIcons.eyeSlash,
+                        size: 20.0,
+                        color: context.primaryColor,
+                      ),
+                    ),
+                  )),
+              isDense: true,
+              hintText: 'password'.tr(),
+              border: OutlineInputBorder(
+                  borderSide: BorderSide(color: context.primaryColor))),
+        );
       },
-      autofocus: false,
-      decoration: InputDecoration(
-          errorText:
-              state.passErrorText == "false" ? null : state.passErrorText,
-          errorStyle: TextStyle(fontSize: 10),
-          labelStyle: TextStyle(color: context.primaryColor, fontSize: 14),
-          focusedBorder: OutlineInputBorder(
-              borderSide: BorderSide(color: context.primaryColor)),
-          focusColor: context.primaryColor,
-          prefixIcon: Icon(FontAwesomeIcons.key, color: context.primaryColor),
-          suffixIcon: GestureDetector(
-              onTap: () {
-                setState(() {
-                  _obscureText = !_obscureText;
-                });
-              },
-              child: Container(
-                color: Colors.transparent,
-                child: Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Icon(
-                    _obscureText
-                        ? FontAwesomeIcons.eye
-                        : FontAwesomeIcons.eyeSlash,
-                    size: 20.0,
-                    color: context.primaryColor,
-                  ),
-                ),
-              )),
-          isDense: true,
-          hintText: 'password'.tr(),
-          border: OutlineInputBorder(
-              borderSide: BorderSide(color: context.primaryColor))),
     );
   }
 
-  Row forgotPassMethod(BuildContext context) {
+  Widget forgotPassMethod(BuildContext context) {
     return Row(
         crossAxisAlignment: CrossAxisAlignment.end,
         mainAxisAlignment: MainAxisAlignment.end,
@@ -239,7 +241,7 @@ class _LoginPageState extends State<LoginPage> {
         ]);
   }
 
-  Column loginButtonMethod(LoginAuthBloc dataBloc) {
+  Widget loginButtonMethod(LoginAuthBloc dataBloc) {
     return Column(mainAxisAlignment: MainAxisAlignment.center, children: [
       SizedBox(
           width: double.infinity,
@@ -260,12 +262,29 @@ class _LoginPageState extends State<LoginPage> {
                           ? null
                           : checkstate.isPasswordChecked == false
                               ? null
-                              : () {
-                                  dataBloc.add(LoginEmailPassEvent(
-                                      email: email.text,
-                                      password: password.text));
-                                },
-                      child: Text("login".tr()));
+                              : authstate is LoadingLoginAuthState
+                                  ? null
+                                  : () {
+                                      if (authstate is LoadingLoginAuthState) {
+                                        ScaffoldMessenger.of(context)
+                                            .showSnackBar(
+                                          SnackBar(
+                                            backgroundColor: Colors.yellow,
+                                            content: Text('Yükleniyor'),
+                                          ),
+                                        );
+                                      } else {
+                                        dataBloc.add(LoginEmailPassEvent(
+                                            email: email.text,
+                                            password: password.text));
+                                      }
+                                    },
+                      child: authstate is LoadingLoginAuthState
+                          ? FadingText(
+                              'Loading...',
+                              style: context.fontStyleLato(Colors.white, 14),
+                            )
+                          : Text("login".tr()));
                 },
               );
             },
@@ -273,7 +292,7 @@ class _LoginPageState extends State<LoginPage> {
     ]);
   }
 
-  Padding orMethod(BuildContext context) {
+  Widget orMethod() {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 24.0),
       child: Row(children: <Widget>[
@@ -290,7 +309,7 @@ class _LoginPageState extends State<LoginPage> {
     );
   }
 
-  Column googleButtonMethod(BuildContext context) {
+  Column googleButtonMethod() {
     return Column(mainAxisAlignment: MainAxisAlignment.center, children: [
       SizedBox(
         width: double.infinity,
@@ -310,7 +329,7 @@ class _LoginPageState extends State<LoginPage> {
     ]);
   }
 
-  Column AppleButtonMethod(BuildContext context) {
+  Widget AppleButtonMethod() {
     return Column(mainAxisAlignment: MainAxisAlignment.center, children: [
       SizedBox(
         width: double.infinity,
@@ -330,7 +349,7 @@ class _LoginPageState extends State<LoginPage> {
     ]);
   }
 
-  GestureDetector RegisterButtonMethod(BuildContext context) {
+  Widget RegisterButtonMethod() {
     return GestureDetector(
       onTap: () {
         Navigator.push(

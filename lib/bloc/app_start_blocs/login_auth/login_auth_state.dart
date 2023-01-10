@@ -9,7 +9,11 @@ abstract class LoginAuthState extends Equatable {
 
 class InitialLoginAuthState extends LoginAuthState {}
 
-class LoadingLoginAuthState extends LoginAuthState {}
+class LoadingLoginAuthState extends LoginAuthState {
+  final bool isLoading;
+
+  LoadingLoginAuthState(this.isLoading);
+}
 
 class SuccessLoginAuthState extends LoginAuthState {}
 
