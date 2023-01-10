@@ -1,13 +1,13 @@
 part of 'intropage_bloc.dart';
 
-abstract class IntropageEvent extends Equatable {
-  const IntropageEvent();
+abstract class IntroPageEvent extends Equatable {
+  const IntroPageEvent();
 
   @override
   List<Object> get props => [];
 }
 
-class SetIntroCountEvent extends IntropageEvent {
+class SetIntroCountEvent extends IntroPageEvent {
   final double setCount;
   const SetIntroCountEvent({required this.setCount});
 

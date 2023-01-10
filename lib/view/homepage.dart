@@ -3,16 +3,16 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:task_reminder_app/tools/extention.dart';
 
-class IntroSliderPage1 extends StatefulWidget {
-  const IntroSliderPage1({super.key});
+class HomePage extends StatefulWidget {
+  const HomePage({super.key});
 
   @override
-  State<IntroSliderPage1> createState() => _IntroSliderPageState();
+  State<HomePage> createState() => _HomePageState();
 }
 
 PageController _pageController = PageController();
 
-class _IntroSliderPageState extends State<IntroSliderPage1> {
+class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(

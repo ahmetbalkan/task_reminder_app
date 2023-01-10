@@ -3,8 +3,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:task_reminder_app/bloc/app_start_blocs/login_auth/login_auth_bloc.dart';
+
 import 'package:task_reminder_app/tools/extention.dart';
 import 'package:task_reminder_app/view/forgotpass_screen.dart';
+import 'package:task_reminder_app/view/homepage.dart';
 import 'package:task_reminder_app/view/register_screen.dart';
 
 import '../bloc/app_start_blocs/loginpage/login_check_bloc.dart';
@@ -23,7 +26,27 @@ bool _obscureText = true;
 class _LoginPageState extends State<LoginPage> {
   @override
   Widget build(BuildContext context) {
+    final dataBloc = BlocProvider.of<LoginAuthBloc>(context);
     return SafeArea(
+        child: BlocListener<LoginAuthBloc, LoginAuthState>(
+      listener: (context, state) {
+        if (state is SuccessAuthState) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              backgroundColor: Colors.green,
+              content: Text('Success'),
+            ),
+          );
+        }
+        if (state is FailedAuthState) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              backgroundColor: Colors.red,
+              content: Text('Hata'),
+            ),
+          );
+        }
+      },
       child: Scaffold(
           appBar: AppBar(
             backgroundColor: Colors.transparent,
@@ -63,9 +86,10 @@ class _LoginPageState extends State<LoginPage> {
                               cursorHeight: 25,
                               keyboardType: TextInputType.emailAddress,
                               onChanged: (value) {
-                                context
-                                    .read<LoginCheckBloc>()
-                                    .add(EmailCheckEvent(email: value.trim()));
+                                context.read<LoginCheckBloc>().add(
+                                    EmailCheckEvent(
+                                        password: password.text,
+                                        email: value.trim()));
                               },
                               decoration: InputDecoration(
                                   errorText: state.emailErrorText == ""
@@ -119,7 +143,9 @@ class _LoginPageState extends State<LoginPage> {
                               keyboardType: TextInputType.visiblePassword,
                               onChanged: (value) {
                                 context.read<LoginCheckBloc>().add(
-                                    PasswordCheckEvent(password: value.trim()));
+                                    PasswordCheckEvent(
+                                        email: email.text,
+                                        password: value.trim()));
                               },
                               autofocus: false,
                               decoration: InputDecoration(
@@ -165,7 +191,8 @@ class _LoginPageState extends State<LoginPage> {
                                 Navigator.push(
                                     context,
                                     MaterialPageRoute(
-                                      builder: (context) => ForgotPassPage(),
+                                      builder: (context) =>
+                                          const ForgotPassPage(),
                                     ));
                               },
                               child: Row(
@@ -178,7 +205,7 @@ class _LoginPageState extends State<LoginPage> {
                                               context,
                                               MaterialPageRoute(
                                                 builder: (context) =>
-                                                    ForgotPassPage(),
+                                                    const ForgotPassPage(),
                                               ));
                                         },
                                         child: Text(
@@ -199,22 +226,31 @@ class _LoginPageState extends State<LoginPage> {
                       children: [
                         SizedBox(
                             width: double.infinity,
-                            child: BlocBuilder<LoginCheckBloc, LoginCheckState>(
-                              builder: (context, state) {
-                                return ElevatedButton(
-                                  style: TextButton.styleFrom(
-                                    backgroundColor:
-                                        state.isLoginComplete == false
-                                            ? Colors.grey
-                                            : context.primaryColor,
-                                    minimumSize: const Size.fromHeight(50),
-                                  ),
-                                  onPressed: state.isLoginComplete == false
-                                      ? null
-                                      : () {},
-                                  child: Text(
-                                    "login".tr(),
-                                  ),
+                            child: BlocBuilder<LoginAuthBloc, LoginAuthState>(
+                              builder: (context, authstate) {
+                                return BlocBuilder<LoginCheckBloc,
+                                    LoginCheckState>(
+                                  builder: (context, checkstate) {
+                                    return ElevatedButton(
+                                        style: TextButton.styleFrom(
+                                          backgroundColor: context.primaryColor,
+                                          minimumSize:
+                                              const Size.fromHeight(50),
+                                        ),
+                                        onPressed: checkstate.isEmailChecked ==
+                                                false
+                                            ? null
+                                            : checkstate.isPasswordChecked ==
+                                                    false
+                                                ? null
+                                                : () {
+                                                    dataBloc.add(LoginEvent(
+                                                        email: email.text,
+                                                        password:
+                                                            password.text));
+                                                  },
+                                        child: Text("Giriş Yap"));
+                                  },
                                 );
                               },
                             )),
@@ -320,6 +356,6 @@ class _LoginPageState extends State<LoginPage> {
               ],
             ),
           )),
-    );
+    ));
   }
 }

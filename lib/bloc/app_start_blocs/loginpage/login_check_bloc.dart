@@ -5,19 +5,26 @@ import 'package:flutter/cupertino.dart';
 part 'login_check_event.dart';
 part 'login_check_state.dart';
 
-class LoginCheckBloc extends Bloc<LoginpageEvent, LoginpageState> {
+class LoginCheckBloc extends Bloc<LoginCheckEvent, LoginCheckState> {
   LoginCheckBloc()
-      : super(LoginpageInitial(
-            passErrorText: "", emailErrorText: "", isLoginComplete: false)) {
+      : super(LoginCheckInitial(
+            passErrorText: "",
+            emailErrorText: "",
+            isEmailChecked: false,
+            isPasswordChecked: false)) {
     on<PasswordCheckEvent>((event, emit) {
-      if (_validatePassword(event.password) == "") {
+      if (_validatePassword(event.password) == "false") {
         emit(ErrorTextState(
-            passErrorText: "", emailErrorText: "", isLoginComplete: true));
+            passErrorText: "",
+            emailErrorText: "",
+            isEmailChecked: _validateEmail(event.password) == "" ? true : false,
+            isPasswordChecked: true));
       } else {
         emit(ErrorTextState(
             passErrorText: _validatePassword(event.password),
             emailErrorText: "",
-            isLoginComplete: false));
+            isEmailChecked: false,
+            isPasswordChecked: false));
       }
     });
 
@@ -28,11 +35,25 @@ class LoginCheckBloc extends Bloc<LoginpageEvent, LoginpageState> {
         emit(ErrorTextState(
             passErrorText: "",
             emailErrorText: "Bu bir email adresi değil.",
-            isLoginComplete: false));
+            isEmailChecked: false,
+            isPasswordChecked: false));
       } else {
         emit(ErrorTextState(
-            passErrorText: "", emailErrorText: "", isLoginComplete: true));
+            passErrorText: "",
+            emailErrorText: "",
+            isEmailChecked: true,
+            isPasswordChecked:
+                _validatePassword(event.email) == "" ? true : false));
       }
+    });
+
+    on<LoginUserPassEvent>((event, emit) {
+      emit(ErrorTextState(
+          passErrorText: _validateEmail(event.email),
+          emailErrorText: _validateEmail(event.email),
+          isEmailChecked: _validateEmail(event.email) == "false" ? true : false,
+          isPasswordChecked:
+              _validatePassword(event.email) == "false" ? true : false));
     });
   }
 }
@@ -53,7 +74,16 @@ String _validatePassword(String value) {
   if (value.length < 8) {
     return "Password has at least 8 characters\n";
   } else {
-    return "";
+    return "false";
+  }
+}
+
+String _validatePasswordLogin(String value) {
+  if (!RegExp(r'^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[!@#\$&*~]).{8,}$')
+      .hasMatch(value)) {
+    return "Check your password.";
+  } else {
+    return "false";
   }
 }
 
@@ -63,6 +93,6 @@ String _validateEmail(String value) {
       .hasMatch(value)) {
     return "Bu bir email adresi değil.";
   } else {
-    return "";
+    return "false";
   }
 }

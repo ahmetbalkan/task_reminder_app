@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:task_reminder_app/bloc/app_start_blocs/login_auth/login_auth_bloc.dart';
 import 'package:task_reminder_app/view/login_screen.dart';
 import 'bloc/app_start_blocs/intropage_bloc/intropage_bloc.dart';
 import 'bloc/app_start_blocs/loginpage/login_check_bloc.dart';
@@ -45,6 +46,9 @@ class MyApp extends StatelessWidget {
               ),
               BlocProvider(
                 create: (context) => LoginCheckBloc(),
+              ),
+              BlocProvider(
+                create: (context) => LoginAuthBloc(),
               )
             ],
             child: MaterialApp(

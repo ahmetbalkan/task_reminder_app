@@ -1,31 +1,33 @@
-part of 'loginpage_bloc.dart';
+part of 'login_check_bloc.dart';
 
-abstract class LoginpageEvent extends Equatable {
-  const LoginpageEvent();
+abstract class LoginCheckEvent extends Equatable {
+  const LoginCheckEvent();
 
   @override
   List<Object> get props => [];
 }
 
-class PasswordCheckEvent extends LoginpageEvent {
+class PasswordCheckEvent extends LoginCheckEvent {
+  final String email;
   final String password;
 
-  PasswordCheckEvent({required this.password});
+  PasswordCheckEvent({required this.email, required this.password});
 
   @override
   List<Object> get props => [password];
 }
 
-class EmailCheckEvent extends LoginpageEvent {
+class EmailCheckEvent extends LoginCheckEvent {
   final String email;
+  final String password;
 
-  EmailCheckEvent({required this.email});
+  EmailCheckEvent({required this.email, required this.password});
 
   @override
   List<Object> get props => [email];
 }
 
-class LoginUserPassEvent extends LoginpageEvent {
+class LoginUserPassEvent extends LoginCheckEvent {
   final String email;
   final String pass;
 
