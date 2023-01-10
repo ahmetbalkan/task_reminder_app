@@ -29,5 +29,10 @@
     "register2":"Kaydolun",
     "haveaccount": "Hesabınız var mı? Giriş Yapın.",
     "registerdesc": "Lütfen Kayıt için bilgilerinizi doldurunuz.",
-    "logindesc": " Task Reminder'a hoşgeldiniz.\n Özelliklerden yararlanmak için giriş yapınız. "
+    "logindesc": " Task Reminder'a hoşgeldiniz.\n Özelliklerden yararlanmak için giriş yapınız.",
+    "lowercasedesc":"Şifre en az bir küçük harf içermelidir.",
+    "uppercasedesc":"Şifre en az bir büyük harf içermelidir",
+    "digitsec":"Şifre en az bir rakam içermelidir",
+    "symboldesc":"Şifre en az bir sembol içermelidir.",
+    "8digit":"Parola en az 8 karakterden oluşur."
 }

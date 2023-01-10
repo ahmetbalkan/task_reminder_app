@@ -15,7 +15,7 @@ class LoginCheckBloc extends Bloc<LoginCheckEvent, LoginCheckState> {
             isPasswordChecked: false)) {
     on<LoginUserPassEvent>((event, emit) {
       if (_validateEmail(event.email) == "false") {
-        if (_validatePasswordLogin(event.pass) == "false") {
+        if (_validatePassword(event.pass) == "false") {
           emit(ErrorTextState(
               emailErrorText: "false",
               isEmailChecked: true,
@@ -25,28 +25,22 @@ class LoginCheckBloc extends Bloc<LoginCheckEvent, LoginCheckState> {
           emit(ErrorTextState(
               emailErrorText: _validateEmail(event.email),
               isEmailChecked: false,
-              passErrorText: _validatePasswordLogin(event.pass),
+              passErrorText: _validatePassword(event.pass),
               isPasswordChecked: false));
         }
       } else {
         emit(ErrorTextState(
             emailErrorText: _validateEmail(event.email),
             isEmailChecked: false,
-            passErrorText: _validatePasswordLogin(event.pass),
+            passErrorText: _validatePassword(event.pass),
             isPasswordChecked: false));
       }
     });
   }
 }
 
-/* emit(ErrorTextState(
-          passErrorText: null,
-          emailErrorText: null,
-          isEmailChecked: true,
-          isPasswordChecked: true));*/
-
 String _validatePassword(String value) {
-  if (!RegExp("(?=.*[a-z])").hasMatch(value)) {
+  if (!RegExp("(?=.*[a-zA-Z])").hasMatch(value)) {
     return "Password must contain at least one lowercase letter\n";
   }
   if (!RegExp("(?=.*[A-Z])").hasMatch(value)) {
@@ -55,20 +49,8 @@ String _validatePassword(String value) {
   if (!RegExp((r'\d')).hasMatch(value)) {
     return "Password must contain at least one digit\n";
   }
-  if (!RegExp((r'\W')).hasMatch(value)) {
-    return "Password must contain at least one symbol\n";
-  }
   if (value.length < 8) {
     return "Password has at least 8 characters\n";
-  } else {
-    return "false";
-  }
-}
-
-String _validatePasswordLogin(String value) {
-  if (!RegExp(r'^(?=.*\d)(?=.*[a-zA-Z])[a-zA-Z0-9!@#$%&*]{8,20}$')
-      .hasMatch(value)) {
-    return "Şifreniz en az 8 haneli Harf, Sayı, Sembollerden oluşmalı.";
   } else {
     return "false";
   }
