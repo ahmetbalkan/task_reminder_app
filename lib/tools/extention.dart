@@ -27,6 +27,7 @@ extension PaddingExtention on BuildContext {
 extension ColorExtention on BuildContext {
   Color get primaryColor => const Color(0xFF8875FF);
   Color get backgroundColor => const Color(0xFF121212);
+  Color get backgroundSoftColor => const Color(0xFF363636);
 }
 
 extension MaterialColorExtention on BuildContext {

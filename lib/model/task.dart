@@ -1,8 +1,8 @@
 import 'package:isar/isar.dart';
-part 'user.g.dart';
+part 'task.g.dart';
 
 @collection
-class UserModel {
+class TaskModel {
   Id id = Isar.autoIncrement;
   String? title;
   int? desc;
@@ -11,6 +11,6 @@ class UserModel {
   String category;
   int priority;
 
-  UserModel(this.title, this.desc, this.dateTimeNow, this.dateTimeFinish,
+  TaskModel(this.title, this.desc, this.dateTimeNow, this.dateTimeFinish,
       this.category, this.priority);
 }

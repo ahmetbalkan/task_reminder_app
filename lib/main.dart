@@ -4,8 +4,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:task_reminder_app/bloc/app_start_blocs/forgot_pass_auth/forgotpass_auth_bloc.dart';
 import 'package:task_reminder_app/bloc/app_start_blocs/login_auth/login_auth_bloc.dart';
-import 'package:task_reminder_app/view/register_screen.dart';
+import 'package:task_reminder_app/view/before_login/forgotpass/forgotpass_screen.dart';
+import 'package:task_reminder_app/view/homepage/homepage.dart';
+import 'package:task_reminder_app/view/before_login/login/login_screen.dart';
+import 'package:task_reminder_app/view/before_login/register/register_screen.dart';
+import 'package:task_reminder_app/view/main_page.dart';
 import 'bloc/app_start_blocs/intropage_bloc/intropage_bloc.dart';
 import 'bloc/app_start_blocs/register_auth/register_auth_bloc.dart';
 
@@ -23,7 +28,7 @@ void main() async {
                 Locale('en', 'US'),
               ],
               child: DevicePreview(
-                enabled: true,
+                enabled: false,
                 builder: (context) => const MyApp(),
               ),
             ),
@@ -50,6 +55,9 @@ class MyApp extends StatelessWidget {
               BlocProvider(
                 create: (context) => RegisterAuthBloc(),
               ),
+              BlocProvider(
+                create: (context) => ForgotPassAuthBloc(),
+              ),
             ],
             child: MaterialApp(
               localizationsDelegates: context.localizationDelegates,
@@ -60,7 +68,7 @@ class MyApp extends StatelessWidget {
               builder: DevicePreview.appBuilder,
               title: 'Task Reminder',
               theme: ThemeData.dark(),
-              home: const RegisterPage(),
+              home: const MainPage(),
             ),
           );
         });

@@ -5,9 +5,9 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:progress_indicators/progress_indicators.dart';
 import 'package:task_reminder_app/tools/extention.dart';
-import 'package:task_reminder_app/view/forgotpass_screen.dart';
-import 'package:task_reminder_app/view/login_screen.dart';
-import '../bloc/app_start_blocs/register_auth/register_auth_bloc.dart';
+import 'package:task_reminder_app/view/before_login/forgotpass/forgotpass_screen.dart';
+import 'package:task_reminder_app/view/before_login/login/login_screen.dart';
+import '../../../bloc/app_start_blocs/register_auth/register_auth_bloc.dart';
 
 class RegisterPage extends StatefulWidget {
   const RegisterPage({super.key});
@@ -44,7 +44,7 @@ class _RegisterPageState extends State<RegisterPage> {
                 content: Row(
                   children: [
                     Icon(Icons.dangerous),
-                    Text('Giriş Yapılamadı. Lütfen Tekrar Deneyiniz.'),
+                    Text('registererrorSnackbar'.tr()),
                   ],
                 ),
               ),
@@ -70,7 +70,7 @@ class _RegisterPageState extends State<RegisterPage> {
                     child: Form(
                       key: _formKey,
                       child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
+                          mainAxisAlignment: MainAxisAlignment.end,
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
@@ -78,31 +78,34 @@ class _RegisterPageState extends State<RegisterPage> {
                               style: context.fontStyleLato(Colors.white, 16),
                             ),
                             SizedBox(
-                              height: 10.h,
+                              height: 5.h,
                             ),
                             mailTextfieldWidget(),
                             SizedBox(
-                              height: 10.h,
+                              height: 5.h,
                             ),
                             Text(
                               "passwordtitle".tr(),
                               style: context.fontStyleLato(Colors.white, 16),
                             ),
                             SizedBox(
-                              height: 10.h,
+                              height: 5.h,
                             ),
                             textfieldPassword1Widget(),
                             SizedBox(
-                              height: 10.h,
+                              height: 5.h,
                             ),
                             Text(
                               "passwordtitle".tr(),
                               style: context.fontStyleLato(Colors.white, 16),
                             ),
                             SizedBox(
-                              height: 10.h,
+                              height: 5.h,
                             ),
-                            textfieldPassword2Widget()
+                            textfieldPassword2Widget(),
+                            SizedBox(
+                              height: 5.h,
+                            ),
                           ]),
                     ),
                   ),
@@ -143,12 +146,12 @@ class _RegisterPageState extends State<RegisterPage> {
     return TextFormField(
       validator: (value) {
         if (value == null || value.isEmpty) {
-          return 'Please enter some text';
+          return 'emptyText'.tr();
         }
         if (!RegExp(
                 r'^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$')
             .hasMatch(value)) {
-          return 'Lütfen geçerli bir mail adresi giriniz.';
+          return 'mailerror'.tr();
         }
 
         return null;
@@ -196,7 +199,7 @@ class _RegisterPageState extends State<RegisterPage> {
       keyboardType: TextInputType.visiblePassword,
       validator: (value) {
         if (value == null || value.isEmpty) {
-          return 'Please enter some text';
+          return 'emptyText'.tr();
         }
         if (!RegExp("(?=.*[a-zA-Z])").hasMatch(value)) {
           return "lowercasedesc".tr();
@@ -272,7 +275,7 @@ class _RegisterPageState extends State<RegisterPage> {
         print(value);
         print(_password1.text);
         if (_password1.text != value) {
-          return "Şifreler eşleşmiyor. Lütfen kontrol ediniz.";
+          return "passMatch".tr();
         }
         return null;
       },
@@ -332,10 +335,10 @@ class _RegisterPageState extends State<RegisterPage> {
             },
             child: authstate is LoadingRegisterAuthState
                 ? FadingText(
-                    'Loading...',
+                    'loading'.tr(),
                     style: context.fontStyleLato(Colors.white, 14),
                   )
-                : Text("login".tr()));
+                : Text("register".tr()));
       },
     );
   }

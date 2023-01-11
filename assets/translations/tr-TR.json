@@ -34,5 +34,22 @@
     "uppercasedesc":"Şifre en az bir büyük harf içermelidir",
     "digitsec":"Şifre en az bir rakam içermelidir",
     "8digit":"Parola en az 8 karakterden oluşur.",
-    "mailerror":"Bu bir email adresi değil."
+    "forgotpassbutton":"Sıfırla",
+    "emptyText":"Boş Bırakılamaz",
+    "mailerror":"Lütfen geçerli bir mail adresi giriniz.",
+    "loginerrorSnackbar":"Giriş Yapılamadı. Lütfen Tekrar Deneyiniz.",
+    "registererrorSnackbar":"Giriş Yapılamadı. Lütfen Tekrar Deneyiniz.",
+    "forgotpassSnackbar":"Gönderilemedi. Lütfen Tekrar Deneyiniz.",
+    "mailsend":"Mail Gönderildi.\n Lütfen Mail kutunuzu kontrol ediniz.",
+    "loading": "Yükleniyor...",
+    "passMatch":"Şifreler eşleşmiyor. Lütfen kontrol ediniz.",
+    "home": "Ana Sayfa",
+    "calendar": "Takvim",
+    "addtask": "Task Ekle",
+    "group": "Grup",
+    "settings": "Ayarlar",
+    "index": "Görevler",
+    "homepage-empty-list-title": "Bugün ne yapmak istiyorsun?",
+    "homepage-empty-list-desc": "Görevlerinizi eklemek için + simgesine dokunun."
+
 }

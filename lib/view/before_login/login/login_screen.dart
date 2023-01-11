@@ -6,8 +6,8 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:progress_indicators/progress_indicators.dart';
 import 'package:task_reminder_app/bloc/app_start_blocs/login_auth/login_auth_bloc.dart';
 import 'package:task_reminder_app/tools/extention.dart';
-import 'package:task_reminder_app/view/forgotpass_screen.dart';
-import 'package:task_reminder_app/view/register_screen.dart';
+import 'package:task_reminder_app/view/before_login/forgotpass/forgotpass_screen.dart';
+import 'package:task_reminder_app/view/before_login/register/register_screen.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
@@ -43,7 +43,7 @@ class _LoginPageState extends State<LoginPage> {
               content: Row(
                 children: [
                   Icon(Icons.dangerous),
-                  Text('Kayıt Yapılamadı. Lütfen Tekrar Deneyiniz.'),
+                  Text('loginerrorSnackbar'),
                 ],
               ),
             ),
@@ -139,7 +139,7 @@ class _LoginPageState extends State<LoginPage> {
         if (!RegExp(
                 r'^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$')
             .hasMatch(value)) {
-          return 'Lütfen geçerli bir mail adresi giriniz.';
+          return 'mailerror'.tr();
         }
         return null;
       },
@@ -183,7 +183,7 @@ class _LoginPageState extends State<LoginPage> {
       autofocus: false,
       validator: (value) {
         if (value == null || value.isEmpty) {
-          return 'Please enter some text';
+          return 'emptyText'.tr();
         }
         if (!RegExp("(?=.*[a-zA-Z])").hasMatch(value)) {
           return "lowercasedesc".tr();
@@ -273,7 +273,7 @@ class _LoginPageState extends State<LoginPage> {
                   },
                   child: authstate is LoadingLoginAuthState
                       ? FadingText(
-                          'Loading...',
+                          'loading'.tr(),
                           style: context.fontStyleLato(Colors.white, 14),
                         )
                       : Text("login".tr()));
