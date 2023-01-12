@@ -5,12 +5,13 @@ part 'user.g.dart';
 class UserModel {
   Id id = Isar.autoIncrement;
   String? title;
-  int? desc;
+  String? desc;
   DateTime? dateTimeNow;
   DateTime? dateTimeFinish;
-  String category;
-  int priority;
+  String? category;
+  int? priority;
+  bool? isUserPremium;
 
   UserModel(this.title, this.desc, this.dateTimeNow, this.dateTimeFinish,
-      this.category, this.priority);
+      this.category, this.priority, this.isUserPremium);
 }

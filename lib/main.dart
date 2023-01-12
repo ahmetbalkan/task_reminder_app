@@ -13,10 +13,16 @@ import 'package:task_reminder_app/view/before_login/register/register_screen.dar
 import 'package:task_reminder_app/view/main_page.dart';
 import 'bloc/app_start_blocs/intropage_bloc/intropage_bloc.dart';
 import 'bloc/app_start_blocs/register_auth/register_auth_bloc.dart';
+import 'locator.dart';
+import 'repository/task_isar_repository.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await EasyLocalization.ensureInitialized();
+  locatorMethod();
+
+  var _isarTaskService = locator.get<TaskIsarRepository>();
+
   SystemChrome.setPreferredOrientations(
           [DeviceOrientation.portraitUp, DeviceOrientation.portraitDown])
       .then((_) => runApp(
@@ -44,31 +50,37 @@ class MyApp extends StatelessWidget {
         minTextAdapt: true,
         splitScreenMode: true,
         builder: (context, child) {
-          return MultiBlocProvider(
+          return MultiRepositoryProvider(
             providers: [
-              BlocProvider(
-                create: (context) => IntroPageBloc(),
-              ),
-              BlocProvider(
-                create: (context) => LoginAuthBloc(),
-              ),
-              BlocProvider(
-                create: (context) => RegisterAuthBloc(),
-              ),
-              BlocProvider(
-                create: (context) => ForgotPassAuthBloc(),
-              ),
+              RepositoryProvider(
+                create: (context) => TaskIsarRepository(),
+              )
             ],
-            child: MaterialApp(
-              localizationsDelegates: context.localizationDelegates,
-              supportedLocales: context.supportedLocales,
-              debugShowCheckedModeBanner: false,
-              useInheritedMediaQuery: true,
-              locale: context.locale,
-              builder: DevicePreview.appBuilder,
-              title: 'Task Reminder',
-              theme: ThemeData.dark(),
-              home: const MainPage(),
+            child: MultiBlocProvider(
+              providers: [
+                BlocProvider(
+                  create: (context) => IntroPageBloc(),
+                ),
+                BlocProvider(
+                  create: (context) => LoginAuthBloc(),
+                ),
+                BlocProvider(
+                  create: (context) => RegisterAuthBloc(),
+                ),
+                BlocProvider(
+                  create: (context) => ForgotPassAuthBloc(),
+                ),
+              ],
+              child: MaterialApp(
+                localizationsDelegates: context.localizationDelegates,
+                supportedLocales: context.supportedLocales,
+                debugShowCheckedModeBanner: false,
+                locale: context.locale,
+                builder: DevicePreview.appBuilder,
+                title: 'Task Reminder',
+                theme: ThemeData.dark(),
+                home: const MainPage(),
+              ),
             ),
           );
         });

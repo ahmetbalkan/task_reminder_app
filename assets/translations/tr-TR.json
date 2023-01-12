@@ -50,6 +50,10 @@
     "settings": "Ayarlar",
     "index": "Görevler",
     "homepage-empty-list-title": "Bugün ne yapmak istiyorsun?",
-    "homepage-empty-list-desc": "Görevlerinizi eklemek için + simgesine dokunun."
+    "homepage-empty-list-desc": "Görevlerinizi eklemek için + simgesine dokunun.",
+    "add-task": "Görev Ekle",
+    "taskaddtitle": "Görev başlığını yazınız.",
+    "taskadddesc": "Görev açıklamasını yazınız."
+
 
 }

@@ -28,6 +28,8 @@ extension ColorExtention on BuildContext {
   Color get primaryColor => const Color(0xFF8875FF);
   Color get backgroundColor => const Color(0xFF121212);
   Color get backgroundSoftColor => const Color(0xFF363636);
+  Color get bottomSheetBackground => const Color(0xFF979797);
+  Color get backgroundsoft => const Color(0xFF272727);
 }
 
 extension MaterialColorExtention on BuildContext {

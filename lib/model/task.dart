@@ -5,7 +5,7 @@ part 'task.g.dart';
 class TaskModel {
   Id id = Isar.autoIncrement;
   String? title;
-  int? desc;
+  String? desc;
   DateTime? dateTimeNow;
   DateTime? dateTimeFinish;
   String category;
