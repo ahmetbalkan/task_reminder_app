@@ -68,8 +68,8 @@ SettingsModel _settingsModelDeserialize(
   Map<Type, List<int>> allOffsets,
 ) {
   final object = SettingsModel(
-    reader.readBoolOrNull(offsets[0]),
-    reader.readBoolOrNull(offsets[1]),
+    reader.readBool(offsets[0]),
+    reader.readBool(offsets[1]),
   );
   object.id = id;
   return object;
@@ -83,9 +83,9 @@ P _settingsModelDeserializeProp<P>(
 ) {
   switch (propertyId) {
     case 0:
-      return (reader.readBoolOrNull(offset)) as P;
+      return (reader.readBool(offset)) as P;
     case 1:
-      return (reader.readBoolOrNull(offset)) as P;
+      return (reader.readBool(offset)) as P;
     default:
       throw IsarError('Unknown property with id $propertyId');
   }
@@ -242,25 +242,7 @@ extension SettingsModelQueryFilter
   }
 
   QueryBuilder<SettingsModel, SettingsModel, QAfterFilterCondition>
-      introCompleteIsNull() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(const FilterCondition.isNull(
-        property: r'introComplete',
-      ));
-    });
-  }
-
-  QueryBuilder<SettingsModel, SettingsModel, QAfterFilterCondition>
-      introCompleteIsNotNull() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(const FilterCondition.isNotNull(
-        property: r'introComplete',
-      ));
-    });
-  }
-
-  QueryBuilder<SettingsModel, SettingsModel, QAfterFilterCondition>
-      introCompleteEqualTo(bool? value) {
+      introCompleteEqualTo(bool value) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.equalTo(
         property: r'introComplete',
@@ -270,25 +252,7 @@ extension SettingsModelQueryFilter
   }
 
   QueryBuilder<SettingsModel, SettingsModel, QAfterFilterCondition>
-      userInformationCompleteIsNull() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(const FilterCondition.isNull(
-        property: r'userInformationComplete',
-      ));
-    });
-  }
-
-  QueryBuilder<SettingsModel, SettingsModel, QAfterFilterCondition>
-      userInformationCompleteIsNotNull() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(const FilterCondition.isNotNull(
-        property: r'userInformationComplete',
-      ));
-    });
-  }
-
-  QueryBuilder<SettingsModel, SettingsModel, QAfterFilterCondition>
-      userInformationCompleteEqualTo(bool? value) {
+      userInformationCompleteEqualTo(bool value) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.equalTo(
         property: r'userInformationComplete',
@@ -403,13 +367,13 @@ extension SettingsModelQueryProperty
     });
   }
 
-  QueryBuilder<SettingsModel, bool?, QQueryOperations> introCompleteProperty() {
+  QueryBuilder<SettingsModel, bool, QQueryOperations> introCompleteProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addPropertyName(r'introComplete');
     });
   }
 
-  QueryBuilder<SettingsModel, bool?, QQueryOperations>
+  QueryBuilder<SettingsModel, bool, QQueryOperations>
       userInformationCompleteProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addPropertyName(r'userInformationComplete');

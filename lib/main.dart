@@ -6,6 +6,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:task_reminder_app/bloc/app_start_blocs/forgot_pass_auth/forgotpass_auth_bloc.dart';
 import 'package:task_reminder_app/bloc/app_start_blocs/login_auth/login_auth_bloc.dart';
+import 'package:task_reminder_app/bloc/task_bloc/task_bloc_bloc.dart';
 import 'package:task_reminder_app/view/before_login/forgotpass/forgotpass_screen.dart';
 import 'package:task_reminder_app/view/homepage/homepage.dart';
 import 'package:task_reminder_app/view/before_login/login/login_screen.dart';
@@ -69,6 +70,9 @@ class MyApp extends StatelessWidget {
                 ),
                 BlocProvider(
                   create: (context) => ForgotPassAuthBloc(),
+                ),
+                BlocProvider(
+                  create: (context) => TaskBloc(),
                 ),
               ],
               child: MaterialApp(

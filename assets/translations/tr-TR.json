@@ -53,7 +53,13 @@
     "homepage-empty-list-desc": "Görevlerinizi eklemek için + simgesine dokunun.",
     "add-task": "Görev Ekle",
     "taskaddtitle": "Görev başlığını yazınız.",
-    "taskadddesc": "Görev açıklamasını yazınız."
+    "taskadddesc": "Görev açıklamasını yazınız.",
+    "alarm-date":"LÜTFEN ALARM TARİHİNİ SEÇİNİZ",
+    "alarm-time":"LÜTFEN ALARM SAATİNİ SEÇİNİZ",
+    "notification-switch":"Bildirim Oluştur",
+    "delete-comfirm":"Görevi silmek istediğinize Emin misiniz ?",
+    "delete":"Sil",
+    "cancel": "Kapat"
 
 
 }

@@ -8,9 +8,9 @@ class TaskModel {
   String? desc;
   DateTime? dateTimeNow;
   DateTime? dateTimeFinish;
-  String category;
-  int priority;
+  int? categoryid;
+  int? priority;
 
   TaskModel(this.title, this.desc, this.dateTimeNow, this.dateTimeFinish,
-      this.category, this.priority);
+      this.categoryid, this.priority);
 }

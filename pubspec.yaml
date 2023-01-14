@@ -53,6 +53,9 @@ dependencies:
   modal_bottom_sheet: ^2.1.2
   bottom_sheet: ^3.1.2
   flutter_datetime_picker: ^1.5.1
+  cupertino_stepper: ^0.2.1
+  cool_stepper: ^1.2.1
+  group_button: ^5.2.2
 
 dev_dependencies:
   flutter_test:
