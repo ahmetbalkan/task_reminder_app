@@ -1,26 +1,29 @@
 part of 'task_bloc_bloc.dart';
 
-abstract class TaskBlocState extends Equatable {
-  const TaskBlocState();
+enum PostStatus { initial, success, failure }
+
+class TaskBlocState extends Equatable {
+  final String errorText;
+  final PostStatus postStatus;
+  final bool alarmStatus;
+
+  const TaskBlocState(
+      {this.errorText = "",
+      this.postStatus = PostStatus.initial,
+      this.alarmStatus = false});
 
   @override
-  List<Object> get props => [];
+  List<Object> get props => [errorText, postStatus];
+
+  TaskBlocState copyWith({
+    String? errorText,
+    PostStatus? postStatus,
+    bool? alarmStatus,
+  }) {
+    return TaskBlocState(
+      errorText: errorText ?? this.errorText,
+      postStatus: postStatus ?? this.postStatus,
+      alarmStatus: alarmStatus ?? this.alarmStatus,
+    );
+  }
 }
-
-class TaskBlocInitial extends TaskBlocState {}
-
-class LoadingTaskState extends TaskBlocState {}
-
-class GetAllTaskState extends TaskBlocState {
-  List<TaskModel> taskModelList;
-
-  GetAllTaskState({required this.taskModelList});
-}
-
-class ErrorTextState extends TaskBlocState {
-  final String errorText;
-
-  const ErrorTextState({required this.errorText});
-}
-
-class TaskAddedState extends TaskBlocState {}

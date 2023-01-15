@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class CalendarPage extends StatefulWidget {
@@ -7,11 +8,21 @@ class CalendarPage extends StatefulWidget {
   State<CalendarPage> createState() => _CalendarPageState();
 }
 
+bool _switchValue = false;
+
 class _CalendarPageState extends State<CalendarPage> {
   @override
   Widget build(BuildContext context) {
     return Center(
-      child: Text("Calendar Page"),
+      child: CupertinoSwitch(
+        value: _switchValue,
+        activeColor: CupertinoColors.activeBlue,
+        onChanged: (value) {
+          setState(() {
+            _switchValue = value;
+          });
+        },
+      ),
     );
   }
 }

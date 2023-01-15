@@ -1,18 +1,14 @@
-import 'package:bottom_sheet/bottom_sheet.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:group_button/group_button.dart';
-import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 import 'package:persistent_bottom_nav_bar/persistent_tab_view.dart';
+import 'package:task_reminder_app/bloc/task_bloc/task_bloc_bloc.dart';
 import 'package:task_reminder_app/model/task.dart';
-import 'package:task_reminder_app/repository/task_isar_repository.dart';
 import 'package:task_reminder_app/tools/extention.dart';
-import '../bloc/task_bloc/task_bloc_bloc.dart';
 import 'calendar/calendar_page.dart';
 import 'group/group_page.dart';
 import 'homepage/homepage.dart';
@@ -25,21 +21,17 @@ class MainPage extends StatefulWidget {
   State<MainPage> createState() => _MainPageState();
 }
 
-late PageController _pageController;
 late PersistentTabController _controller;
 late TextEditingController _titleTextEditingController;
 late TextEditingController _descTextEditingController;
 final _formKey = GlobalKey<FormState>();
-final key = GlobalKey();
 DateTime? selectedDate;
-late GroupButtonController _groupButtonController;
 TimeOfDay? _pickedTime;
 DateTime? _pickedDate;
-TaskModel? _userModelEmpty;
+
 int? _categoryid;
 int? _priority;
-String errorText = "";
-bool switchValue = true;
+bool _switchValue = false;
 
 class _MainPageState extends State<MainPage> {
   @override
@@ -48,28 +40,23 @@ class _MainPageState extends State<MainPage> {
     _controller = PersistentTabController(initialIndex: 0);
     _descTextEditingController = TextEditingController();
     _titleTextEditingController = TextEditingController();
-    _groupButtonController = GroupButtonController();
-    _pageController = PageController();
   }
 
   @override
   void dispose() {
-    _pageController.dispose();
     _controller.dispose();
     super.dispose();
     _descTextEditingController.dispose();
     _titleTextEditingController.dispose();
-    _groupButtonController.dispose();
   }
 
   @override
-  Widget build(BuildContext context1) {
+  Widget build(BuildContext buildcontext) {
     return SafeArea(
       child: Scaffold(
           resizeToAvoidBottomInset: false,
           backgroundColor: context.backgroundColor,
           appBar: AppBar(
-            key: key,
             title: Text("index".tr()),
             backgroundColor: context.backgroundColor,
             elevation: 1,
@@ -116,7 +103,7 @@ class _MainPageState extends State<MainPage> {
             hideNavigationBar: false,
             controller: _controller,
             screens: _buildScreens(),
-            items: _navBarsItems(context1),
+            items: _navBarsItems(),
             confineInSafeArea: true,
             backgroundColor: context.backgroundSoftColor,
             handleAndroidBackButtonPress: true,
@@ -153,7 +140,7 @@ class _MainPageState extends State<MainPage> {
     ];
   }
 
-  List<PersistentBottomNavBarItem> _navBarsItems(BuildContext c1) {
+  List<PersistentBottomNavBarItem> _navBarsItems() {
     return [
       PersistentBottomNavBarItem(
         icon: const Icon(CupertinoIcons.home),
@@ -171,7 +158,7 @@ class _MainPageState extends State<MainPage> {
         icon: const Icon(FontAwesomeIcons.plus, color: Colors.white),
         title: ("addtask".tr()),
         onPressed: (p0) {
-          showAddDialog(null);
+          _showAddBottomSheetWidget();
         },
         activeColorPrimary: context.primaryColor,
         inactiveColorPrimary: CupertinoColors.systemGrey,
@@ -191,367 +178,8 @@ class _MainPageState extends State<MainPage> {
     ];
   }
 
-  showAddDialog(TaskModel? userModel) {
-    if (userModel == null) {
-      newTaskBottomSheet();
-    } else {
-      updateTaskBottomSheet();
-    }
-  }
-
-  updateTaskBottomSheet() {
-    showModalBottomSheet(
-        isDismissible: false,
-        useRootNavigator: true,
-        shape: const RoundedRectangleBorder(
-          borderRadius: BorderRadius.only(
-              topLeft: Radius.circular(20), topRight: Radius.circular(20)),
-        ),
-        isScrollControlled: true,
-        context: context,
-        builder: (context) {
-          return Padding(
-            padding: EdgeInsets.only(
-                bottom: MediaQuery.of(context).viewInsets.bottom),
-            child: SizedBox(
-                height: ScreenUtil().screenHeight / 2,
-                child: Padding(
-                  padding: const EdgeInsets.symmetric(
-                      vertical: 10.0, horizontal: 20),
-                  child: Form(
-                    key: _formKey,
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      mainAxisAlignment: MainAxisAlignment.end,
-                      children: [
-                        Expanded(
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [Image.asset("assets/line.png")],
-                          ),
-                        ),
-                        Expanded(
-                          flex: 2,
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                "add-task".tr(),
-                                style: context.fontStyleLatoFontWeigt(
-                                    Colors.white, 20, FontWeight.bold),
-                              ),
-                            ],
-                          ),
-                        ),
-                        Expanded(
-                            flex: 3,
-                            child: TextFormField(
-                              autofocus: false,
-                              cursorColor: context.primaryColor,
-                              controller: _titleTextEditingController,
-                              cursorHeight: 30,
-                              style: context.fontStyleLato(Colors.white, 18),
-                              keyboardType: TextInputType.text,
-                              validator: (value) {
-                                if (value == null || value.isEmpty) {
-                                  return 'emptyText'.tr();
-                                }
-                                return null;
-                              },
-                              decoration: InputDecoration(
-                                  filled: true,
-                                  fillColor: context.backgroundSoftColor,
-                                  focusedBorder: UnderlineInputBorder(
-                                      borderSide: BorderSide(
-                                          color: context.primaryColor)),
-                                  suffixIcon: GestureDetector(
-                                      onTap: () {
-                                        setState(() {
-                                          _titleTextEditingController.text = "";
-                                        });
-                                      },
-                                      child: Container(
-                                        color: Colors.transparent,
-                                        child: Padding(
-                                          padding: const EdgeInsets.all(8.0),
-                                          child: Icon(
-                                            FontAwesomeIcons.deleteLeft,
-                                            size: 25.0,
-                                            color: context.primaryColor,
-                                          ),
-                                        ),
-                                      )),
-                                  focusColor: context.primaryColor,
-                                  isDense: true,
-                                  hintText: "taskaddtitle".tr(),
-                                  border: const UnderlineInputBorder(
-                                      borderSide: BorderSide())),
-                            )),
-                        Expanded(
-                            flex: 4,
-                            child: TextFormField(
-                              style: context.fontStyleLato(Colors.white, 16),
-                              autofocus: false,
-                              cursorColor: context.primaryColor,
-                              controller: _descTextEditingController,
-                              cursorHeight: 25,
-                              maxLines: 4,
-                              keyboardType: TextInputType.multiline,
-                              validator: (value) {
-                                if (value == null || value.isEmpty) {
-                                  return 'emptyText'.tr();
-                                }
-                                return null;
-                              },
-                              decoration: InputDecoration(
-                                  fillColor: context.backgroundSoftColor,
-                                  filled: true,
-                                  focusedBorder: UnderlineInputBorder(
-                                      borderSide: BorderSide(
-                                          color: context.primaryColor)),
-                                  suffixIcon: GestureDetector(
-                                      onTap: () {
-                                        setState(() {
-                                          _descTextEditingController.text = "";
-                                        });
-                                      },
-                                      child: Container(
-                                        color: Colors.transparent,
-                                        child: Padding(
-                                          padding: const EdgeInsets.all(8.0),
-                                          child: Icon(
-                                            FontAwesomeIcons.deleteLeft,
-                                            size: 25.0,
-                                            color: context.primaryColor,
-                                          ),
-                                        ),
-                                      )),
-                                  focusColor: context.primaryColor,
-                                  isDense: true,
-                                  hintText: "taskadddesc".tr(),
-                                  border: const UnderlineInputBorder(
-                                      borderSide: BorderSide())),
-                            )),
-                        Expanded(
-                            flex: 2,
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Text(
-                                  "asdasd",
-                                  style: context.fontStyleLato(Colors.red, 14),
-                                ),
-                                Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    Text(
-                                      "notification-switch".tr(),
-                                      style: context.fontStyleLato(
-                                          Colors.white, 16),
-                                    )
-                                  ],
-                                )
-                              ],
-                            )),
-                        Expanded(
-                          flex: 2,
-                          child: Row(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            mainAxisSize: MainAxisSize.max,
-                            children: [
-                              Row(
-                                mainAxisAlignment: MainAxisAlignment.start,
-                                children: [
-                                  IconButton(
-                                    onPressed: () async {
-                                      DateTime? pickedDate =
-                                          await showDatePicker(
-                                              helpText: "alarm-date".tr(),
-                                              context: context,
-                                              initialDate: DateTime.now(),
-                                              firstDate: DateTime.now(),
-                                              lastDate: DateTime(
-                                                  DateTime.now().year + 1));
-
-                                      TimeOfDay? pickedTime =
-                                          await showTimePicker(
-                                        helpText: "alarm-time".tr(),
-                                        initialTime: TimeOfDay.now(),
-                                        context: context,
-                                      );
-
-                                      if (pickedTime != null &&
-                                          pickedDate != null) {
-                                        print("1. " + pickedDate.toString());
-                                        print("2. " + pickedTime.toString());
-                                      } else {
-                                        print("Time is not selected");
-                                      }
-                                    },
-                                    icon: const SizedBox(
-                                        child: Icon(
-                                      FontAwesomeIcons.clock,
-                                      color: Colors.white54,
-                                    )),
-                                  ),
-                                  IconButton(
-                                      onPressed: () {
-                                        showDialog(
-                                            context: context,
-                                            builder: (context) {
-                                              return AlertDialog(
-                                                insetPadding:
-                                                    const EdgeInsets.all(8.0),
-                                                title: Column(
-                                                  mainAxisAlignment:
-                                                      MainAxisAlignment
-                                                          .spaceBetween,
-                                                  children: const [
-                                                    Text(
-                                                      "Choose Category",
-                                                      textAlign:
-                                                          TextAlign.center,
-                                                    ),
-                                                    SizedBox(
-                                                      height: 10,
-                                                    ),
-                                                    Divider(
-                                                      height: 2,
-                                                    ),
-                                                  ],
-                                                ),
-                                                content: SizedBox(
-                                                    width:
-                                                        MediaQuery.of(context)
-                                                            .size
-                                                            .width,
-                                                    height:
-                                                        MediaQuery.of(context)
-                                                                .size
-                                                                .height /
-                                                            1.4,
-                                                    child: Column(
-                                                      children: [
-                                                        Expanded(
-                                                          flex: 9,
-                                                          child:
-                                                              GridView.builder(
-                                                            itemCount: 20,
-                                                            itemBuilder:
-                                                                (context,
-                                                                    index) {
-                                                              return GestureDetector(
-                                                                onTap: () {
-                                                                  _categoryid =
-                                                                      index;
-                                                                  Navigator.pop(
-                                                                      context);
-                                                                },
-                                                                child: Padding(
-                                                                    padding:
-                                                                        const EdgeInsets.all(
-                                                                            4.0),
-                                                                    child:
-                                                                        Container(
-                                                                      decoration: BoxDecoration(
-                                                                          color: context
-                                                                              .backgroundsoft,
-                                                                          borderRadius:
-                                                                              const BorderRadius.all(Radius.circular(6))),
-                                                                      child:
-                                                                          Column(
-                                                                        crossAxisAlignment:
-                                                                            CrossAxisAlignment.center,
-                                                                        mainAxisAlignment:
-                                                                            MainAxisAlignment.spaceAround,
-                                                                        children: [
-                                                                          const Icon(
-                                                                              FontAwesomeIcons.solidFlag),
-                                                                          Text((index + 1)
-                                                                              .toString()),
-                                                                        ],
-                                                                      ),
-                                                                    )),
-                                                              );
-                                                            },
-                                                            gridDelegate:
-                                                                const SliverGridDelegateWithFixedCrossAxisCount(
-                                                              crossAxisCount: 3,
-                                                            ),
-                                                          ),
-                                                        ),
-                                                        const Spacer(),
-                                                        Expanded(
-                                                          child: SizedBox(
-                                                            child:
-                                                                ElevatedButton(
-                                                              style: ElevatedButton.styleFrom(
-                                                                  minimumSize:
-                                                                      const Size
-                                                                              .fromHeight(
-                                                                          50),
-                                                                  backgroundColor:
-                                                                      context
-                                                                          .primaryColor),
-                                                              onPressed: () {},
-                                                              child: Text(
-                                                                "Add Category",
-                                                                style: context
-                                                                    .fontStyleLato(
-                                                                        Colors
-                                                                            .white,
-                                                                        18),
-                                                              ),
-                                                            ),
-                                                          ),
-                                                        ),
-                                                      ],
-                                                    )),
-                                              );
-                                            });
-                                      },
-                                      icon: const Icon(
-                                        FontAwesomeIcons.tag,
-                                        color: Colors.white54,
-                                      )),
-                                  IconButton(
-                                      onPressed: () {},
-                                      icon: const Icon(
-                                        FontAwesomeIcons.solidFlag,
-                                        color: Colors.white54,
-                                      )),
-                                ],
-                              ),
-                              IconButton(
-                                  onPressed: () {
-                                    print(_titleTextEditingController.text);
-                                    print(_descTextEditingController.text);
-                                    print(_pickedDate);
-                                    print(_pickedTime);
-                                    print(_categoryid);
-                                    print(_priority);
-                                  },
-                                  icon: const Icon(
-                                    size: 32,
-                                    Icons.send,
-                                    color: Colors.white54,
-                                  )),
-                            ],
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                )),
-          );
-        });
-  }
-
-  newTaskBottomSheet() async {
-    showModalBottomSheet(
+  Future<dynamic> _showAddBottomSheetWidget() {
+    return showModalBottomSheet(
         isDismissible: false,
         useRootNavigator: true,
         shape: const RoundedRectangleBorder(
@@ -612,7 +240,125 @@ class _MainPageState extends State<MainPage> {
         });
   }
 
+  TextFormField titleTextFieldMethod(BuildContext context) {
+    return TextFormField(
+      autofocus: false,
+      cursorColor: context.primaryColor,
+      controller: _titleTextEditingController,
+      cursorHeight: 30,
+      style: context.fontStyleLato(Colors.white, 18),
+      keyboardType: TextInputType.text,
+      validator: (value) {
+        if (value == null || value.isEmpty) {
+          return 'emptyText'.tr();
+        }
+        return null;
+      },
+      decoration: InputDecoration(
+          filled: true,
+          fillColor: context.backgroundSoftColor,
+          focusedBorder: UnderlineInputBorder(
+              borderSide: BorderSide(color: context.primaryColor)),
+          suffixIcon: GestureDetector(
+              onTap: () {
+                _titleTextEditingController.text = "";
+              },
+              child: Container(
+                color: Colors.transparent,
+                child: Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Icon(
+                    FontAwesomeIcons.deleteLeft,
+                    size: 25.0,
+                    color: context.primaryColor,
+                  ),
+                ),
+              )),
+          focusColor: context.primaryColor,
+          isDense: true,
+          hintText: "taskaddtitle".tr(),
+          border: const UnderlineInputBorder(borderSide: BorderSide())),
+    );
+  }
+
+  TextFormField descTextfieldMethod(BuildContext context) {
+    return TextFormField(
+      style: context.fontStyleLato(Colors.white, 16),
+      autofocus: false,
+      cursorColor: context.primaryColor,
+      controller: _descTextEditingController,
+      cursorHeight: 25,
+      maxLines: 4,
+      keyboardType: TextInputType.multiline,
+      validator: (value) {
+        if (value == null || value.isEmpty) {
+          return 'emptyText'.tr();
+        }
+        return null;
+      },
+      decoration: InputDecoration(
+          fillColor: context.backgroundSoftColor,
+          filled: true,
+          focusedBorder: UnderlineInputBorder(
+              borderSide: BorderSide(color: context.primaryColor)),
+          suffixIcon: GestureDetector(
+              onTap: () {
+                _descTextEditingController.text = "";
+              },
+              child: Container(
+                color: Colors.transparent,
+                child: Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Icon(
+                    FontAwesomeIcons.deleteLeft,
+                    size: 25.0,
+                    color: context.primaryColor,
+                  ),
+                ),
+              )),
+          focusColor: context.primaryColor,
+          isDense: true,
+          hintText: "taskadddesc".tr(),
+          border: const UnderlineInputBorder(borderSide: BorderSide())),
+    );
+  }
+
+  Widget errorTextAndNotificationMethod(BuildContext errorcontext) {
+    print("errorTextAndNotificationMethod");
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        BlocBuilder<TaskBloc, TaskBlocState>(
+          builder: (context, state) {
+            return Text(state.errorText);
+          },
+        ),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Center(child: StatefulBuilder(
+              builder: (context, setState) {
+                return CupertinoSwitch(
+                  activeColor: CupertinoColors.activeBlue,
+                  onChanged: (bool value) {
+                    setState(() => _switchValue = value);
+                  },
+                  value: _switchValue,
+                );
+              },
+            )),
+            Text(
+              "Bildirim Oluştur.",
+              style: context.fontStyleLato(Colors.white, 16),
+            )
+          ],
+        )
+      ],
+    );
+  }
+
   Widget dateCategoryPrioritySendButtonMethod(BuildContext context) {
+    print("dateCategoryPrioritySendButtonMethod");
     return Row(
       crossAxisAlignment: CrossAxisAlignment.start,
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -635,9 +381,6 @@ class _MainPageState extends State<MainPage> {
                   initialTime: TimeOfDay.now(),
                   context: context,
                 );
-
-                errorText = "";
-                setState(() {});
               },
               icon: const SizedBox(
                   child: Icon(
@@ -680,8 +423,7 @@ class _MainPageState extends State<MainPage> {
                                         return GestureDetector(
                                           onTap: () {
                                             _categoryid = index;
-                                            errorText = "";
-                                            setState(() {});
+
                                             Navigator.pop(context);
                                           },
                                           child: Padding(
@@ -781,8 +523,6 @@ class _MainPageState extends State<MainPage> {
                                         return GestureDetector(
                                           onTap: () {
                                             _priority = index;
-                                            errorText = "";
-                                            setState(() {});
                                             Navigator.pop(context);
                                           },
                                           child: Padding(
@@ -849,8 +589,15 @@ class _MainPageState extends State<MainPage> {
         ),
         BlocListener<TaskBloc, TaskBlocState>(
           listener: (context, state) {
-            if (state is TaskAddedState) {
-              Navigator.pop(context);
+            print(state.postStatus);
+            if (state.postStatus == PostStatus.success) {
+              _titleTextEditingController.clear();
+              _descTextEditingController.clear();
+              _priority = null;
+              _categoryid = null;
+              _pickedDate = null;
+              _pickedTime = null;
+              Navigator.of(context).pop(context);
             }
           },
           child: IconButton(
@@ -863,7 +610,8 @@ class _MainPageState extends State<MainPage> {
                           DateTime.now(),
                           _pickedDate,
                           _categoryid,
-                          _priority)));
+                          _priority,
+                          _switchValue)));
                 }
               },
               icon: const Icon(
@@ -873,135 +621,6 @@ class _MainPageState extends State<MainPage> {
               )),
         ),
       ],
-    );
-  }
-
-  Row errorTextAndNotificationMethod(BuildContext context) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: [
-        BlocBuilder<TaskBloc, TaskBlocState>(
-          builder: (context, state) {
-            print(state);
-            if (state is ErrorTextState) {
-              return Text(
-                state.errorText,
-                style: context.fontStyleLato(Colors.red, 14),
-              );
-            } else {
-              return Text("");
-            }
-          },
-        ),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Center(
-              child: CupertinoSwitch(
-                // This bool value toggles the switch.
-                value: switchValue,
-                activeColor: CupertinoColors.activeBlue,
-                onChanged: (bool? value) {
-                  setState(() {
-                    switchValue = value ?? false;
-                  });
-                },
-              ),
-            ),
-            Text(
-              "Bildirim Oluştur.",
-              style: context.fontStyleLato(Colors.white, 16),
-            )
-          ],
-        )
-      ],
-    );
-  }
-
-  TextFormField descTextfieldMethod(BuildContext context) {
-    return TextFormField(
-      style: context.fontStyleLato(Colors.white, 16),
-      autofocus: false,
-      cursorColor: context.primaryColor,
-      controller: _descTextEditingController,
-      cursorHeight: 25,
-      maxLines: 4,
-      keyboardType: TextInputType.multiline,
-      validator: (value) {
-        if (value == null || value.isEmpty) {
-          return 'emptyText'.tr();
-        }
-        return null;
-      },
-      decoration: InputDecoration(
-          fillColor: context.backgroundSoftColor,
-          filled: true,
-          focusedBorder: UnderlineInputBorder(
-              borderSide: BorderSide(color: context.primaryColor)),
-          suffixIcon: GestureDetector(
-              onTap: () {
-                setState(() {
-                  _descTextEditingController.text = "";
-                });
-              },
-              child: Container(
-                color: Colors.transparent,
-                child: Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Icon(
-                    FontAwesomeIcons.deleteLeft,
-                    size: 25.0,
-                    color: context.primaryColor,
-                  ),
-                ),
-              )),
-          focusColor: context.primaryColor,
-          isDense: true,
-          hintText: "taskadddesc".tr(),
-          border: const UnderlineInputBorder(borderSide: BorderSide())),
-    );
-  }
-
-  TextFormField titleTextFieldMethod(BuildContext context) {
-    return TextFormField(
-      autofocus: false,
-      cursorColor: context.primaryColor,
-      controller: _titleTextEditingController,
-      cursorHeight: 30,
-      style: context.fontStyleLato(Colors.white, 18),
-      keyboardType: TextInputType.text,
-      validator: (value) {
-        if (value == null || value.isEmpty) {
-          return 'emptyText'.tr();
-        }
-        return null;
-      },
-      decoration: InputDecoration(
-          filled: true,
-          fillColor: context.backgroundSoftColor,
-          focusedBorder: UnderlineInputBorder(
-              borderSide: BorderSide(color: context.primaryColor)),
-          suffixIcon: GestureDetector(
-              onTap: () {
-                setState(() {
-                  _titleTextEditingController.text = "";
-                });
-              },
-              child: Container(
-                color: Colors.transparent,
-                child: Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Icon(
-                    FontAwesomeIcons.deleteLeft,
-                    size: 25.0,
-                    color: context.primaryColor,
-                  ),
-                ),
-              )),
-          focusColor: context.primaryColor,
-          isDense: true,
-          hintText: "taskaddtitle".tr(),
-          border: const UnderlineInputBorder(borderSide: BorderSide())),
     );
   }
 }

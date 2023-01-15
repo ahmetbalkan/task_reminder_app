@@ -17,33 +17,38 @@ const TaskModelSchema = CollectionSchema(
   name: r'TaskModel',
   id: -1192054402460482572,
   properties: {
-    r'categoryid': PropertySchema(
+    r'alarm': PropertySchema(
       id: 0,
+      name: r'alarm',
+      type: IsarType.bool,
+    ),
+    r'categoryid': PropertySchema(
+      id: 1,
       name: r'categoryid',
       type: IsarType.long,
     ),
     r'dateTimeFinish': PropertySchema(
-      id: 1,
+      id: 2,
       name: r'dateTimeFinish',
       type: IsarType.dateTime,
     ),
     r'dateTimeNow': PropertySchema(
-      id: 2,
+      id: 3,
       name: r'dateTimeNow',
       type: IsarType.dateTime,
     ),
     r'desc': PropertySchema(
-      id: 3,
+      id: 4,
       name: r'desc',
       type: IsarType.string,
     ),
     r'priority': PropertySchema(
-      id: 4,
+      id: 5,
       name: r'priority',
       type: IsarType.long,
     ),
     r'title': PropertySchema(
-      id: 5,
+      id: 6,
       name: r'title',
       type: IsarType.string,
     )
@@ -89,12 +94,13 @@ void _taskModelSerialize(
   List<int> offsets,
   Map<Type, List<int>> allOffsets,
 ) {
-  writer.writeLong(offsets[0], object.categoryid);
-  writer.writeDateTime(offsets[1], object.dateTimeFinish);
-  writer.writeDateTime(offsets[2], object.dateTimeNow);
-  writer.writeString(offsets[3], object.desc);
-  writer.writeLong(offsets[4], object.priority);
-  writer.writeString(offsets[5], object.title);
+  writer.writeBool(offsets[0], object.alarm);
+  writer.writeLong(offsets[1], object.categoryid);
+  writer.writeDateTime(offsets[2], object.dateTimeFinish);
+  writer.writeDateTime(offsets[3], object.dateTimeNow);
+  writer.writeString(offsets[4], object.desc);
+  writer.writeLong(offsets[5], object.priority);
+  writer.writeString(offsets[6], object.title);
 }
 
 TaskModel _taskModelDeserialize(
@@ -104,12 +110,13 @@ TaskModel _taskModelDeserialize(
   Map<Type, List<int>> allOffsets,
 ) {
   final object = TaskModel(
-    reader.readStringOrNull(offsets[5]),
-    reader.readStringOrNull(offsets[3]),
+    reader.readStringOrNull(offsets[6]),
+    reader.readStringOrNull(offsets[4]),
+    reader.readDateTimeOrNull(offsets[3]),
     reader.readDateTimeOrNull(offsets[2]),
-    reader.readDateTimeOrNull(offsets[1]),
-    reader.readLongOrNull(offsets[0]),
-    reader.readLongOrNull(offsets[4]),
+    reader.readLongOrNull(offsets[1]),
+    reader.readLongOrNull(offsets[5]),
+    reader.readBoolOrNull(offsets[0]),
   );
   object.id = id;
   return object;
@@ -123,16 +130,18 @@ P _taskModelDeserializeProp<P>(
 ) {
   switch (propertyId) {
     case 0:
-      return (reader.readLongOrNull(offset)) as P;
+      return (reader.readBoolOrNull(offset)) as P;
     case 1:
-      return (reader.readDateTimeOrNull(offset)) as P;
+      return (reader.readLongOrNull(offset)) as P;
     case 2:
       return (reader.readDateTimeOrNull(offset)) as P;
     case 3:
-      return (reader.readStringOrNull(offset)) as P;
+      return (reader.readDateTimeOrNull(offset)) as P;
     case 4:
-      return (reader.readLongOrNull(offset)) as P;
+      return (reader.readStringOrNull(offset)) as P;
     case 5:
+      return (reader.readLongOrNull(offset)) as P;
+    case 6:
       return (reader.readStringOrNull(offset)) as P;
     default:
       throw IsarError('Unknown property with id $propertyId');
@@ -230,6 +239,32 @@ extension TaskModelQueryWhere
 
 extension TaskModelQueryFilter
     on QueryBuilder<TaskModel, TaskModel, QFilterCondition> {
+  QueryBuilder<TaskModel, TaskModel, QAfterFilterCondition> alarmIsNull() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(const FilterCondition.isNull(
+        property: r'alarm',
+      ));
+    });
+  }
+
+  QueryBuilder<TaskModel, TaskModel, QAfterFilterCondition> alarmIsNotNull() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(const FilterCondition.isNotNull(
+        property: r'alarm',
+      ));
+    });
+  }
+
+  QueryBuilder<TaskModel, TaskModel, QAfterFilterCondition> alarmEqualTo(
+      bool? value) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.equalTo(
+        property: r'alarm',
+        value: value,
+      ));
+    });
+  }
+
   QueryBuilder<TaskModel, TaskModel, QAfterFilterCondition> categoryidIsNull() {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(const FilterCondition.isNull(
@@ -870,6 +905,18 @@ extension TaskModelQueryLinks
     on QueryBuilder<TaskModel, TaskModel, QFilterCondition> {}
 
 extension TaskModelQuerySortBy on QueryBuilder<TaskModel, TaskModel, QSortBy> {
+  QueryBuilder<TaskModel, TaskModel, QAfterSortBy> sortByAlarm() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'alarm', Sort.asc);
+    });
+  }
+
+  QueryBuilder<TaskModel, TaskModel, QAfterSortBy> sortByAlarmDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'alarm', Sort.desc);
+    });
+  }
+
   QueryBuilder<TaskModel, TaskModel, QAfterSortBy> sortByCategoryid() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'categoryid', Sort.asc);
@@ -945,6 +992,18 @@ extension TaskModelQuerySortBy on QueryBuilder<TaskModel, TaskModel, QSortBy> {
 
 extension TaskModelQuerySortThenBy
     on QueryBuilder<TaskModel, TaskModel, QSortThenBy> {
+  QueryBuilder<TaskModel, TaskModel, QAfterSortBy> thenByAlarm() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'alarm', Sort.asc);
+    });
+  }
+
+  QueryBuilder<TaskModel, TaskModel, QAfterSortBy> thenByAlarmDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'alarm', Sort.desc);
+    });
+  }
+
   QueryBuilder<TaskModel, TaskModel, QAfterSortBy> thenByCategoryid() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'categoryid', Sort.asc);
@@ -1032,6 +1091,12 @@ extension TaskModelQuerySortThenBy
 
 extension TaskModelQueryWhereDistinct
     on QueryBuilder<TaskModel, TaskModel, QDistinct> {
+  QueryBuilder<TaskModel, TaskModel, QDistinct> distinctByAlarm() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addDistinctBy(r'alarm');
+    });
+  }
+
   QueryBuilder<TaskModel, TaskModel, QDistinct> distinctByCategoryid() {
     return QueryBuilder.apply(this, (query) {
       return query.addDistinctBy(r'categoryid');
@@ -1076,6 +1141,12 @@ extension TaskModelQueryProperty
   QueryBuilder<TaskModel, int, QQueryOperations> idProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addPropertyName(r'id');
+    });
+  }
+
+  QueryBuilder<TaskModel, bool?, QQueryOperations> alarmProperty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addPropertyName(r'alarm');
     });
   }
 

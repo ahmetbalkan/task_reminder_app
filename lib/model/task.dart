@@ -10,7 +10,8 @@ class TaskModel {
   DateTime? dateTimeFinish;
   int? categoryid;
   int? priority;
+  bool? alarm;
 
   TaskModel(this.title, this.desc, this.dateTimeNow, this.dateTimeFinish,
-      this.categoryid, this.priority);
+      this.categoryid, this.priority, this.alarm);
 }

@@ -4,10 +4,12 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
-import 'package:task_reminder_app/bloc/task_bloc/task_bloc_bloc.dart';
+
 import 'package:task_reminder_app/model/task.dart';
 import 'package:task_reminder_app/repository/task_isar_repository.dart';
 import 'package:task_reminder_app/tools/extention.dart';
+
+import '../../bloc/task_bloc/task_bloc_bloc.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -78,15 +80,12 @@ class _HomePageState extends State<HomePage> {
                                 TextButton(
                                   child: const Text("Sil"),
                                   onPressed: () {
-                                    showModalBottomSheet(
-                                      isDismissible: true,
-                                      useRootNavigator: true,
+                                    showBottomSheet(
                                       shape: const RoundedRectangleBorder(
                                         borderRadius: BorderRadius.only(
                                             topLeft: Radius.circular(20),
                                             topRight: Radius.circular(20)),
                                       ),
-                                      isScrollControlled: true,
                                       context: context,
                                       builder: (context) {
                                         return Padding(
@@ -150,10 +149,10 @@ class _HomePageState extends State<HomePage> {
                                                                 context
                                                                     .read<
                                                                         TaskBloc>()
-                                                                    .add(DeleteTaskEvent(
-                                                                        id: snapshot
-                                                                            .data![index]
-                                                                            .id));
+                                                                    .add(DeleteTaskEvent(snapshot
+                                                                        .data![
+                                                                            index]
+                                                                        .id));
                                                                 Navigator.pop(
                                                                     context);
                                                               },
@@ -187,6 +186,9 @@ class _HomePageState extends State<HomePage> {
                                                           ),
                                                         ],
                                                       ),
+                                                    ),
+                                                    Spacer(
+                                                      flex: 1,
                                                     )
                                                   ],
                                                 ),

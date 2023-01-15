@@ -14,11 +14,5 @@ class AddTaskEvent extends TaskBlocEvent {
 
 class DeleteTaskEvent extends TaskBlocEvent {
   final int id;
-  const DeleteTaskEvent({required this.id});
+  const DeleteTaskEvent(this.id);
 }
-
-class UpdateTaskEvent extends TaskBlocEvent {}
-
-class GetSingleEvent extends TaskBlocEvent {}
-
-class ErrorTextEvent extends TaskBlocEvent {}
