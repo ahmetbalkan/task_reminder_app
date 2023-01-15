@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 extension ContextExtention on BuildContext {
@@ -77,4 +78,10 @@ extension EmailValidation on String {
   bool isValidEmail(String value) => RegExp(
           r'^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$')
       .hasMatch(this);
+}
+
+extension IconStringExt on String {
+  IconData? iconParse(String iconname, FaIcon icon) => {
+        iconname: FontAwesomeIcons.bus,
+      }[this];
 }

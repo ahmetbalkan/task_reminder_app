@@ -9,30 +9,30 @@ class SettingIsarRepository extends OpenDB {
     _db = openDB();
   }
 
-  Stream<List<TaskModel>> listenUser() async* {
+  Stream<List<SettingsModel>> listenSetting() async* {
     final isar = await _db;
-    yield* isar.taskModels.where().watch(fireImmediately: true);
+    yield* isar.settingsModels.where().watch(fireImmediately: true);
   }
 
-  Future<void> saveUser(TaskModel newUser) async {
+  Future<void> saveSetting(SettingsModel newSetting) async {
     final isar = await _db;
-    isar.writeTxnSync(() => isar.taskModels.putSync(newUser));
+    isar.writeTxnSync(() => isar.settingsModels.putSync(newSetting));
   }
 
-  Future<TaskModel?> getSingle(int id) async {
+  Future<void> cleanSettingDb() async {
     final isar = await _db;
-    return isar.taskModels.getSync(id);
+    await isar.writeTxn(() => isar.settingsModels.clear());
   }
 
-  Future<void> UpdateUser(TaskModel user) async {
+  Future<SettingsModel?> getFirstSettings() async {
+    final isar = await _db;
+    return isar.settingsModels.getSync(1);
+  }
+
+  Future<void> UpdateSettings(SettingsModel settings) async {
     final isar = await _db;
     await isar.writeTxn(() async {
-      await isar.taskModels.put(user);
+      await isar.settingsModels.put(settings);
     });
-  }
-
-  Future<void> deleteUser(int userid) async {
-    final isar = await _db;
-    isar.writeTxn(() => isar.taskModels.delete(userid));
   }
 }

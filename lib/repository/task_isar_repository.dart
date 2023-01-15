@@ -35,4 +35,9 @@ class TaskIsarRepository extends OpenDB {
     final isar = await _db;
     isar.writeTxn(() => isar.taskModels.delete(userid));
   }
+
+  Future<void> cleanSettingDb() async {
+    final isar = await _db;
+    await isar.writeTxn(() => isar.taskModels.clear());
+  }
 }

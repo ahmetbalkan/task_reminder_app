@@ -4,8 +4,9 @@ part 'category.g.dart';
 @collection
 class CategoryModel {
   Id id = Isar.autoIncrement;
-  bool categoryName;
+  String categoryName;
   int categoryColor;
+  int icon;
 
-  CategoryModel(this.categoryName, this.categoryColor);
+  CategoryModel(this.categoryName, this.categoryColor, this.icon);
 }

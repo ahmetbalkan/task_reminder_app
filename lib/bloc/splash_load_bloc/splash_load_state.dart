@@ -1,6 +1,13 @@
-part of 'task_bloc.dart';
+part of 'splash_load_bloc.dart';
 
-enum PostStatus { initial, success, failure }
+enum PostStatus {
+  initial,
+  loading,
+  showintro,
+  gologin,
+  gohome,
+  goinformation,
+}
 
 class SplashLoadState extends Equatable {
   final PostStatus postStatus;

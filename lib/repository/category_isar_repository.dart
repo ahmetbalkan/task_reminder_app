@@ -15,25 +15,30 @@ class CategoryIsarRepository extends OpenDB {
     yield* isar.categoryModels.where().watch(fireImmediately: true);
   }
 
-  Future<void> saveCategory(CategoryModel newUser) async {
+  Future<List<CategoryModel>> getAllCategory() async {
     final isar = await _db;
-    isar.writeTxnSync(() => isar.categoryModels.putSync(newUser));
+    return await isar.categoryModels.where().findAll();
   }
 
-  Future<CategoryModel?> getSingle(int id) async {
+  Future<void> saveCategory(CategoryModel categoryModel) async {
     final isar = await _db;
-    return isar.categoryModels.getSync(id);
+    isar.writeTxnSync(() => isar.categoryModels.putSync(categoryModel));
   }
 
-  Future<void> updateCategory(CategoryModel user) async {
+  Future<void> saveAllCategory(List<CategoryModel> categoryModel) async {
+    final isar = await _db;
+    isar.writeTxnSync(() => isar.categoryModels.putAllSync(categoryModel));
+  }
+
+  Future<void> cleanSettingDb() async {
+    final isar = await _db;
+    await isar.writeTxn(() => isar.categoryModels.clear());
+  }
+
+  Future<void> UpdateCategory(CategoryModel categoryModel) async {
     final isar = await _db;
     await isar.writeTxn(() async {
-      await isar.categoryModels.put(user);
+      await isar.categoryModels.put(categoryModel);
     });
-  }
-
-  Future<void> deleteCategory(int userid) async {
-    final isar = await _db;
-    isar.writeTxn(() => isar.categoryModels.delete(userid));
   }
 }
