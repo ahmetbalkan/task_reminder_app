@@ -9,7 +9,7 @@ import 'package:task_reminder_app/model/task.dart';
 import 'package:task_reminder_app/repository/task_isar_repository.dart';
 import 'package:task_reminder_app/tools/extention.dart';
 
-import '../../bloc/task_bloc/task_bloc_bloc.dart';
+import '../../bloc/task_bloc/task_bloc.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});

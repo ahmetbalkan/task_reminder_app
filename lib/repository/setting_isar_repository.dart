@@ -3,9 +3,9 @@ import 'package:task_reminder_app/model/settings.dart';
 import 'package:task_reminder_app/model/task.dart';
 import 'package:task_reminder_app/repository/opendb.dart';
 
-class TaskIsarRepository extends OpenDB {
+class SettingIsarRepository extends OpenDB {
   late Future<Isar> _db;
-  TaskIsarRepository() {
+  SettingIsarRepository() {
     _db = openDB();
   }
 

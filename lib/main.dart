@@ -7,13 +7,14 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:task_reminder_app/bloc/app_start_blocs/forgot_pass_auth/forgotpass_auth_bloc.dart';
 import 'package:task_reminder_app/bloc/app_start_blocs/login_auth/login_auth_bloc.dart';
 import 'package:task_reminder_app/view/before_login/forgotpass/forgotpass_screen.dart';
+import 'package:task_reminder_app/view/before_login/splash_screen.dart';
 import 'package:task_reminder_app/view/homepage/homepage.dart';
 import 'package:task_reminder_app/view/before_login/login/login_screen.dart';
 import 'package:task_reminder_app/view/before_login/register/register_screen.dart';
 import 'package:task_reminder_app/view/main_page.dart';
 import 'bloc/app_start_blocs/intropage_bloc/intropage_bloc.dart';
 import 'bloc/app_start_blocs/register_auth/register_auth_bloc.dart';
-import 'bloc/task_bloc/task_bloc_bloc.dart';
+import 'bloc/task_bloc/task_bloc.dart';
 import 'locator.dart';
 import 'repository/task_isar_repository.dart';
 
@@ -83,7 +84,7 @@ class MyApp extends StatelessWidget {
                 builder: DevicePreview.appBuilder,
                 title: 'Task Reminder',
                 theme: ThemeData.dark(),
-                home: MainPage(),
+                home: SplashScreen(),
               ),
             ),
           );

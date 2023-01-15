@@ -6,7 +6,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:group_button/group_button.dart';
 import 'package:persistent_bottom_nav_bar/persistent_tab_view.dart';
-import 'package:task_reminder_app/bloc/task_bloc/task_bloc_bloc.dart';
+import 'package:task_reminder_app/bloc/task_bloc/task_bloc.dart';
 import 'package:task_reminder_app/model/task.dart';
 import 'package:task_reminder_app/tools/extention.dart';
 import 'calendar/calendar_page.dart';
@@ -330,7 +330,10 @@ class _MainPageState extends State<MainPage> {
       children: [
         BlocBuilder<TaskBloc, TaskBlocState>(
           builder: (context, state) {
-            return Text(state.errorText);
+            return Text(
+              state.errorText,
+              style: context.fontStyleLato(Colors.red, 14),
+            );
           },
         ),
         Row(
