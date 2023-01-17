@@ -26,11 +26,36 @@ class SettingIsarRepository extends OpenDB {
 
   Future<SettingsModel?> getFirstSettings() async {
     final isar = await _db;
-    return isar.settingsModels.getSync(1);
+    List<SettingsModel?> list = await isar.settingsModels.where().findAll();
+    if (list.isEmpty) {
+      return null;
+    } else {
+      return list.first;
+    }
   }
 
-  Future<void> UpdateSettings(SettingsModel settings) async {
+  Future<void> updateIntroRow(bool value) async {
     final isar = await _db;
+    var settings = await getFirstSettings();
+    settings!.introComplete = value;
+    await isar.writeTxn(() async {
+      await isar.settingsModels.put(settings);
+    });
+  }
+
+  Future<void> updateCategoryLoad(bool value) async {
+    final isar = await _db;
+    var settings = await getFirstSettings();
+    settings!.categoryLoadComplete = value;
+    await isar.writeTxn(() async {
+      await isar.settingsModels.put(settings);
+    });
+  }
+
+  Future<void> updateTaskLoad(bool value) async {
+    final isar = await _db;
+    var settings = await getFirstSettings();
+    settings!.taskLoadComplete = value;
     await isar.writeTxn(() async {
       await isar.settingsModels.put(settings);
     });

@@ -59,7 +59,28 @@
     "notification-switch":"Bildirim Oluştur",
     "delete-comfirm":"Görevi silmek istediğinize Emin misiniz ?",
     "delete":"Sil",
-    "cancel": "Kapat"
+    "cancel": "Kapat",
+    "add-category": "Kategori Ekle",
+    "add-new-category": "Yeni Kategori Ekle",
+    "choise-category": "Kategori Ekle",
+    "choise-add-category": "Lütfen Kategori Seçin",
+    "empty-category": "Kategori Boş",
+    "home-icon":"Ev",
+    "code-icon":"Developer",
+    "cases-icon":"İş",
+    "sports_martial_arts-icon":"Spor",
+    "crop-icon":"Tasarım",
+    "school-icon":"Okul",
+    "music_note-icon":"Müzik",
+    "health_and_safety-icon":"Sağlık",
+    "video_collection_rounded-icon":"Video",
+    "choisealarmdate":"LÜTFEN ALARM TARİHİNİ SEÇİNİZ",
+    "choisealarmtime":"LÜTFEN ALARM SAATİNİ SEÇİNİZ",
+    "choisecolor":"Renk Seç",
+    "choise-shade-color":"Ton seçiniz.",
+    "choiseicon":"Icon Seç"
+
+    
 
 
 }

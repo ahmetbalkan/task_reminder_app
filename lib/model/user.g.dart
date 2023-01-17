@@ -22,15 +22,20 @@ const UserModelSchema = CollectionSchema(
       name: r'isLogin',
       type: IsarType.bool,
     ),
-    r'userColor': PropertySchema(
+    r'isPremium': PropertySchema(
       id: 1,
-      name: r'userColor',
-      type: IsarType.long,
+      name: r'isPremium',
+      type: IsarType.bool,
     ),
     r'userName': PropertySchema(
       id: 2,
       name: r'userName',
-      type: IsarType.bool,
+      type: IsarType.string,
+    ),
+    r'userkey': PropertySchema(
+      id: 3,
+      name: r'userkey',
+      type: IsarType.string,
     )
   },
   estimateSize: _userModelEstimateSize,
@@ -53,6 +58,8 @@ int _userModelEstimateSize(
   Map<Type, List<int>> allOffsets,
 ) {
   var bytesCount = offsets.last;
+  bytesCount += 3 + object.userName.length * 3;
+  bytesCount += 3 + object.userkey.length * 3;
   return bytesCount;
 }
 
@@ -63,8 +70,9 @@ void _userModelSerialize(
   Map<Type, List<int>> allOffsets,
 ) {
   writer.writeBool(offsets[0], object.isLogin);
-  writer.writeLong(offsets[1], object.userColor);
-  writer.writeBool(offsets[2], object.userName);
+  writer.writeBool(offsets[1], object.isPremium);
+  writer.writeString(offsets[2], object.userName);
+  writer.writeString(offsets[3], object.userkey);
 }
 
 UserModel _userModelDeserialize(
@@ -75,8 +83,9 @@ UserModel _userModelDeserialize(
 ) {
   final object = UserModel(
     reader.readBool(offsets[0]),
-    reader.readBool(offsets[2]),
-    reader.readLong(offsets[1]),
+    reader.readString(offsets[2]),
+    reader.readString(offsets[3]),
+    reader.readBool(offsets[1]),
   );
   object.id = id;
   return object;
@@ -92,9 +101,11 @@ P _userModelDeserializeProp<P>(
     case 0:
       return (reader.readBool(offset)) as P;
     case 1:
-      return (reader.readLong(offset)) as P;
-    case 2:
       return (reader.readBool(offset)) as P;
+    case 2:
+      return (reader.readString(offset)) as P;
+    case 3:
+      return (reader.readString(offset)) as P;
     default:
       throw IsarError('Unknown property with id $propertyId');
   }
@@ -254,66 +265,274 @@ extension UserModelQueryFilter
     });
   }
 
-  QueryBuilder<UserModel, UserModel, QAfterFilterCondition> userColorEqualTo(
-      int value) {
+  QueryBuilder<UserModel, UserModel, QAfterFilterCondition> isPremiumEqualTo(
+      bool value) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.equalTo(
-        property: r'userColor',
+        property: r'isPremium',
         value: value,
-      ));
-    });
-  }
-
-  QueryBuilder<UserModel, UserModel, QAfterFilterCondition>
-      userColorGreaterThan(
-    int value, {
-    bool include = false,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.greaterThan(
-        include: include,
-        property: r'userColor',
-        value: value,
-      ));
-    });
-  }
-
-  QueryBuilder<UserModel, UserModel, QAfterFilterCondition> userColorLessThan(
-    int value, {
-    bool include = false,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.lessThan(
-        include: include,
-        property: r'userColor',
-        value: value,
-      ));
-    });
-  }
-
-  QueryBuilder<UserModel, UserModel, QAfterFilterCondition> userColorBetween(
-    int lower,
-    int upper, {
-    bool includeLower = true,
-    bool includeUpper = true,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.between(
-        property: r'userColor',
-        lower: lower,
-        includeLower: includeLower,
-        upper: upper,
-        includeUpper: includeUpper,
       ));
     });
   }
 
   QueryBuilder<UserModel, UserModel, QAfterFilterCondition> userNameEqualTo(
-      bool value) {
+    String value, {
+    bool caseSensitive = true,
+  }) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.equalTo(
         property: r'userName',
         value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<UserModel, UserModel, QAfterFilterCondition> userNameGreaterThan(
+    String value, {
+    bool include = false,
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.greaterThan(
+        include: include,
+        property: r'userName',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<UserModel, UserModel, QAfterFilterCondition> userNameLessThan(
+    String value, {
+    bool include = false,
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.lessThan(
+        include: include,
+        property: r'userName',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<UserModel, UserModel, QAfterFilterCondition> userNameBetween(
+    String lower,
+    String upper, {
+    bool includeLower = true,
+    bool includeUpper = true,
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.between(
+        property: r'userName',
+        lower: lower,
+        includeLower: includeLower,
+        upper: upper,
+        includeUpper: includeUpper,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<UserModel, UserModel, QAfterFilterCondition> userNameStartsWith(
+    String value, {
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.startsWith(
+        property: r'userName',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<UserModel, UserModel, QAfterFilterCondition> userNameEndsWith(
+    String value, {
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.endsWith(
+        property: r'userName',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<UserModel, UserModel, QAfterFilterCondition> userNameContains(
+      String value,
+      {bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.contains(
+        property: r'userName',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<UserModel, UserModel, QAfterFilterCondition> userNameMatches(
+      String pattern,
+      {bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.matches(
+        property: r'userName',
+        wildcard: pattern,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<UserModel, UserModel, QAfterFilterCondition> userNameIsEmpty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.equalTo(
+        property: r'userName',
+        value: '',
+      ));
+    });
+  }
+
+  QueryBuilder<UserModel, UserModel, QAfterFilterCondition>
+      userNameIsNotEmpty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.greaterThan(
+        property: r'userName',
+        value: '',
+      ));
+    });
+  }
+
+  QueryBuilder<UserModel, UserModel, QAfterFilterCondition> userkeyEqualTo(
+    String value, {
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.equalTo(
+        property: r'userkey',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<UserModel, UserModel, QAfterFilterCondition> userkeyGreaterThan(
+    String value, {
+    bool include = false,
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.greaterThan(
+        include: include,
+        property: r'userkey',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<UserModel, UserModel, QAfterFilterCondition> userkeyLessThan(
+    String value, {
+    bool include = false,
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.lessThan(
+        include: include,
+        property: r'userkey',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<UserModel, UserModel, QAfterFilterCondition> userkeyBetween(
+    String lower,
+    String upper, {
+    bool includeLower = true,
+    bool includeUpper = true,
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.between(
+        property: r'userkey',
+        lower: lower,
+        includeLower: includeLower,
+        upper: upper,
+        includeUpper: includeUpper,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<UserModel, UserModel, QAfterFilterCondition> userkeyStartsWith(
+    String value, {
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.startsWith(
+        property: r'userkey',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<UserModel, UserModel, QAfterFilterCondition> userkeyEndsWith(
+    String value, {
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.endsWith(
+        property: r'userkey',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<UserModel, UserModel, QAfterFilterCondition> userkeyContains(
+      String value,
+      {bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.contains(
+        property: r'userkey',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<UserModel, UserModel, QAfterFilterCondition> userkeyMatches(
+      String pattern,
+      {bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.matches(
+        property: r'userkey',
+        wildcard: pattern,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<UserModel, UserModel, QAfterFilterCondition> userkeyIsEmpty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.equalTo(
+        property: r'userkey',
+        value: '',
+      ));
+    });
+  }
+
+  QueryBuilder<UserModel, UserModel, QAfterFilterCondition>
+      userkeyIsNotEmpty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.greaterThan(
+        property: r'userkey',
+        value: '',
       ));
     });
   }
@@ -338,15 +557,15 @@ extension UserModelQuerySortBy on QueryBuilder<UserModel, UserModel, QSortBy> {
     });
   }
 
-  QueryBuilder<UserModel, UserModel, QAfterSortBy> sortByUserColor() {
+  QueryBuilder<UserModel, UserModel, QAfterSortBy> sortByIsPremium() {
     return QueryBuilder.apply(this, (query) {
-      return query.addSortBy(r'userColor', Sort.asc);
+      return query.addSortBy(r'isPremium', Sort.asc);
     });
   }
 
-  QueryBuilder<UserModel, UserModel, QAfterSortBy> sortByUserColorDesc() {
+  QueryBuilder<UserModel, UserModel, QAfterSortBy> sortByIsPremiumDesc() {
     return QueryBuilder.apply(this, (query) {
-      return query.addSortBy(r'userColor', Sort.desc);
+      return query.addSortBy(r'isPremium', Sort.desc);
     });
   }
 
@@ -359,6 +578,18 @@ extension UserModelQuerySortBy on QueryBuilder<UserModel, UserModel, QSortBy> {
   QueryBuilder<UserModel, UserModel, QAfterSortBy> sortByUserNameDesc() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'userName', Sort.desc);
+    });
+  }
+
+  QueryBuilder<UserModel, UserModel, QAfterSortBy> sortByUserkey() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'userkey', Sort.asc);
+    });
+  }
+
+  QueryBuilder<UserModel, UserModel, QAfterSortBy> sortByUserkeyDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'userkey', Sort.desc);
     });
   }
 }
@@ -389,15 +620,15 @@ extension UserModelQuerySortThenBy
     });
   }
 
-  QueryBuilder<UserModel, UserModel, QAfterSortBy> thenByUserColor() {
+  QueryBuilder<UserModel, UserModel, QAfterSortBy> thenByIsPremium() {
     return QueryBuilder.apply(this, (query) {
-      return query.addSortBy(r'userColor', Sort.asc);
+      return query.addSortBy(r'isPremium', Sort.asc);
     });
   }
 
-  QueryBuilder<UserModel, UserModel, QAfterSortBy> thenByUserColorDesc() {
+  QueryBuilder<UserModel, UserModel, QAfterSortBy> thenByIsPremiumDesc() {
     return QueryBuilder.apply(this, (query) {
-      return query.addSortBy(r'userColor', Sort.desc);
+      return query.addSortBy(r'isPremium', Sort.desc);
     });
   }
 
@@ -412,6 +643,18 @@ extension UserModelQuerySortThenBy
       return query.addSortBy(r'userName', Sort.desc);
     });
   }
+
+  QueryBuilder<UserModel, UserModel, QAfterSortBy> thenByUserkey() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'userkey', Sort.asc);
+    });
+  }
+
+  QueryBuilder<UserModel, UserModel, QAfterSortBy> thenByUserkeyDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'userkey', Sort.desc);
+    });
+  }
 }
 
 extension UserModelQueryWhereDistinct
@@ -422,15 +665,23 @@ extension UserModelQueryWhereDistinct
     });
   }
 
-  QueryBuilder<UserModel, UserModel, QDistinct> distinctByUserColor() {
+  QueryBuilder<UserModel, UserModel, QDistinct> distinctByIsPremium() {
     return QueryBuilder.apply(this, (query) {
-      return query.addDistinctBy(r'userColor');
+      return query.addDistinctBy(r'isPremium');
     });
   }
 
-  QueryBuilder<UserModel, UserModel, QDistinct> distinctByUserName() {
+  QueryBuilder<UserModel, UserModel, QDistinct> distinctByUserName(
+      {bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
-      return query.addDistinctBy(r'userName');
+      return query.addDistinctBy(r'userName', caseSensitive: caseSensitive);
+    });
+  }
+
+  QueryBuilder<UserModel, UserModel, QDistinct> distinctByUserkey(
+      {bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addDistinctBy(r'userkey', caseSensitive: caseSensitive);
     });
   }
 }
@@ -449,15 +700,21 @@ extension UserModelQueryProperty
     });
   }
 
-  QueryBuilder<UserModel, int, QQueryOperations> userColorProperty() {
+  QueryBuilder<UserModel, bool, QQueryOperations> isPremiumProperty() {
     return QueryBuilder.apply(this, (query) {
-      return query.addPropertyName(r'userColor');
+      return query.addPropertyName(r'isPremium');
     });
   }
 
-  QueryBuilder<UserModel, bool, QQueryOperations> userNameProperty() {
+  QueryBuilder<UserModel, String, QQueryOperations> userNameProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addPropertyName(r'userName');
+    });
+  }
+
+  QueryBuilder<UserModel, String, QQueryOperations> userkeyProperty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addPropertyName(r'userkey');
     });
   }
 }

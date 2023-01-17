@@ -6,6 +6,9 @@ class SettingsModel {
   Id id = Isar.autoIncrement;
   bool introComplete;
   bool userInformationComplete;
+  bool categoryLoadComplete;
+  bool taskLoadComplete;
 
-  SettingsModel(this.introComplete, this.userInformationComplete);
+  SettingsModel(this.introComplete, this.userInformationComplete,
+      this.categoryLoadComplete, this.taskLoadComplete);
 }

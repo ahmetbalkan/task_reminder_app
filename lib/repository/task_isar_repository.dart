@@ -19,6 +19,11 @@ class TaskIsarRepository extends OpenDB {
     isar.writeTxnSync(() => isar.taskModels.putSync(newUser));
   }
 
+  Future<List<TaskModel>> getAllTask() async {
+    final isar = await _db;
+    return await isar.taskModels.where().findAll();
+  }
+
   Future<TaskModel?> getSingle(int id) async {
     final isar = await _db;
     return isar.taskModels.getSync(id);

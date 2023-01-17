@@ -17,13 +17,23 @@ const SettingsModelSchema = CollectionSchema(
   name: r'SettingsModel',
   id: 4013777327486952906,
   properties: {
-    r'introComplete': PropertySchema(
+    r'categoryLoadComplete': PropertySchema(
       id: 0,
+      name: r'categoryLoadComplete',
+      type: IsarType.bool,
+    ),
+    r'introComplete': PropertySchema(
+      id: 1,
       name: r'introComplete',
       type: IsarType.bool,
     ),
+    r'taskLoadComplete': PropertySchema(
+      id: 2,
+      name: r'taskLoadComplete',
+      type: IsarType.bool,
+    ),
     r'userInformationComplete': PropertySchema(
-      id: 1,
+      id: 3,
       name: r'userInformationComplete',
       type: IsarType.bool,
     )
@@ -57,8 +67,10 @@ void _settingsModelSerialize(
   List<int> offsets,
   Map<Type, List<int>> allOffsets,
 ) {
-  writer.writeBool(offsets[0], object.introComplete);
-  writer.writeBool(offsets[1], object.userInformationComplete);
+  writer.writeBool(offsets[0], object.categoryLoadComplete);
+  writer.writeBool(offsets[1], object.introComplete);
+  writer.writeBool(offsets[2], object.taskLoadComplete);
+  writer.writeBool(offsets[3], object.userInformationComplete);
 }
 
 SettingsModel _settingsModelDeserialize(
@@ -68,8 +80,10 @@ SettingsModel _settingsModelDeserialize(
   Map<Type, List<int>> allOffsets,
 ) {
   final object = SettingsModel(
-    reader.readBool(offsets[0]),
     reader.readBool(offsets[1]),
+    reader.readBool(offsets[3]),
+    reader.readBool(offsets[0]),
+    reader.readBool(offsets[2]),
   );
   object.id = id;
   return object;
@@ -85,6 +99,10 @@ P _settingsModelDeserializeProp<P>(
     case 0:
       return (reader.readBool(offset)) as P;
     case 1:
+      return (reader.readBool(offset)) as P;
+    case 2:
+      return (reader.readBool(offset)) as P;
+    case 3:
       return (reader.readBool(offset)) as P;
     default:
       throw IsarError('Unknown property with id $propertyId');
@@ -187,6 +205,16 @@ extension SettingsModelQueryWhere
 
 extension SettingsModelQueryFilter
     on QueryBuilder<SettingsModel, SettingsModel, QFilterCondition> {
+  QueryBuilder<SettingsModel, SettingsModel, QAfterFilterCondition>
+      categoryLoadCompleteEqualTo(bool value) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.equalTo(
+        property: r'categoryLoadComplete',
+        value: value,
+      ));
+    });
+  }
+
   QueryBuilder<SettingsModel, SettingsModel, QAfterFilterCondition> idEqualTo(
       Id value) {
     return QueryBuilder.apply(this, (query) {
@@ -252,6 +280,16 @@ extension SettingsModelQueryFilter
   }
 
   QueryBuilder<SettingsModel, SettingsModel, QAfterFilterCondition>
+      taskLoadCompleteEqualTo(bool value) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.equalTo(
+        property: r'taskLoadComplete',
+        value: value,
+      ));
+    });
+  }
+
+  QueryBuilder<SettingsModel, SettingsModel, QAfterFilterCondition>
       userInformationCompleteEqualTo(bool value) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.equalTo(
@@ -271,6 +309,20 @@ extension SettingsModelQueryLinks
 extension SettingsModelQuerySortBy
     on QueryBuilder<SettingsModel, SettingsModel, QSortBy> {
   QueryBuilder<SettingsModel, SettingsModel, QAfterSortBy>
+      sortByCategoryLoadComplete() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'categoryLoadComplete', Sort.asc);
+    });
+  }
+
+  QueryBuilder<SettingsModel, SettingsModel, QAfterSortBy>
+      sortByCategoryLoadCompleteDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'categoryLoadComplete', Sort.desc);
+    });
+  }
+
+  QueryBuilder<SettingsModel, SettingsModel, QAfterSortBy>
       sortByIntroComplete() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'introComplete', Sort.asc);
@@ -281,6 +333,20 @@ extension SettingsModelQuerySortBy
       sortByIntroCompleteDesc() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'introComplete', Sort.desc);
+    });
+  }
+
+  QueryBuilder<SettingsModel, SettingsModel, QAfterSortBy>
+      sortByTaskLoadComplete() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'taskLoadComplete', Sort.asc);
+    });
+  }
+
+  QueryBuilder<SettingsModel, SettingsModel, QAfterSortBy>
+      sortByTaskLoadCompleteDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'taskLoadComplete', Sort.desc);
     });
   }
 
@@ -301,6 +367,20 @@ extension SettingsModelQuerySortBy
 
 extension SettingsModelQuerySortThenBy
     on QueryBuilder<SettingsModel, SettingsModel, QSortThenBy> {
+  QueryBuilder<SettingsModel, SettingsModel, QAfterSortBy>
+      thenByCategoryLoadComplete() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'categoryLoadComplete', Sort.asc);
+    });
+  }
+
+  QueryBuilder<SettingsModel, SettingsModel, QAfterSortBy>
+      thenByCategoryLoadCompleteDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'categoryLoadComplete', Sort.desc);
+    });
+  }
+
   QueryBuilder<SettingsModel, SettingsModel, QAfterSortBy> thenById() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'id', Sort.asc);
@@ -328,6 +408,20 @@ extension SettingsModelQuerySortThenBy
   }
 
   QueryBuilder<SettingsModel, SettingsModel, QAfterSortBy>
+      thenByTaskLoadComplete() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'taskLoadComplete', Sort.asc);
+    });
+  }
+
+  QueryBuilder<SettingsModel, SettingsModel, QAfterSortBy>
+      thenByTaskLoadCompleteDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'taskLoadComplete', Sort.desc);
+    });
+  }
+
+  QueryBuilder<SettingsModel, SettingsModel, QAfterSortBy>
       thenByUserInformationComplete() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'userInformationComplete', Sort.asc);
@@ -345,9 +439,23 @@ extension SettingsModelQuerySortThenBy
 extension SettingsModelQueryWhereDistinct
     on QueryBuilder<SettingsModel, SettingsModel, QDistinct> {
   QueryBuilder<SettingsModel, SettingsModel, QDistinct>
+      distinctByCategoryLoadComplete() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addDistinctBy(r'categoryLoadComplete');
+    });
+  }
+
+  QueryBuilder<SettingsModel, SettingsModel, QDistinct>
       distinctByIntroComplete() {
     return QueryBuilder.apply(this, (query) {
       return query.addDistinctBy(r'introComplete');
+    });
+  }
+
+  QueryBuilder<SettingsModel, SettingsModel, QDistinct>
+      distinctByTaskLoadComplete() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addDistinctBy(r'taskLoadComplete');
     });
   }
 
@@ -367,9 +475,23 @@ extension SettingsModelQueryProperty
     });
   }
 
+  QueryBuilder<SettingsModel, bool, QQueryOperations>
+      categoryLoadCompleteProperty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addPropertyName(r'categoryLoadComplete');
+    });
+  }
+
   QueryBuilder<SettingsModel, bool, QQueryOperations> introCompleteProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addPropertyName(r'introComplete');
+    });
+  }
+
+  QueryBuilder<SettingsModel, bool, QQueryOperations>
+      taskLoadCompleteProperty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addPropertyName(r'taskLoadComplete');
     });
   }
 

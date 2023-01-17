@@ -25,6 +25,11 @@ class CategoryIsarRepository extends OpenDB {
     isar.writeTxnSync(() => isar.categoryModels.putSync(categoryModel));
   }
 
+  Future<void> deleteCategory(int userid) async {
+    final isar = await _db;
+    isar.writeTxn(() => isar.categoryModels.delete(userid));
+  }
+
   Future<void> saveAllCategory(List<CategoryModel> categoryModel) async {
     final isar = await _db;
     isar.writeTxnSync(() => isar.categoryModels.putAllSync(categoryModel));

@@ -7,10 +7,11 @@ class TaskBlocState extends Equatable {
   final PostStatus postStatus;
   final bool alarmStatus;
 
-  const TaskBlocState(
-      {this.errorText = "",
-      this.postStatus = PostStatus.initial,
-      this.alarmStatus = false});
+  const TaskBlocState({
+    this.errorText = "",
+    this.postStatus = PostStatus.initial,
+    this.alarmStatus = false,
+  });
 
   @override
   List<Object> get props => [errorText, postStatus];
@@ -19,6 +20,7 @@ class TaskBlocState extends Equatable {
     String? errorText,
     PostStatus? postStatus,
     bool? alarmStatus,
+    List<CategoryModel>? categories,
   }) {
     return TaskBlocState(
       errorText: errorText ?? this.errorText,

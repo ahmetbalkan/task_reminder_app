@@ -35,7 +35,8 @@ class UserIsarRepository extends OpenDB {
 
   Future<UserModel?> getFirstUser() async {
     final isar = await _db;
-    return isar.userModels.getSync(1);
+    var userlist = await isar.userModels.where().findAll();
+    return userlist.first;
   }
 
   Future<void> deleteUser(int userid) async {

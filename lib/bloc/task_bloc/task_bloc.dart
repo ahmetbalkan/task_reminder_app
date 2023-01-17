@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
+import 'package:task_reminder_app/model/category.dart';
 import 'package:task_reminder_app/model/task.dart';
 import 'package:task_reminder_app/repository/task_isar_repository.dart';
 import 'package:task_reminder_app/view/main_page.dart';
@@ -12,7 +13,7 @@ part 'task_state.dart';
 
 class TaskBloc extends Bloc<TaskBlocEvent, TaskBlocState> {
   var _taskIsarRepository = locator.get<TaskIsarRepository>();
-  TaskBloc() : super(const TaskBlocState()) {
+  TaskBloc() : super(TaskBlocState()) {
     on<AddTaskEvent>(_addTask);
     on<DeleteTaskEvent>(_deleteTaskEvent);
   }

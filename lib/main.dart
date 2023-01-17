@@ -6,6 +6,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:task_reminder_app/bloc/app_start_blocs/forgot_pass_auth/forgotpass_auth_bloc.dart';
 import 'package:task_reminder_app/bloc/app_start_blocs/login_auth/login_auth_bloc.dart';
+import 'package:task_reminder_app/bloc/categories_bloc/category_bloc.dart';
+import 'package:task_reminder_app/bloc/splash_load_bloc/splash_load_bloc.dart';
 import 'package:task_reminder_app/view/before_login/forgotpass/forgotpass_screen.dart';
 import 'package:task_reminder_app/view/before_login/splash_screen.dart';
 import 'package:task_reminder_app/view/homepage/homepage.dart';
@@ -23,7 +25,7 @@ void main() async {
   await EasyLocalization.ensureInitialized();
   locatorMethod();
 
-  //var _isarTaskService = locator.get<TaskIsarRepository>();
+  var _isarTaskService = locator.get<TaskIsarRepository>();
 
   SystemChrome.setPreferredOrientations(
           [DeviceOrientation.portraitUp, DeviceOrientation.portraitDown])
@@ -74,6 +76,12 @@ class MyApp extends StatelessWidget {
                 ),
                 BlocProvider(
                   create: (context) => TaskBloc(),
+                ),
+                BlocProvider(
+                  create: (context) => SplashLoadBloc(),
+                ),
+                BlocProvider(
+                  create: (context) => CategoryBloc(),
                 ),
               ],
               child: MaterialApp(

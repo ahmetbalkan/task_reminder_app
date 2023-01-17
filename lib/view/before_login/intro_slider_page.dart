@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 import '../../bloc/app_start_blocs/intropage_bloc/intropage_bloc.dart';
+import '../../bloc/splash_load_bloc/splash_load_bloc.dart';
 import '../../tools/extention.dart';
 import 'login/login_screen.dart';
 
@@ -70,12 +71,10 @@ class _IntroSliderPageState extends State<IntroSliderPage> {
           flex: 2,
           child: GestureDetector(
             onTap: (() {
-              Navigator.pushAndRemoveUntil(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => const LoginPage(),
-                  ),
-                  (route) => false);
+              context
+                  .read<SplashLoadBloc>()
+                  .add(GetSplashChangeSettingsEvent());
+              context.read<SplashLoadBloc>().add(GetSplashLoadEvent());
             }),
             child: Container(
               padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
@@ -227,13 +226,13 @@ class _IntroSliderPageState extends State<IntroSliderPage> {
                 ? Expanded(
                     flex: 5,
                     child: GestureDetector(
-                      onTap: () {
-                        Navigator.pushAndRemoveUntil(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => const LoginPage(),
-                            ),
-                            (route) => false);
+                      onTap: () async {
+                        context
+                            .read<SplashLoadBloc>()
+                            .add(GetSplashChangeSettingsEvent());
+                        context
+                            .read<SplashLoadBloc>()
+                            .add(GetSplashLoadEvent());
                       },
                       child: Container(
                         decoration: BoxDecoration(
