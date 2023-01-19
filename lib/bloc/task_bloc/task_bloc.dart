@@ -16,6 +16,7 @@ class TaskBloc extends Bloc<TaskBlocEvent, TaskBlocState> {
   TaskBloc() : super(TaskBlocState()) {
     on<AddTaskEvent>(_addTask);
     on<DeleteTaskEvent>(_deleteTaskEvent);
+    on<GetTaskEvent>(_getTaskEvent);
   }
 
   _addTask(AddTaskEvent event, Emitter<TaskBlocState> emit) {
@@ -39,5 +40,18 @@ class TaskBloc extends Bloc<TaskBlocEvent, TaskBlocState> {
 
   _deleteTaskEvent(DeleteTaskEvent event, Emitter<TaskBlocState> emit) {
     _taskIsarRepository.deleteUser(event.id);
+  }
+
+  _getTaskEvent(GetTaskEvent event, Emitter<TaskBlocState> emit) async {
+    if (event.getTaskStatus == GetTaskStatus.all) {
+      emit(state.copyWith(
+          getTaskStatus: GetTaskStatus.all,
+          tasks: await _taskIsarRepository.getAllTask()));
+    }
+    if (event.getTaskStatus == GetTaskStatus.complete) {
+      var a = await _taskIsarRepository.getCompleteTask();
+      emit(state.copyWith(
+          getTaskStatus: GetTaskStatus.complete, tasks: state.tasks));
+    }
   }
 }

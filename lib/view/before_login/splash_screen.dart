@@ -73,12 +73,3 @@ class _SplashScreenState extends State<SplashScreen> {
         ));
   }
 }
-
-/*enum PostStatus {
-  initial,
-  loading,
-  showintro,
-  gologin,
-  gohome,
-  goinformation,
-}*/

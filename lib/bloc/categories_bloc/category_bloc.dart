@@ -15,6 +15,7 @@ class CategoryBloc extends Bloc<CategoryBlocEvent, CategoryBlocState> {
   CategoryBloc() : super(CategoryBlocState()) {
     on<AddCategoryEvent>(_addCategory);
     on<DeleteCategoryEvent>(_deleteCategoryEvent);
+    on<GetCategoryEvent>(_getCategoryEvent);
   }
 
   _addCategory(AddCategoryEvent event, Emitter<CategoryBlocState> emit) {
@@ -29,4 +30,6 @@ class CategoryBloc extends Bloc<CategoryBlocEvent, CategoryBlocState> {
       await _categoryIsarRepository.deleteCategory(event.id);
     }
   }
+
+  _getCategoryEvent(GetCategoryEvent event, Emitter<CategoryBlocState> emit) {}
 }

@@ -14,6 +14,14 @@ class TaskIsarRepository extends OpenDB {
     yield* isar.taskModels.where().watch(fireImmediately: true);
   }
 
+  Stream<List<TaskModel>> listenCompleteUser() async* {
+    final isar = await _db;
+    yield* isar.taskModels
+        .filter()
+        .completeEqualTo(true)
+        .watch(fireImmediately: true);
+  }
+
   Future<void> saveUser(TaskModel newUser) async {
     final isar = await _db;
     isar.writeTxnSync(() => isar.taskModels.putSync(newUser));
@@ -22,6 +30,12 @@ class TaskIsarRepository extends OpenDB {
   Future<List<TaskModel>> getAllTask() async {
     final isar = await _db;
     return await isar.taskModels.where().findAll();
+  }
+
+  Future<List<TaskModel>> getCompleteTask() async {
+    final isar = await _db;
+    var value = await isar.taskModels.filter().completeEqualTo(true).findAll();
+    return value;
   }
 
   Future<TaskModel?> getSingle(int id) async {

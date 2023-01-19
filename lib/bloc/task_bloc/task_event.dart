@@ -16,3 +16,9 @@ class DeleteTaskEvent extends TaskBlocEvent {
   final int id;
   const DeleteTaskEvent(this.id);
 }
+
+class GetTaskEvent extends TaskBlocEvent {
+  GetTaskStatus getTaskStatus;
+
+  GetTaskEvent({required this.getTaskStatus});
+}

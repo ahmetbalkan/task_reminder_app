@@ -273,8 +273,7 @@ class _RegisterPageState extends State<RegisterPage> {
         if (value.length < 8) {
           return "8digit".tr();
         }
-        print(value);
-        print(_password1.text);
+
         if (_password1.text != value) {
           return "passMatch".tr();
         }

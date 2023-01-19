@@ -8,6 +8,7 @@ import 'package:task_reminder_app/bloc/app_start_blocs/forgot_pass_auth/forgotpa
 import 'package:task_reminder_app/bloc/app_start_blocs/login_auth/login_auth_bloc.dart';
 import 'package:task_reminder_app/bloc/categories_bloc/category_bloc.dart';
 import 'package:task_reminder_app/bloc/splash_load_bloc/splash_load_bloc.dart';
+
 import 'package:task_reminder_app/view/before_login/forgotpass/forgotpass_screen.dart';
 import 'package:task_reminder_app/view/before_login/splash_screen.dart';
 import 'package:task_reminder_app/view/homepage/homepage.dart';
@@ -19,11 +20,13 @@ import 'bloc/app_start_blocs/register_auth/register_auth_bloc.dart';
 import 'bloc/task_bloc/task_bloc.dart';
 import 'locator.dart';
 import 'repository/task_isar_repository.dart';
+import 'package:timezone/data/latest.dart' as tz;
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await EasyLocalization.ensureInitialized();
   locatorMethod();
+  tz.initializeTimeZones();
 
   var _isarTaskService = locator.get<TaskIsarRepository>();
 

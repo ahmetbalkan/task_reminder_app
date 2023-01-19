@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:intl/intl.dart';
 
 extension ContextExtention on BuildContext {
   double dynamicWidth(double val) => MediaQuery.of(this).size.width * val;
@@ -84,4 +85,14 @@ extension IconStringExt on String {
   IconData? iconParse(String iconname, FaIcon icon) => {
         iconname: FontAwesomeIcons.bus,
       }[this];
+}
+
+extension DateTimeFormat on BuildContext {
+  String fomatDate(DateTime dt) {
+    return DateFormat('dd.MM.yyyy').format(dt);
+  }
+
+  String fomatTime(DateTime dt) {
+    return DateFormat('HH.mm').format(dt);
+  }
 }

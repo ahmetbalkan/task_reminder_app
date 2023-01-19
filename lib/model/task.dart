@@ -11,7 +11,8 @@ class TaskModel {
   int? categoryid;
   int? priority;
   bool? alarm;
+  bool? complete;
 
   TaskModel(this.title, this.desc, this.dateTimeNow, this.dateTimeFinish,
-      this.categoryid, this.priority, this.alarm);
+      this.categoryid, this.priority, this.alarm, this.complete);
 }

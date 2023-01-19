@@ -59,6 +59,10 @@ dependencies:
   top_snackbar_flutter: ^3.0.0+1
   flutter_iconpicker: ^3.2.2
   flex_color_picker: ^3.0.2
+  syncfusion_flutter_calendar: ^20.4.43
+  date_picker_timeline: ^1.2.3
+  flutter_staggered_animations: ^1.1.1
+  intl: ^0.17.0
   
 dev_dependencies:
   flutter_test:
@@ -89,6 +93,8 @@ flutter:
     - assets/
     - assets/translations/
     - assets/intropage/
+    - assets/month/
+    - packages/timezone/data/latest.tzf
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware

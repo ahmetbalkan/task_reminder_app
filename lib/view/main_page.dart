@@ -47,6 +47,9 @@ class _MainPageState extends State<MainPage> {
   @override
   void initState() {
     super.initState();
+    context
+        .read<TaskBloc>()
+        .add(GetTaskEvent(getTaskStatus: GetTaskStatus.all));
     _controller = PersistentTabController(initialIndex: 0);
     _descTextEditingController = TextEditingController();
     _titleTextEditingController = TextEditingController();
@@ -467,9 +470,15 @@ class _MainPageState extends State<MainPage> {
                                                       builder: (context) {
                                                         return AlertDialog(
                                                           title: Text(
-                                                              "Categori Siliniyor"),
+                                                            "Categori Siliniyor",
+                                                            textAlign: TextAlign
+                                                                .center,
+                                                          ),
                                                           content: Text(
-                                                              "Lütfen kategoriyi silmek için buttonu kullanın."),
+                                                              textAlign:
+                                                                  TextAlign
+                                                                      .center,
+                                                              "Bu kategoriyi silmeniz halinde buna bağlı tüm görevlerde silinicektir onaylıyor musunuz ?"),
                                                           actions: [
                                                             Row(
                                                               mainAxisAlignment:
@@ -985,7 +994,8 @@ class _MainPageState extends State<MainPage> {
                           _pickedDate,
                           _categoryid,
                           _priority,
-                          _switchValue)));
+                          _switchValue,
+                          true)));
                 }
               },
               icon: const Icon(

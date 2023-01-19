@@ -27,28 +27,33 @@ const TaskModelSchema = CollectionSchema(
       name: r'categoryid',
       type: IsarType.long,
     ),
-    r'dateTimeFinish': PropertySchema(
+    r'complete': PropertySchema(
       id: 2,
+      name: r'complete',
+      type: IsarType.bool,
+    ),
+    r'dateTimeFinish': PropertySchema(
+      id: 3,
       name: r'dateTimeFinish',
       type: IsarType.dateTime,
     ),
     r'dateTimeNow': PropertySchema(
-      id: 3,
+      id: 4,
       name: r'dateTimeNow',
       type: IsarType.dateTime,
     ),
     r'desc': PropertySchema(
-      id: 4,
+      id: 5,
       name: r'desc',
       type: IsarType.string,
     ),
     r'priority': PropertySchema(
-      id: 5,
+      id: 6,
       name: r'priority',
       type: IsarType.long,
     ),
     r'title': PropertySchema(
-      id: 6,
+      id: 7,
       name: r'title',
       type: IsarType.string,
     )
@@ -96,11 +101,12 @@ void _taskModelSerialize(
 ) {
   writer.writeBool(offsets[0], object.alarm);
   writer.writeLong(offsets[1], object.categoryid);
-  writer.writeDateTime(offsets[2], object.dateTimeFinish);
-  writer.writeDateTime(offsets[3], object.dateTimeNow);
-  writer.writeString(offsets[4], object.desc);
-  writer.writeLong(offsets[5], object.priority);
-  writer.writeString(offsets[6], object.title);
+  writer.writeBool(offsets[2], object.complete);
+  writer.writeDateTime(offsets[3], object.dateTimeFinish);
+  writer.writeDateTime(offsets[4], object.dateTimeNow);
+  writer.writeString(offsets[5], object.desc);
+  writer.writeLong(offsets[6], object.priority);
+  writer.writeString(offsets[7], object.title);
 }
 
 TaskModel _taskModelDeserialize(
@@ -110,13 +116,14 @@ TaskModel _taskModelDeserialize(
   Map<Type, List<int>> allOffsets,
 ) {
   final object = TaskModel(
-    reader.readStringOrNull(offsets[6]),
-    reader.readStringOrNull(offsets[4]),
+    reader.readStringOrNull(offsets[7]),
+    reader.readStringOrNull(offsets[5]),
+    reader.readDateTimeOrNull(offsets[4]),
     reader.readDateTimeOrNull(offsets[3]),
-    reader.readDateTimeOrNull(offsets[2]),
     reader.readLongOrNull(offsets[1]),
-    reader.readLongOrNull(offsets[5]),
+    reader.readLongOrNull(offsets[6]),
     reader.readBoolOrNull(offsets[0]),
+    reader.readBoolOrNull(offsets[2]),
   );
   object.id = id;
   return object;
@@ -134,14 +141,16 @@ P _taskModelDeserializeProp<P>(
     case 1:
       return (reader.readLongOrNull(offset)) as P;
     case 2:
-      return (reader.readDateTimeOrNull(offset)) as P;
+      return (reader.readBoolOrNull(offset)) as P;
     case 3:
       return (reader.readDateTimeOrNull(offset)) as P;
     case 4:
-      return (reader.readStringOrNull(offset)) as P;
+      return (reader.readDateTimeOrNull(offset)) as P;
     case 5:
-      return (reader.readLongOrNull(offset)) as P;
+      return (reader.readStringOrNull(offset)) as P;
     case 6:
+      return (reader.readLongOrNull(offset)) as P;
+    case 7:
       return (reader.readStringOrNull(offset)) as P;
     default:
       throw IsarError('Unknown property with id $propertyId');
@@ -332,6 +341,33 @@ extension TaskModelQueryFilter
         includeLower: includeLower,
         upper: upper,
         includeUpper: includeUpper,
+      ));
+    });
+  }
+
+  QueryBuilder<TaskModel, TaskModel, QAfterFilterCondition> completeIsNull() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(const FilterCondition.isNull(
+        property: r'complete',
+      ));
+    });
+  }
+
+  QueryBuilder<TaskModel, TaskModel, QAfterFilterCondition>
+      completeIsNotNull() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(const FilterCondition.isNotNull(
+        property: r'complete',
+      ));
+    });
+  }
+
+  QueryBuilder<TaskModel, TaskModel, QAfterFilterCondition> completeEqualTo(
+      bool? value) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.equalTo(
+        property: r'complete',
+        value: value,
       ));
     });
   }
@@ -929,6 +965,18 @@ extension TaskModelQuerySortBy on QueryBuilder<TaskModel, TaskModel, QSortBy> {
     });
   }
 
+  QueryBuilder<TaskModel, TaskModel, QAfterSortBy> sortByComplete() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'complete', Sort.asc);
+    });
+  }
+
+  QueryBuilder<TaskModel, TaskModel, QAfterSortBy> sortByCompleteDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'complete', Sort.desc);
+    });
+  }
+
   QueryBuilder<TaskModel, TaskModel, QAfterSortBy> sortByDateTimeFinish() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'dateTimeFinish', Sort.asc);
@@ -1013,6 +1061,18 @@ extension TaskModelQuerySortThenBy
   QueryBuilder<TaskModel, TaskModel, QAfterSortBy> thenByCategoryidDesc() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'categoryid', Sort.desc);
+    });
+  }
+
+  QueryBuilder<TaskModel, TaskModel, QAfterSortBy> thenByComplete() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'complete', Sort.asc);
+    });
+  }
+
+  QueryBuilder<TaskModel, TaskModel, QAfterSortBy> thenByCompleteDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'complete', Sort.desc);
     });
   }
 
@@ -1103,6 +1163,12 @@ extension TaskModelQueryWhereDistinct
     });
   }
 
+  QueryBuilder<TaskModel, TaskModel, QDistinct> distinctByComplete() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addDistinctBy(r'complete');
+    });
+  }
+
   QueryBuilder<TaskModel, TaskModel, QDistinct> distinctByDateTimeFinish() {
     return QueryBuilder.apply(this, (query) {
       return query.addDistinctBy(r'dateTimeFinish');
@@ -1153,6 +1219,12 @@ extension TaskModelQueryProperty
   QueryBuilder<TaskModel, int?, QQueryOperations> categoryidProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addPropertyName(r'categoryid');
+    });
+  }
+
+  QueryBuilder<TaskModel, bool?, QQueryOperations> completeProperty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addPropertyName(r'complete');
     });
   }
 

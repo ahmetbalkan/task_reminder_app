@@ -17,4 +17,7 @@ class DeleteCategoryEvent extends CategoryBlocEvent {
   const DeleteCategoryEvent(this.id);
 }
 
-class GetCategoryEvent extends CategoryBlocEvent {}
+class GetCategoryEvent extends CategoryBlocEvent {
+  final int id;
+  const GetCategoryEvent(this.id);
+}
