@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:isar/isar.dart';
 import 'package:task_reminder_app/model/settings.dart';
 import 'package:task_reminder_app/model/task.dart';
@@ -8,6 +10,9 @@ class TaskIsarRepository extends OpenDB {
   TaskIsarRepository() {
     _db = openDB();
   }
+
+  StreamController<List<TaskModel>> controller =
+      StreamController<List<TaskModel>>();
 
   Stream<List<TaskModel>> listenUser() async* {
     final isar = await _db;
@@ -35,6 +40,21 @@ class TaskIsarRepository extends OpenDB {
   Future<List<TaskModel>> getCompleteTask() async {
     final isar = await _db;
     var value = await isar.taskModels.filter().completeEqualTo(true).findAll();
+    return value;
+  }
+
+  Future<List<TaskModel>> getTodayTask() async {
+    final isar = await _db;
+    var value = await isar.taskModels
+        .filter()
+        .dateTimeFinishEqualTo(DateTime.now())
+        .findAll();
+    return value;
+  }
+
+  Future<List<TaskModel>> searchTask(String search) async {
+    final isar = await _db;
+    var value = await isar.taskModels.filter().titleContains(search).findAll();
     return value;
   }
 

@@ -20,9 +20,6 @@ class TaskBloc extends Bloc<TaskBlocEvent, TaskBlocState> {
   }
 
   _addTask(AddTaskEvent event, Emitter<TaskBlocState> emit) {
-    print(event.taskModel.categoryid);
-    print(event.taskModel.priority);
-    print(event.taskModel.dateTimeFinish);
     if (event.taskModel.dateTimeFinish == null) {
       emit(state.copyWith(
           errorText: "Tarih Boş", postStatus: PostStatus.failure));
@@ -44,14 +41,13 @@ class TaskBloc extends Bloc<TaskBlocEvent, TaskBlocState> {
 
   _getTaskEvent(GetTaskEvent event, Emitter<TaskBlocState> emit) async {
     if (event.getTaskStatus == GetTaskStatus.all) {
-      emit(state.copyWith(
-          getTaskStatus: GetTaskStatus.all,
-          tasks: await _taskIsarRepository.getAllTask()));
+      emit(state.copyWith(getTaskStatus: GetTaskStatus.initial));
+      var a = await _taskIsarRepository.getAllTask();
+      emit(state.copyWith(getTaskStatus: GetTaskStatus.all, tasks: a));
     }
     if (event.getTaskStatus == GetTaskStatus.complete) {
       var a = await _taskIsarRepository.getCompleteTask();
-      emit(state.copyWith(
-          getTaskStatus: GetTaskStatus.complete, tasks: state.tasks));
+      emit(state.copyWith(getTaskStatus: GetTaskStatus.complete, tasks: a));
     }
   }
 }

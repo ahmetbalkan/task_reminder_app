@@ -8,6 +8,7 @@ import 'package:task_reminder_app/bloc/app_start_blocs/forgot_pass_auth/forgotpa
 import 'package:task_reminder_app/bloc/app_start_blocs/login_auth/login_auth_bloc.dart';
 import 'package:task_reminder_app/bloc/categories_bloc/category_bloc.dart';
 import 'package:task_reminder_app/bloc/splash_load_bloc/splash_load_bloc.dart';
+import 'package:task_reminder_app/bloc/test_bloc/test_bloc.dart';
 
 import 'package:task_reminder_app/view/before_login/forgotpass/forgotpass_screen.dart';
 import 'package:task_reminder_app/view/before_login/splash_screen.dart';
@@ -85,6 +86,9 @@ class MyApp extends StatelessWidget {
                 ),
                 BlocProvider(
                   create: (context) => CategoryBloc(),
+                ),
+                BlocProvider(
+                  create: (context) => TestBloc()..add(GetCompleteTaskEvent()),
                 ),
               ],
               child: MaterialApp(

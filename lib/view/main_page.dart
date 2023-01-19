@@ -47,9 +47,7 @@ class _MainPageState extends State<MainPage> {
   @override
   void initState() {
     super.initState();
-    context
-        .read<TaskBloc>()
-        .add(GetTaskEvent(getTaskStatus: GetTaskStatus.all));
+
     _controller = PersistentTabController(initialIndex: 0);
     _descTextEditingController = TextEditingController();
     _titleTextEditingController = TextEditingController();
