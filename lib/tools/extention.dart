@@ -92,7 +92,23 @@ extension DateTimeFormat on BuildContext {
     return DateFormat('dd.MM.yyyy').format(dt);
   }
 
+  String fomatDate2(DateTime dt) {
+    return DateFormat('yyyy-MM-dd').format(dt);
+  }
+
   String fomatTime(DateTime dt) {
     return DateFormat('HH.mm').format(dt);
+  }
+
+  String fomatTime2(DateTime dt) {
+    return DateFormat('HH:mm:ss').format(dt);
+  }
+
+  DateTime? fomat2Date(String a, String b) {
+    return DateTime.tryParse(a + " " + b);
+  }
+
+  bool isToday(DateTime firstdate) {
+    return fomatDate2(firstdate) == fomatDate2(DateTime.now());
   }
 }

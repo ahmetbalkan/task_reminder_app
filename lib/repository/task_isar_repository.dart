@@ -14,16 +14,28 @@ class TaskIsarRepository extends OpenDB {
   StreamController<List<TaskModel>> controller =
       StreamController<List<TaskModel>>();
 
-  Stream<List<TaskModel>> listenUser() async* {
+  Stream<List<TaskModel>> listenAllUserTask(String value) async* {
     final isar = await _db;
-    yield* isar.taskModels.where().watch(fireImmediately: true);
+    yield* isar.taskModels
+        .filter()
+        .titleContains(value)
+        .watch(fireImmediately: true);
   }
 
-  Stream<List<TaskModel>> listenCompleteUser() async* {
+  Stream<List<TaskModel>> listenCompleteTask(String value) async* {
     final isar = await _db;
     yield* isar.taskModels
         .filter()
         .completeEqualTo(true)
+        .titleContains(value)
+        .watch(fireImmediately: true);
+  }
+
+  Stream<List<TaskModel>> listenTodayTask(String value) async* {
+    final isar = await _db;
+    yield* isar.taskModels
+        .filter()
+        .titleContains(value)
         .watch(fireImmediately: true);
   }
 
@@ -40,15 +52,6 @@ class TaskIsarRepository extends OpenDB {
   Future<List<TaskModel>> getCompleteTask() async {
     final isar = await _db;
     var value = await isar.taskModels.filter().completeEqualTo(true).findAll();
-    return value;
-  }
-
-  Future<List<TaskModel>> getTodayTask() async {
-    final isar = await _db;
-    var value = await isar.taskModels
-        .filter()
-        .dateTimeFinishEqualTo(DateTime.now())
-        .findAll();
     return value;
   }
 

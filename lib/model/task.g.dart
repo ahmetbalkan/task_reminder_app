@@ -17,40 +17,40 @@ const TaskModelSchema = CollectionSchema(
   name: r'TaskModel',
   id: -1192054402460482572,
   properties: {
-    r'alarm': PropertySchema(
+    r'EndDate': PropertySchema(
       id: 0,
+      name: r'EndDate',
+      type: IsarType.dateTime,
+    ),
+    r'alarm': PropertySchema(
+      id: 1,
       name: r'alarm',
       type: IsarType.bool,
     ),
     r'categoryid': PropertySchema(
-      id: 1,
+      id: 2,
       name: r'categoryid',
       type: IsarType.long,
     ),
     r'complete': PropertySchema(
-      id: 2,
+      id: 3,
       name: r'complete',
       type: IsarType.bool,
     ),
-    r'dateTimeFinish': PropertySchema(
-      id: 3,
-      name: r'dateTimeFinish',
-      type: IsarType.dateTime,
-    ),
-    r'dateTimeNow': PropertySchema(
-      id: 4,
-      name: r'dateTimeNow',
-      type: IsarType.dateTime,
-    ),
     r'desc': PropertySchema(
-      id: 5,
+      id: 4,
       name: r'desc',
       type: IsarType.string,
     ),
     r'priority': PropertySchema(
-      id: 6,
+      id: 5,
       name: r'priority',
       type: IsarType.long,
+    ),
+    r'startDate': PropertySchema(
+      id: 6,
+      name: r'startDate',
+      type: IsarType.dateTime,
     ),
     r'title': PropertySchema(
       id: 7,
@@ -99,13 +99,13 @@ void _taskModelSerialize(
   List<int> offsets,
   Map<Type, List<int>> allOffsets,
 ) {
-  writer.writeBool(offsets[0], object.alarm);
-  writer.writeLong(offsets[1], object.categoryid);
-  writer.writeBool(offsets[2], object.complete);
-  writer.writeDateTime(offsets[3], object.dateTimeFinish);
-  writer.writeDateTime(offsets[4], object.dateTimeNow);
-  writer.writeString(offsets[5], object.desc);
-  writer.writeLong(offsets[6], object.priority);
+  writer.writeDateTime(offsets[0], object.EndDate);
+  writer.writeBool(offsets[1], object.alarm);
+  writer.writeLong(offsets[2], object.categoryid);
+  writer.writeBool(offsets[3], object.complete);
+  writer.writeString(offsets[4], object.desc);
+  writer.writeLong(offsets[5], object.priority);
+  writer.writeDateTime(offsets[6], object.startDate);
   writer.writeString(offsets[7], object.title);
 }
 
@@ -117,13 +117,13 @@ TaskModel _taskModelDeserialize(
 ) {
   final object = TaskModel(
     reader.readStringOrNull(offsets[7]),
-    reader.readStringOrNull(offsets[5]),
-    reader.readDateTimeOrNull(offsets[4]),
-    reader.readDateTimeOrNull(offsets[3]),
-    reader.readLongOrNull(offsets[1]),
-    reader.readLongOrNull(offsets[6]),
-    reader.readBoolOrNull(offsets[0]),
-    reader.readBoolOrNull(offsets[2]),
+    reader.readStringOrNull(offsets[4]),
+    reader.readDateTimeOrNull(offsets[6]),
+    reader.readDateTimeOrNull(offsets[0]),
+    reader.readLongOrNull(offsets[2]),
+    reader.readLongOrNull(offsets[5]),
+    reader.readBoolOrNull(offsets[1]),
+    reader.readBoolOrNull(offsets[3]),
   );
   object.id = id;
   return object;
@@ -137,19 +137,19 @@ P _taskModelDeserializeProp<P>(
 ) {
   switch (propertyId) {
     case 0:
-      return (reader.readBoolOrNull(offset)) as P;
+      return (reader.readDateTimeOrNull(offset)) as P;
     case 1:
-      return (reader.readLongOrNull(offset)) as P;
-    case 2:
       return (reader.readBoolOrNull(offset)) as P;
-    case 3:
-      return (reader.readDateTimeOrNull(offset)) as P;
-    case 4:
-      return (reader.readDateTimeOrNull(offset)) as P;
-    case 5:
-      return (reader.readStringOrNull(offset)) as P;
-    case 6:
+    case 2:
       return (reader.readLongOrNull(offset)) as P;
+    case 3:
+      return (reader.readBoolOrNull(offset)) as P;
+    case 4:
+      return (reader.readStringOrNull(offset)) as P;
+    case 5:
+      return (reader.readLongOrNull(offset)) as P;
+    case 6:
+      return (reader.readDateTimeOrNull(offset)) as P;
     case 7:
       return (reader.readStringOrNull(offset)) as P;
     default:
@@ -248,6 +248,75 @@ extension TaskModelQueryWhere
 
 extension TaskModelQueryFilter
     on QueryBuilder<TaskModel, TaskModel, QFilterCondition> {
+  QueryBuilder<TaskModel, TaskModel, QAfterFilterCondition> endDateIsNull() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(const FilterCondition.isNull(
+        property: r'EndDate',
+      ));
+    });
+  }
+
+  QueryBuilder<TaskModel, TaskModel, QAfterFilterCondition> endDateIsNotNull() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(const FilterCondition.isNotNull(
+        property: r'EndDate',
+      ));
+    });
+  }
+
+  QueryBuilder<TaskModel, TaskModel, QAfterFilterCondition> endDateEqualTo(
+      DateTime? value) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.equalTo(
+        property: r'EndDate',
+        value: value,
+      ));
+    });
+  }
+
+  QueryBuilder<TaskModel, TaskModel, QAfterFilterCondition> endDateGreaterThan(
+    DateTime? value, {
+    bool include = false,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.greaterThan(
+        include: include,
+        property: r'EndDate',
+        value: value,
+      ));
+    });
+  }
+
+  QueryBuilder<TaskModel, TaskModel, QAfterFilterCondition> endDateLessThan(
+    DateTime? value, {
+    bool include = false,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.lessThan(
+        include: include,
+        property: r'EndDate',
+        value: value,
+      ));
+    });
+  }
+
+  QueryBuilder<TaskModel, TaskModel, QAfterFilterCondition> endDateBetween(
+    DateTime? lower,
+    DateTime? upper, {
+    bool includeLower = true,
+    bool includeUpper = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.between(
+        property: r'EndDate',
+        lower: lower,
+        includeLower: includeLower,
+        upper: upper,
+        includeUpper: includeUpper,
+      ));
+    });
+  }
+
   QueryBuilder<TaskModel, TaskModel, QAfterFilterCondition> alarmIsNull() {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(const FilterCondition.isNull(
@@ -368,152 +437,6 @@ extension TaskModelQueryFilter
       return query.addFilterCondition(FilterCondition.equalTo(
         property: r'complete',
         value: value,
-      ));
-    });
-  }
-
-  QueryBuilder<TaskModel, TaskModel, QAfterFilterCondition>
-      dateTimeFinishIsNull() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(const FilterCondition.isNull(
-        property: r'dateTimeFinish',
-      ));
-    });
-  }
-
-  QueryBuilder<TaskModel, TaskModel, QAfterFilterCondition>
-      dateTimeFinishIsNotNull() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(const FilterCondition.isNotNull(
-        property: r'dateTimeFinish',
-      ));
-    });
-  }
-
-  QueryBuilder<TaskModel, TaskModel, QAfterFilterCondition>
-      dateTimeFinishEqualTo(DateTime? value) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.equalTo(
-        property: r'dateTimeFinish',
-        value: value,
-      ));
-    });
-  }
-
-  QueryBuilder<TaskModel, TaskModel, QAfterFilterCondition>
-      dateTimeFinishGreaterThan(
-    DateTime? value, {
-    bool include = false,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.greaterThan(
-        include: include,
-        property: r'dateTimeFinish',
-        value: value,
-      ));
-    });
-  }
-
-  QueryBuilder<TaskModel, TaskModel, QAfterFilterCondition>
-      dateTimeFinishLessThan(
-    DateTime? value, {
-    bool include = false,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.lessThan(
-        include: include,
-        property: r'dateTimeFinish',
-        value: value,
-      ));
-    });
-  }
-
-  QueryBuilder<TaskModel, TaskModel, QAfterFilterCondition>
-      dateTimeFinishBetween(
-    DateTime? lower,
-    DateTime? upper, {
-    bool includeLower = true,
-    bool includeUpper = true,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.between(
-        property: r'dateTimeFinish',
-        lower: lower,
-        includeLower: includeLower,
-        upper: upper,
-        includeUpper: includeUpper,
-      ));
-    });
-  }
-
-  QueryBuilder<TaskModel, TaskModel, QAfterFilterCondition>
-      dateTimeNowIsNull() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(const FilterCondition.isNull(
-        property: r'dateTimeNow',
-      ));
-    });
-  }
-
-  QueryBuilder<TaskModel, TaskModel, QAfterFilterCondition>
-      dateTimeNowIsNotNull() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(const FilterCondition.isNotNull(
-        property: r'dateTimeNow',
-      ));
-    });
-  }
-
-  QueryBuilder<TaskModel, TaskModel, QAfterFilterCondition> dateTimeNowEqualTo(
-      DateTime? value) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.equalTo(
-        property: r'dateTimeNow',
-        value: value,
-      ));
-    });
-  }
-
-  QueryBuilder<TaskModel, TaskModel, QAfterFilterCondition>
-      dateTimeNowGreaterThan(
-    DateTime? value, {
-    bool include = false,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.greaterThan(
-        include: include,
-        property: r'dateTimeNow',
-        value: value,
-      ));
-    });
-  }
-
-  QueryBuilder<TaskModel, TaskModel, QAfterFilterCondition> dateTimeNowLessThan(
-    DateTime? value, {
-    bool include = false,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.lessThan(
-        include: include,
-        property: r'dateTimeNow',
-        value: value,
-      ));
-    });
-  }
-
-  QueryBuilder<TaskModel, TaskModel, QAfterFilterCondition> dateTimeNowBetween(
-    DateTime? lower,
-    DateTime? upper, {
-    bool includeLower = true,
-    bool includeUpper = true,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.between(
-        property: r'dateTimeNow',
-        lower: lower,
-        includeLower: includeLower,
-        upper: upper,
-        includeUpper: includeUpper,
       ));
     });
   }
@@ -787,6 +710,77 @@ extension TaskModelQueryFilter
     });
   }
 
+  QueryBuilder<TaskModel, TaskModel, QAfterFilterCondition> startDateIsNull() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(const FilterCondition.isNull(
+        property: r'startDate',
+      ));
+    });
+  }
+
+  QueryBuilder<TaskModel, TaskModel, QAfterFilterCondition>
+      startDateIsNotNull() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(const FilterCondition.isNotNull(
+        property: r'startDate',
+      ));
+    });
+  }
+
+  QueryBuilder<TaskModel, TaskModel, QAfterFilterCondition> startDateEqualTo(
+      DateTime? value) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.equalTo(
+        property: r'startDate',
+        value: value,
+      ));
+    });
+  }
+
+  QueryBuilder<TaskModel, TaskModel, QAfterFilterCondition>
+      startDateGreaterThan(
+    DateTime? value, {
+    bool include = false,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.greaterThan(
+        include: include,
+        property: r'startDate',
+        value: value,
+      ));
+    });
+  }
+
+  QueryBuilder<TaskModel, TaskModel, QAfterFilterCondition> startDateLessThan(
+    DateTime? value, {
+    bool include = false,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.lessThan(
+        include: include,
+        property: r'startDate',
+        value: value,
+      ));
+    });
+  }
+
+  QueryBuilder<TaskModel, TaskModel, QAfterFilterCondition> startDateBetween(
+    DateTime? lower,
+    DateTime? upper, {
+    bool includeLower = true,
+    bool includeUpper = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.between(
+        property: r'startDate',
+        lower: lower,
+        includeLower: includeLower,
+        upper: upper,
+        includeUpper: includeUpper,
+      ));
+    });
+  }
+
   QueryBuilder<TaskModel, TaskModel, QAfterFilterCondition> titleIsNull() {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(const FilterCondition.isNull(
@@ -941,6 +935,18 @@ extension TaskModelQueryLinks
     on QueryBuilder<TaskModel, TaskModel, QFilterCondition> {}
 
 extension TaskModelQuerySortBy on QueryBuilder<TaskModel, TaskModel, QSortBy> {
+  QueryBuilder<TaskModel, TaskModel, QAfterSortBy> sortByEndDate() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'EndDate', Sort.asc);
+    });
+  }
+
+  QueryBuilder<TaskModel, TaskModel, QAfterSortBy> sortByEndDateDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'EndDate', Sort.desc);
+    });
+  }
+
   QueryBuilder<TaskModel, TaskModel, QAfterSortBy> sortByAlarm() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'alarm', Sort.asc);
@@ -977,30 +983,6 @@ extension TaskModelQuerySortBy on QueryBuilder<TaskModel, TaskModel, QSortBy> {
     });
   }
 
-  QueryBuilder<TaskModel, TaskModel, QAfterSortBy> sortByDateTimeFinish() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addSortBy(r'dateTimeFinish', Sort.asc);
-    });
-  }
-
-  QueryBuilder<TaskModel, TaskModel, QAfterSortBy> sortByDateTimeFinishDesc() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addSortBy(r'dateTimeFinish', Sort.desc);
-    });
-  }
-
-  QueryBuilder<TaskModel, TaskModel, QAfterSortBy> sortByDateTimeNow() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addSortBy(r'dateTimeNow', Sort.asc);
-    });
-  }
-
-  QueryBuilder<TaskModel, TaskModel, QAfterSortBy> sortByDateTimeNowDesc() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addSortBy(r'dateTimeNow', Sort.desc);
-    });
-  }
-
   QueryBuilder<TaskModel, TaskModel, QAfterSortBy> sortByDesc() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'desc', Sort.asc);
@@ -1025,6 +1007,18 @@ extension TaskModelQuerySortBy on QueryBuilder<TaskModel, TaskModel, QSortBy> {
     });
   }
 
+  QueryBuilder<TaskModel, TaskModel, QAfterSortBy> sortByStartDate() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'startDate', Sort.asc);
+    });
+  }
+
+  QueryBuilder<TaskModel, TaskModel, QAfterSortBy> sortByStartDateDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'startDate', Sort.desc);
+    });
+  }
+
   QueryBuilder<TaskModel, TaskModel, QAfterSortBy> sortByTitle() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'title', Sort.asc);
@@ -1040,6 +1034,18 @@ extension TaskModelQuerySortBy on QueryBuilder<TaskModel, TaskModel, QSortBy> {
 
 extension TaskModelQuerySortThenBy
     on QueryBuilder<TaskModel, TaskModel, QSortThenBy> {
+  QueryBuilder<TaskModel, TaskModel, QAfterSortBy> thenByEndDate() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'EndDate', Sort.asc);
+    });
+  }
+
+  QueryBuilder<TaskModel, TaskModel, QAfterSortBy> thenByEndDateDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'EndDate', Sort.desc);
+    });
+  }
+
   QueryBuilder<TaskModel, TaskModel, QAfterSortBy> thenByAlarm() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'alarm', Sort.asc);
@@ -1073,30 +1079,6 @@ extension TaskModelQuerySortThenBy
   QueryBuilder<TaskModel, TaskModel, QAfterSortBy> thenByCompleteDesc() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'complete', Sort.desc);
-    });
-  }
-
-  QueryBuilder<TaskModel, TaskModel, QAfterSortBy> thenByDateTimeFinish() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addSortBy(r'dateTimeFinish', Sort.asc);
-    });
-  }
-
-  QueryBuilder<TaskModel, TaskModel, QAfterSortBy> thenByDateTimeFinishDesc() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addSortBy(r'dateTimeFinish', Sort.desc);
-    });
-  }
-
-  QueryBuilder<TaskModel, TaskModel, QAfterSortBy> thenByDateTimeNow() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addSortBy(r'dateTimeNow', Sort.asc);
-    });
-  }
-
-  QueryBuilder<TaskModel, TaskModel, QAfterSortBy> thenByDateTimeNowDesc() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addSortBy(r'dateTimeNow', Sort.desc);
     });
   }
 
@@ -1136,6 +1118,18 @@ extension TaskModelQuerySortThenBy
     });
   }
 
+  QueryBuilder<TaskModel, TaskModel, QAfterSortBy> thenByStartDate() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'startDate', Sort.asc);
+    });
+  }
+
+  QueryBuilder<TaskModel, TaskModel, QAfterSortBy> thenByStartDateDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'startDate', Sort.desc);
+    });
+  }
+
   QueryBuilder<TaskModel, TaskModel, QAfterSortBy> thenByTitle() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'title', Sort.asc);
@@ -1151,6 +1145,12 @@ extension TaskModelQuerySortThenBy
 
 extension TaskModelQueryWhereDistinct
     on QueryBuilder<TaskModel, TaskModel, QDistinct> {
+  QueryBuilder<TaskModel, TaskModel, QDistinct> distinctByEndDate() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addDistinctBy(r'EndDate');
+    });
+  }
+
   QueryBuilder<TaskModel, TaskModel, QDistinct> distinctByAlarm() {
     return QueryBuilder.apply(this, (query) {
       return query.addDistinctBy(r'alarm');
@@ -1169,18 +1169,6 @@ extension TaskModelQueryWhereDistinct
     });
   }
 
-  QueryBuilder<TaskModel, TaskModel, QDistinct> distinctByDateTimeFinish() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addDistinctBy(r'dateTimeFinish');
-    });
-  }
-
-  QueryBuilder<TaskModel, TaskModel, QDistinct> distinctByDateTimeNow() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addDistinctBy(r'dateTimeNow');
-    });
-  }
-
   QueryBuilder<TaskModel, TaskModel, QDistinct> distinctByDesc(
       {bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
@@ -1191,6 +1179,12 @@ extension TaskModelQueryWhereDistinct
   QueryBuilder<TaskModel, TaskModel, QDistinct> distinctByPriority() {
     return QueryBuilder.apply(this, (query) {
       return query.addDistinctBy(r'priority');
+    });
+  }
+
+  QueryBuilder<TaskModel, TaskModel, QDistinct> distinctByStartDate() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addDistinctBy(r'startDate');
     });
   }
 
@@ -1207,6 +1201,12 @@ extension TaskModelQueryProperty
   QueryBuilder<TaskModel, int, QQueryOperations> idProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addPropertyName(r'id');
+    });
+  }
+
+  QueryBuilder<TaskModel, DateTime?, QQueryOperations> EndDateProperty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addPropertyName(r'EndDate');
     });
   }
 
@@ -1228,19 +1228,6 @@ extension TaskModelQueryProperty
     });
   }
 
-  QueryBuilder<TaskModel, DateTime?, QQueryOperations>
-      dateTimeFinishProperty() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addPropertyName(r'dateTimeFinish');
-    });
-  }
-
-  QueryBuilder<TaskModel, DateTime?, QQueryOperations> dateTimeNowProperty() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addPropertyName(r'dateTimeNow');
-    });
-  }
-
   QueryBuilder<TaskModel, String?, QQueryOperations> descProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addPropertyName(r'desc');
@@ -1250,6 +1237,12 @@ extension TaskModelQueryProperty
   QueryBuilder<TaskModel, int?, QQueryOperations> priorityProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addPropertyName(r'priority');
+    });
+  }
+
+  QueryBuilder<TaskModel, DateTime?, QQueryOperations> startDateProperty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addPropertyName(r'startDate');
     });
   }
 

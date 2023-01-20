@@ -1,11 +1,10 @@
-import 'dart:async';
-
-import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:task_reminder_app/model/task.dart';
 
 import '../../locator.dart';
 import '../../repository/task_isar_repository.dart';
+import 'package:bloc_concurrency/bloc_concurrency.dart';
 
 part 'test_event.dart';
 part 'test_state.dart';
@@ -15,33 +14,34 @@ class TestBloc extends Bloc<TestEvent, TestState> {
 
   TestBloc() : super(TestInitial()) {
     on<GetAllTaskEvent>(_getAllTask);
+    on<AddTestEvent>(_addTask);
     on<GetCompleteTaskEvent>(_getCompleteTask);
     on<GetTodayTaskEvent>(_getTodayTask);
-    on<GetSearchTaskEvent>(_getSearchTask);
+    on<DeleteTaskEvent>(_deleteTaskEvent, transformer: sequential());
   }
+
   _getCompleteTask(GetCompleteTaskEvent event, Emitter<TestState> emit) async {
     emit(TestInitial());
-    emit(GetAllTaskState(
-        allTask: await _taskIsarRepository.getCompleteTask(),
-        name: "Complete Task"));
+    emit(GetCompleteTaskState(event.seachValue));
   }
 
   _getAllTask(GetAllTaskEvent event, Emitter<TestState> emit) async {
     emit(TestInitial());
-    emit(GetAllTaskState(
-        allTask: await _taskIsarRepository.getAllTask(), name: "All Task"));
+    emit(GetAllTaskState(event.seachValue));
   }
 
   _getTodayTask(GetTodayTaskEvent event, Emitter<TestState> emit) async {
     emit(TestInitial());
-    emit(GetAllTaskState(
-        allTask: await _taskIsarRepository.getTodayTask(), name: "Bugün"));
+    emit(GetTodayTaskState((event.seachValue)));
   }
 
-  _getSearchTask(GetSearchTaskEvent event, Emitter<TestState> emit) async {
+  _deleteTaskEvent(DeleteTaskEvent event, Emitter<TestState> emit) async {
     emit(TestInitial());
-    emit(GetAllTaskState(
-        allTask: await _taskIsarRepository.searchTask(event.seachValue),
-        name: "Aranan İçerik:"));
+    await _taskIsarRepository.deleteUser(event.id);
+  }
+
+  _addTask(AddTestEvent event, Emitter<TestState> emit) {
+    _taskIsarRepository.saveUser(event.taskModel);
+    emit(AddSuccessState());
   }
 }

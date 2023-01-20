@@ -1,7 +1,5 @@
 part of 'test_bloc.dart';
 
-enum PostStatus { initial, success, failure }
-
 enum GetTaskStatus { initial, today, complete, all, search, empty, loading }
 
 abstract class TestState extends Equatable {
@@ -13,57 +11,22 @@ abstract class TestState extends Equatable {
 
 class TestInitial extends TestState {}
 
-class GetAllTaskState extends TestState {
-  List<TaskModel> allTask;
-  String name;
+class AddSuccessState extends TestState {}
 
-  GetAllTaskState({required this.allTask, required this.name});
+class GetAllTaskState extends TestState {
+  String searchValue;
+
+  GetAllTaskState(this.searchValue);
 }
 
 class GetCompleteTaskState extends TestState {
-  List<TaskModel> completeTask;
-  String name;
+  String searchValue;
 
-  GetCompleteTaskState({required this.completeTask, required this.name});
+  GetCompleteTaskState(this.searchValue);
 }
 
-class GetSearchTaskState extends TestState {
-  List<TaskModel> searchTask;
-  String name;
+class GetTodayTaskState extends TestState {
+  String searchValue;
 
-  GetSearchTaskState({required this.searchTask, required this.name});
-}
-
-class TestVerbState extends TestState {
-  final String errorText;
-  final PostStatus postStatus;
-  final GetTaskStatus getTaskStatus;
-  final bool alarmStatus;
-  List<TaskModel>? tasks;
-
-  TestVerbState(
-      {this.errorText = "",
-      this.postStatus = PostStatus.initial,
-      this.getTaskStatus = GetTaskStatus.initial,
-      this.alarmStatus = false,
-      this.tasks = const []});
-
-  @override
-  List<Object> get props => [errorText, postStatus];
-
-  TestVerbState copyWith({
-    String? errorText,
-    PostStatus? postStatus,
-    GetTaskStatus? getTaskStatus,
-    bool? alarmStatus,
-    List<TaskModel>? tasks,
-  }) {
-    return TestVerbState(
-      errorText: errorText ?? this.errorText,
-      postStatus: postStatus ?? this.postStatus,
-      getTaskStatus: getTaskStatus ?? this.getTaskStatus,
-      alarmStatus: alarmStatus ?? this.alarmStatus,
-      tasks: tasks ?? this.tasks,
-    );
-  }
+  GetTodayTaskState(this.searchValue);
 }

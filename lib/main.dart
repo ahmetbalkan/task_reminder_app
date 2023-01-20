@@ -9,25 +9,16 @@ import 'package:task_reminder_app/bloc/app_start_blocs/login_auth/login_auth_blo
 import 'package:task_reminder_app/bloc/categories_bloc/category_bloc.dart';
 import 'package:task_reminder_app/bloc/splash_load_bloc/splash_load_bloc.dart';
 import 'package:task_reminder_app/bloc/test_bloc/test_bloc.dart';
-
-import 'package:task_reminder_app/view/before_login/forgotpass/forgotpass_screen.dart';
 import 'package:task_reminder_app/view/before_login/splash_screen.dart';
-import 'package:task_reminder_app/view/homepage/homepage.dart';
-import 'package:task_reminder_app/view/before_login/login/login_screen.dart';
-import 'package:task_reminder_app/view/before_login/register/register_screen.dart';
-import 'package:task_reminder_app/view/main_page.dart';
 import 'bloc/app_start_blocs/intropage_bloc/intropage_bloc.dart';
 import 'bloc/app_start_blocs/register_auth/register_auth_bloc.dart';
-import 'bloc/task_bloc/task_bloc.dart';
 import 'locator.dart';
 import 'repository/task_isar_repository.dart';
-import 'package:timezone/data/latest.dart' as tz;
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await EasyLocalization.ensureInitialized();
   locatorMethod();
-  tz.initializeTimeZones();
 
   var _isarTaskService = locator.get<TaskIsarRepository>();
 
@@ -79,16 +70,14 @@ class MyApp extends StatelessWidget {
                   create: (context) => ForgotPassAuthBloc(),
                 ),
                 BlocProvider(
-                  create: (context) => TaskBloc(),
-                ),
-                BlocProvider(
                   create: (context) => SplashLoadBloc(),
                 ),
                 BlocProvider(
                   create: (context) => CategoryBloc(),
                 ),
                 BlocProvider(
-                  create: (context) => TestBloc()..add(GetCompleteTaskEvent()),
+                  create: (context) =>
+                      TestBloc()..add(GetTodayTaskEvent(seachValue: "")),
                 ),
               ],
               child: MaterialApp(

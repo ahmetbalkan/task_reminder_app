@@ -6,13 +6,13 @@ class TaskModel {
   Id id = Isar.autoIncrement;
   String? title;
   String? desc;
-  DateTime? dateTimeNow;
-  DateTime? dateTimeFinish;
+  DateTime? startDate;
+  DateTime? EndDate;
   int? categoryid;
   int? priority;
   bool? alarm;
   bool? complete;
 
-  TaskModel(this.title, this.desc, this.dateTimeNow, this.dateTimeFinish,
+  TaskModel(this.title, this.desc, this.startDate, this.EndDate,
       this.categoryid, this.priority, this.alarm, this.complete);
 }

@@ -7,14 +7,36 @@ abstract class TestEvent extends Equatable {
   List<Object> get props => [];
 }
 
-class GetAllTaskEvent extends TestEvent {}
+class GetAllTaskEvent extends TestEvent {
+  String seachValue;
 
-class GetCompleteTaskEvent extends TestEvent {}
+  GetAllTaskEvent({required this.seachValue});
+}
 
-class GetTodayTaskEvent extends TestEvent {}
+class GetCompleteTaskEvent extends TestEvent {
+  String seachValue;
+
+  GetCompleteTaskEvent({required this.seachValue});
+}
+
+class GetTodayTaskEvent extends TestEvent {
+  String seachValue;
+
+  GetTodayTaskEvent({required this.seachValue});
+}
 
 class GetSearchTaskEvent extends TestEvent {
   String seachValue;
 
   GetSearchTaskEvent({required this.seachValue});
+}
+
+class DeleteTaskEvent extends TestEvent {
+  final int id;
+  const DeleteTaskEvent(this.id);
+}
+
+class AddTestEvent extends TestEvent {
+  final TaskModel taskModel;
+  const AddTestEvent({required this.taskModel});
 }
