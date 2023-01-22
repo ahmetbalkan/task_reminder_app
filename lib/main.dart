@@ -12,6 +12,7 @@ import 'package:task_reminder_app/bloc/test_bloc/test_bloc.dart';
 import 'package:task_reminder_app/view/before_login/splash_screen.dart';
 import 'bloc/app_start_blocs/intropage_bloc/intropage_bloc.dart';
 import 'bloc/app_start_blocs/register_auth/register_auth_bloc.dart';
+import 'bloc/test_bloc/dropdown_button_cubit/dropdown_cubit.dart';
 import 'locator.dart';
 import 'repository/task_isar_repository.dart';
 
@@ -75,9 +76,11 @@ class MyApp extends StatelessWidget {
                 BlocProvider(
                   create: (context) => CategoryBloc()..add(GetCategoryEvent()),
                 ),
+                BlocProvider(create: (context) => DropDownNameCubit()),
                 BlocProvider(
-                  create: (context) =>
-                      TestBloc()..add(GetTodayTaskEvent(seachValue: "")),
+                  create: (context) => TestBloc("Bu Gün")
+                    ..add(SearchTaskEvent(
+                        dropDownValue: "Bu Gün", searchValue: "")),
                 ),
               ],
               child: MaterialApp(

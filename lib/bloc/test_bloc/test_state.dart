@@ -1,7 +1,5 @@
 part of 'test_bloc.dart';
 
-enum GetTaskStatus { initial, today, complete, all, search, empty, loading }
-
 abstract class TestState extends Equatable {
   const TestState();
 
@@ -11,26 +9,38 @@ abstract class TestState extends Equatable {
 
 class TestInitial extends TestState {}
 
+class EmptyListState extends TestState {}
+
 class AddSuccessState extends TestState {}
-
-class GetAllTaskState extends TestState {
-  String searchValue;
-
-  GetAllTaskState(this.searchValue);
-}
-
-class GetCompleteTaskState extends TestState {
-  String searchValue;
-
-  GetCompleteTaskState(this.searchValue);
-}
-
-class GetTodayTaskState extends TestState {
-  String searchValue;
-  GetTodayTaskState(this.searchValue);
-}
 
 class EditTestState extends TestState {
   final TaskModel updateTask;
-  EditTestState({required this.updateTask});
+
+  EditTestState({
+    required this.updateTask,
+  });
+}
+
+class AllTaskState extends TestState {
+  final List<TaskModel> tasklist;
+  final String DropDownValue;
+  AllTaskState({required this.tasklist, required this.DropDownValue});
+}
+
+class CompleteTaskState extends TestState {
+  final List<TaskModel> tasklist;
+  final String DropDownValue;
+  CompleteTaskState({required this.tasklist, required this.DropDownValue});
+}
+
+class TodayTaskState extends TestState {
+  final List<TaskModel> tasklist;
+  final String DropDownValue;
+  TodayTaskState({required this.tasklist, required this.DropDownValue});
+}
+
+class SearchTaskState extends TestState {
+  final List<TaskModel> tasklist;
+
+  SearchTaskState({required this.tasklist});
 }
