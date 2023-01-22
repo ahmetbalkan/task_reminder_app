@@ -49,6 +49,33 @@ class TestBloc extends Bloc<TestEvent, TestState> {
 
   _editTaskEvent(EditTestEvent event, Emitter<TestState> emit) {
     emit(EditTestState(updateTask: event.taskModel));
+
+    switch (event.dropDownValue) {
+      case "Tümünü Göster":
+        _taskIsarRepository.listenAllUserTask("").listen((taskModel) {
+          add((SearchTaskUpdateEvent(
+              updatedlist: taskModel, dropDownValue: event.dropDownValue)));
+        });
+
+        break;
+      case "Tamamlandı":
+        _taskIsarRepository.listenCompleteTask("").listen((taskModel) {
+          add((SearchTaskUpdateEvent(
+              updatedlist: taskModel, dropDownValue: event.dropDownValue)));
+        });
+
+        break;
+      case "Bu Gün":
+        _taskIsarRepository.listenTodayTask("").listen((taskModel) {
+          print(taskModel.length);
+          add((SearchTaskUpdateEvent(
+              updatedlist: taskModel, dropDownValue: event.dropDownValue)));
+        });
+
+        break;
+
+      default:
+    }
   }
 
   _updateTestEvent(UpdateTestEvent event, Emitter<TestState> emit) async {

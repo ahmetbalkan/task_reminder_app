@@ -8,6 +8,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:omni_datetime_picker/omni_datetime_picker.dart';
 import 'package:persistent_bottom_nav_bar/persistent_tab_view.dart';
+import 'package:task_reminder_app/bloc/test_bloc/cubit/dropdown_cubit.dart';
 import 'package:task_reminder_app/model/category.dart';
 import 'package:task_reminder_app/model/task.dart';
 import 'package:task_reminder_app/repository/category_isar_repository.dart';
@@ -271,7 +272,6 @@ class _MainPageState extends State<MainPage> {
                                   ),
                                   BlocListener<TestBloc, TestState>(
                                     listener: (context, state) {
-                                      print(state);
                                       if (state is AddSuccessState) {
                                         _titleTextEditingController.clear();
                                         _descTextEditingController.clear();
@@ -337,6 +337,15 @@ class _MainPageState extends State<MainPage> {
                                                               _categoryName,
                                                               _priority,
                                                               false)));
+
+                                                  context.read<TestBloc>().add(
+                                                      TodayTaskEvent(
+                                                          dropDownValue: context
+                                                              .read<
+                                                                  DropDownNameCubit>()
+                                                              .state
+                                                              .name,
+                                                          searchValue: ""));
                                                 }
                                               }
                                             }

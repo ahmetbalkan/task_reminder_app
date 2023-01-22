@@ -4,12 +4,12 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:task_reminder_app/bloc/categories_bloc/category_bloc.dart';
-import 'package:task_reminder_app/bloc/test_bloc/dropdown_button_cubit/dropdown_cubit.dart';
 import 'package:task_reminder_app/model/category.dart';
 import 'package:task_reminder_app/model/task.dart';
 import 'package:task_reminder_app/repository/category_isar_repository.dart';
 import 'package:task_reminder_app/repository/task_isar_repository.dart';
 import 'package:task_reminder_app/tools/extention.dart';
+import '../../bloc/test_bloc/cubit/dropdown_cubit.dart';
 import '../../bloc/test_bloc/test_bloc.dart';
 import '../../locator.dart';
 
@@ -73,7 +73,7 @@ class _HomePageState extends State<HomePage> {
                             .listen((taskModel) {
                           print(taskModel.length);
                         });
-                        for (var i = 0; i < 5; i++) {
+                        /*   for (var i = 0; i < 5; i++) {
                           context.read<TestBloc>().add(AddTestEvent(
                               taskModel: TaskModel(
                                   "title" + i.toString(),
@@ -88,7 +88,7 @@ class _HomePageState extends State<HomePage> {
                                   "ahmet",
                                   1,
                                   i % 2 == 0 ? true : false)));
-                        }
+                        }*/
                       },
                       child: Icon(FontAwesomeIcons.magnifyingGlass,
                           color: context.primaryColor),
@@ -314,9 +314,10 @@ class _HomePageState extends State<HomePage> {
                       topRight: Radius.circular(8),
                       bottomRight: Radius.circular(8)),
                   onPressed: (context) {
-                    context
-                        .read<TestBloc>()
-                        .add(EditTestEvent(taskModel: currentSnapshot));
+                    context.read<TestBloc>().add(EditTestEvent(
+                        dropDownValue:
+                            context.read<DropDownNameCubit>().state.name,
+                        taskModel: currentSnapshot));
                   },
                   backgroundColor: const Color(0xFF709FB0),
                   foregroundColor: Colors.white,
