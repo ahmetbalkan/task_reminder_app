@@ -27,6 +27,10 @@ class GetCompleteTaskState extends TestState {
 
 class GetTodayTaskState extends TestState {
   String searchValue;
-
   GetTodayTaskState(this.searchValue);
+}
+
+class EditTestState extends TestState {
+  final TaskModel updateTask;
+  EditTestState({required this.updateTask});
 }

@@ -9,10 +9,10 @@ class TaskModel {
   DateTime? startDate;
   DateTime? EndDate;
   int? categoryid;
+  String? categoryName;
   int? priority;
-  bool? alarm;
   bool? complete;
 
   TaskModel(this.title, this.desc, this.startDate, this.EndDate,
-      this.categoryid, this.priority, this.alarm, this.complete);
+      this.categoryid, this.categoryName, this.priority, this.complete);
 }

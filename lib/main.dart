@@ -73,7 +73,7 @@ class MyApp extends StatelessWidget {
                   create: (context) => SplashLoadBloc(),
                 ),
                 BlocProvider(
-                  create: (context) => CategoryBloc(),
+                  create: (context) => CategoryBloc()..add(GetCategoryEvent()),
                 ),
                 BlocProvider(
                   create: (context) =>

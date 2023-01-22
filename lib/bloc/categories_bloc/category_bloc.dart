@@ -31,5 +31,8 @@ class CategoryBloc extends Bloc<CategoryBlocEvent, CategoryBlocState> {
     }
   }
 
-  _getCategoryEvent(GetCategoryEvent event, Emitter<CategoryBlocState> emit) {}
+  _getCategoryEvent(
+      GetCategoryEvent event, Emitter<CategoryBlocState> emit) async {
+    state.copyWith(categories: await _categoryIsarRepository.getAllCategory());
+  }
 }

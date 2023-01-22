@@ -28,32 +28,36 @@ class _SplashScreenState extends State<SplashScreen> {
         child: BlocConsumer<SplashLoadBloc, SplashLoadState>(
           listener: (context, state) {
             if (state.postStatus == PostStatus.showintro) {
-              Navigator.push(
+              Navigator.pushAndRemoveUntil(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => const IntroSliderPage(),
-                  ));
+                    builder: (context) => IntroSliderPage(),
+                  ),
+                  (route) => false);
             }
             if (state.postStatus == PostStatus.gologin) {
-              Navigator.push(
+              Navigator.pushAndRemoveUntil(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => const LoginPage(),
-                  ));
+                    builder: (context) => LoginPage(),
+                  ),
+                  (route) => false);
             }
             if (state.postStatus == PostStatus.gohome) {
-              Navigator.push(
+              Navigator.pushAndRemoveUntil(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => const MainPage(),
-                  ));
+                    builder: (context) => MainPage(),
+                  ),
+                  (route) => false);
             }
             if (state.postStatus == PostStatus.goinformation) {
-              Navigator.push(
+              Navigator.pushAndRemoveUntil(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => const MainPage(),
-                  ));
+                    builder: (context) => MainPage(),
+                  ),
+                  (route) => false);
             }
           },
           builder: (context, state) {

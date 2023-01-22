@@ -31,6 +31,7 @@ late PersistentTabController _controller;
 late TextEditingController _titleTextEditingController;
 late TextEditingController _descTextEditingController;
 late TextEditingController _catNameTextEditingController;
+late TextEditingController _priorityTextEditingController;
 late TextEditingController _startDateController;
 late TextEditingController _endDateController;
 final _formKey = GlobalKey<FormState>();
@@ -40,6 +41,7 @@ IconData? _icondata = Icons.assignment_late_outlined;
 DateTime? _startDate;
 DateTime? _endDate;
 int? _categoryid;
+String? _categoryName;
 int? _priority;
 bool _switchValue = false;
 
@@ -49,10 +51,10 @@ class _MainPageState extends State<MainPage> {
   @override
   void initState() {
     super.initState();
-
     _controller = PersistentTabController(initialIndex: 0);
     _descTextEditingController = TextEditingController();
     _titleTextEditingController = TextEditingController();
+    _priorityTextEditingController = TextEditingController();
     _catNameTextEditingController = TextEditingController();
     _startDateController = TextEditingController();
     _endDateController = TextEditingController();
@@ -69,80 +71,87 @@ class _MainPageState extends State<MainPage> {
   @override
   Widget build(BuildContext buildcontext) {
     return SafeArea(
-      child: Scaffold(
-          resizeToAvoidBottomInset: false,
-          backgroundColor: context.backgroundColor,
-          appBar: AppBar(
-            title: Text("index".tr()),
+      child: BlocListener<TestBloc, TestState>(
+        listener: (context, state) {
+          if (state is EditTestState) {
+            _showAddBottomSheetWidget(state.updateTask);
+          }
+        },
+        child: Scaffold(
+            resizeToAvoidBottomInset: false,
             backgroundColor: context.backgroundColor,
-            elevation: 1,
-            centerTitle: true,
-            leadingWidth: 100,
-            leading: Row(children: [
-              const SizedBox(width: 15),
-              Center(child: Image.asset("assets/menu.png")),
-              const SizedBox(
-                width: 10,
-              ),
-              const Padding(
-                padding: EdgeInsets.symmetric(horizontal: 8, vertical: 8),
-                child: VerticalDivider(
-                  width: 3,
-                  color: Colors.white24,
+            appBar: AppBar(
+              title: Text("index".tr()),
+              backgroundColor: context.backgroundColor,
+              elevation: 1,
+              centerTitle: true,
+              leadingWidth: 100,
+              leading: Row(children: [
+                const SizedBox(width: 15),
+                Center(child: Image.asset("assets/menu.png")),
+                const SizedBox(
+                  width: 10,
                 ),
-              ),
-              const SizedBox(
-                width: 20,
-              ),
-            ]),
-            actions: [
-              const Padding(
-                padding: EdgeInsets.symmetric(horizontal: 8, vertical: 8),
-                child: VerticalDivider(
-                  width: 4,
-                  color: Colors.white24,
+                const Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 8, vertical: 8),
+                  child: VerticalDivider(
+                    width: 3,
+                    color: Colors.white24,
+                  ),
                 ),
+                const SizedBox(
+                  width: 20,
+                ),
+              ]),
+              actions: [
+                const Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 8, vertical: 8),
+                  child: VerticalDivider(
+                    width: 4,
+                    color: Colors.white24,
+                  ),
+                ),
+                const SizedBox(width: 15),
+                Center(
+                    child: CircleAvatar(
+                  backgroundImage: const AssetImage('assets/profile.png'),
+                  radius: 18.h,
+                )),
+                const SizedBox(
+                  width: 20,
+                )
+              ],
+            ),
+            body: PersistentTabView(
+              context,
+              hideNavigationBar: false,
+              controller: _controller,
+              screens: _buildScreens(),
+              items: _navBarsItems(),
+              confineInSafeArea: true,
+              backgroundColor: context.backgroundSoftColor,
+              handleAndroidBackButtonPress: true,
+              resizeToAvoidBottomInset: true,
+              stateManagement: true,
+              hideNavigationBarWhenKeyboardShows: true,
+              decoration: NavBarDecoration(
+                borderRadius: BorderRadius.circular(1.0),
+                colorBehindNavBar: Colors.white,
               ),
-              const SizedBox(width: 15),
-              Center(
-                  child: CircleAvatar(
-                backgroundImage: const AssetImage('assets/profile.png'),
-                radius: 18.h,
-              )),
-              const SizedBox(
-                width: 20,
-              )
-            ],
-          ),
-          body: PersistentTabView(
-            context,
-            hideNavigationBar: false,
-            controller: _controller,
-            screens: _buildScreens(),
-            items: _navBarsItems(),
-            confineInSafeArea: true,
-            backgroundColor: context.backgroundSoftColor,
-            handleAndroidBackButtonPress: true,
-            resizeToAvoidBottomInset: true,
-            stateManagement: true,
-            hideNavigationBarWhenKeyboardShows: true,
-            decoration: NavBarDecoration(
-              borderRadius: BorderRadius.circular(1.0),
-              colorBehindNavBar: Colors.white,
-            ),
-            popAllScreensOnTapOfSelectedTab: true,
-            popActionScreens: PopActionScreensType.all,
-            itemAnimationProperties: const ItemAnimationProperties(
-              duration: Duration(milliseconds: 200),
-              curve: Curves.ease,
-            ),
-            screenTransitionAnimation: const ScreenTransitionAnimation(
-              animateTabTransition: true,
-              curve: Curves.linear,
-              duration: Duration(milliseconds: 200),
-            ),
-            navBarStyle: NavBarStyle.style15,
-          )),
+              popAllScreensOnTapOfSelectedTab: true,
+              popActionScreens: PopActionScreensType.all,
+              itemAnimationProperties: const ItemAnimationProperties(
+                duration: Duration(milliseconds: 200),
+                curve: Curves.ease,
+              ),
+              screenTransitionAnimation: const ScreenTransitionAnimation(
+                animateTabTransition: true,
+                curve: Curves.linear,
+                duration: Duration(milliseconds: 200),
+              ),
+              navBarStyle: NavBarStyle.style15,
+            )),
+      ),
     );
   }
 
@@ -174,10 +183,7 @@ class _MainPageState extends State<MainPage> {
         icon: const Icon(FontAwesomeIcons.plus, color: Colors.white),
         title: ("addtask".tr()),
         onPressed: (p0) {
-          BlocListener<TestBloc, TestState>(
-            listener: (context, state) {},
-          );
-          _showAddBottomSheetWidget();
+          _showAddBottomSheetWidget(null);
         },
         activeColorPrimary: context.primaryColor,
         inactiveColorPrimary: CupertinoColors.systemGrey,
@@ -197,7 +203,27 @@ class _MainPageState extends State<MainPage> {
     ];
   }
 
-  Future<dynamic> _showAddBottomSheetWidget() {
+  _showAddBottomSheetWidget(TaskModel? task) {
+    if (task != null) {
+      _titleTextEditingController.text = task.title!;
+      _descTextEditingController.text = task.desc!;
+      _catNameTextEditingController.text = task.categoryName!;
+      _priorityTextEditingController.text = task.priority.toString();
+      _startDateController.text = _endDateController.text =
+          context.fomatDate(task.startDate!) +
+              " / " +
+              context.fomatTime(task.startDate!);
+      ;
+      _endDateController.text = _endDateController.text =
+          context.fomatDate(task.EndDate!) +
+              " / " +
+              context.fomatTime(task.EndDate!);
+
+      _priority = task.priority;
+      _categoryid = task.categoryid;
+      _startDate = task.startDate;
+      _endDate = task.EndDate;
+    }
     return showModalBottomSheet(
         isDismissible: false,
         useRootNavigator: true,
@@ -212,7 +238,7 @@ class _MainPageState extends State<MainPage> {
             padding: EdgeInsets.only(
                 bottom: MediaQuery.of(context).viewInsets.bottom),
             child: SizedBox(
-                height: ScreenUtil().screenHeight / 1.5,
+                height: ScreenUtil().screenHeight / 1.7,
                 child: Padding(
                   padding: const EdgeInsets.symmetric(
                       vertical: 10.0, horizontal: 20),
@@ -245,9 +271,14 @@ class _MainPageState extends State<MainPage> {
                                   ),
                                   BlocListener<TestBloc, TestState>(
                                     listener: (context, state) {
+                                      print(state);
                                       if (state is AddSuccessState) {
                                         _titleTextEditingController.clear();
                                         _descTextEditingController.clear();
+                                        _catNameTextEditingController.clear();
+                                        _priorityTextEditingController.clear();
+                                        _startDateController.clear();
+                                        _endDateController.clear();
                                         _priority = null;
                                         _categoryid = null;
                                         _startDate = null;
@@ -255,41 +286,72 @@ class _MainPageState extends State<MainPage> {
                                         Navigator.of(context).pop(context);
                                       }
                                     },
-                                    child: TextButton.icon(
-                                      icon: const Icon(
-                                        size: 22,
-                                        Icons.add,
-                                        color: Colors.white54,
-                                      ),
-                                      style: ElevatedButton.styleFrom(
-                                          backgroundColor: context.primaryColor
-                                              .withOpacity(0.4)),
-                                      onPressed: () {
-                                        if (_formKey.currentState!.validate()) {
-                                          BlocProvider.of<TestBloc>(context)
-                                              .add(AddTestEvent(
-                                                  taskModel: TaskModel(
-                                                      _titleTextEditingController
-                                                          .text,
-                                                      _descTextEditingController
-                                                          .text,
-                                                      DateTime.now(),
-                                                      DateTime.now(),
-                                                      _categoryid,
-                                                      _priority,
-                                                      _switchValue,
-                                                      true)));
-                                        }
+                                    child: BlocBuilder<TestBloc, TestState>(
+                                      builder: (context, state) {
+                                        return TextButton.icon(
+                                          icon: const Icon(
+                                            size: 22,
+                                            Icons.add,
+                                            color: Colors.white54,
+                                          ),
+                                          style: ElevatedButton.styleFrom(
+                                              backgroundColor: context
+                                                  .primaryColor
+                                                  .withOpacity(0.4)),
+                                          onPressed: () {
+                                            print(state);
+                                            if (_formKey.currentState!
+                                                .validate()) {
+                                              if (state is EditTestState) {
+                                                task?.title =
+                                                    _titleTextEditingController
+                                                        .text;
+                                                task?.desc =
+                                                    _descTextEditingController
+                                                        .text;
+                                                task?.startDate = _startDate;
+                                                task?.EndDate = _endDate;
+                                                task?.categoryid = _categoryid;
+                                                task?.categoryName =
+                                                    _categoryName;
+                                                task?.priority = _priority;
+                                                task?.complete = false;
+                                                BlocProvider.of<TestBloc>(
+                                                        context)
+                                                    .add(UpdateTestEvent(
+                                                        taskModel: task!));
+                                              } else {
+                                                if (_formKey.currentState!
+                                                    .validate()) {
+                                                  BlocProvider.of<TestBloc>(
+                                                          context)
+                                                      .add(AddTestEvent(
+                                                          taskModel: TaskModel(
+                                                              _titleTextEditingController
+                                                                  .text,
+                                                              _descTextEditingController
+                                                                  .text,
+                                                              _startDate,
+                                                              _endDate,
+                                                              _categoryid,
+                                                              _categoryName,
+                                                              _priority,
+                                                              false)));
+                                                }
+                                              }
+                                            }
+                                          },
+                                          label: Padding(
+                                            padding: const EdgeInsets.only(
+                                                right: 15.0),
+                                            child: Text(
+                                              "Kaydet",
+                                              style: context.fontStyleLato(
+                                                  Colors.white, 12),
+                                            ),
+                                          ),
+                                        );
                                       },
-                                      label: Padding(
-                                        padding:
-                                            const EdgeInsets.only(right: 15.0),
-                                        child: Text(
-                                          'Oluştur',
-                                          style: context.fontStyleLato(
-                                              Colors.white, 12),
-                                        ),
-                                      ),
                                     ),
                                   ),
                                 ],
@@ -397,105 +459,127 @@ class _MainPageState extends State<MainPage> {
     return Row(
       children: [
         Expanded(
-            flex: 15,
-            child: TextFormField(
-              controller: _startDateController,
-              readOnly: true,
-              autofocus: false,
-              onTap: () async {
-                _startDate = await showOmniDateTimePicker(
-                  context: context,
-                  primaryColor: context.primaryColor,
-                  backgroundColor: context.backgroundSoftColor,
-                  calendarTextColor: Colors.white,
-                  tabTextColor: Colors.white,
-                  unselectedTabBackgroundColor: context.backgroundSoftColor,
-                  buttonTextColor: Colors.white,
-                  timeSpinnerTextStyle:
-                      const TextStyle(color: Colors.white70, fontSize: 18),
-                  timeSpinnerHighlightedTextStyle:
-                      const TextStyle(color: Colors.white, fontSize: 24),
-                  is24HourMode: true,
-                  isShowSeconds: false,
-                  startFirstDate:
-                      DateTime(1600).subtract(const Duration(days: 3652)),
-                  startLastDate: DateTime.now().add(
-                    const Duration(days: 3652),
-                  ),
-                  borderRadius: const Radius.circular(16),
-                );
-              },
-              cursorColor: context.primaryColor,
-              cursorHeight: 25,
-              keyboardType: TextInputType.datetime,
-              /* validator: (value) {
-                if (value == null || value.isEmpty) {
-                  return 'emptyText'.tr();
-                }
-                return null;
-              },*/
-              decoration: InputDecoration(
-                  prefixIcon: Icon(FontAwesomeIcons.solidCalendarPlus,
-                      color: context.primaryColor),
-                  focusedBorder: OutlineInputBorder(
-                      borderSide: BorderSide(color: context.primaryColor)),
-                  focusColor: context.primaryColor,
-                  isDense: true,
-                  hintText: "Başlangıç",
-                  hintStyle: context.fontStyleLato(Colors.grey, 16),
-                  border: const OutlineInputBorder(borderSide: BorderSide())),
+            flex: 1,
+            child: Padding(
+              padding: const EdgeInsets.only(right: 8.0),
+              child: TextFormField(
+                controller: _startDateController,
+                style: context.fontStyleLato(Colors.grey, 12.sp),
+                readOnly: true,
+                autofocus: false,
+                onTap: () async {
+                  _startDate = await showOmniDateTimePicker(
+                    context: context,
+                    primaryColor: context.primaryColor,
+                    backgroundColor: context.backgroundSoftColor,
+                    calendarTextColor: Colors.white,
+                    tabTextColor: Colors.white,
+                    unselectedTabBackgroundColor: context.backgroundSoftColor,
+                    buttonTextColor: Colors.white,
+                    timeSpinnerTextStyle:
+                        const TextStyle(color: Colors.white70, fontSize: 18),
+                    timeSpinnerHighlightedTextStyle:
+                        const TextStyle(color: Colors.white, fontSize: 24),
+                    is24HourMode: true,
+                    isShowSeconds: false,
+                    startFirstDate: DateTime.now(),
+                    startLastDate: DateTime.now().add(
+                      const Duration(days: 3652),
+                    ),
+                    borderRadius: const Radius.circular(16),
+                  );
+                  if (_startDate != null) {
+                    _startDateController.text = context.fomatDate(_startDate!) +
+                        " / " +
+                        context.fomatTime(_startDate!);
+                  }
+                },
+                cursorColor: context.primaryColor,
+                cursorHeight: 25,
+                keyboardType: TextInputType.datetime,
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return 'emptyText'.tr();
+                  }
+                  return null;
+                },
+                decoration: InputDecoration(
+                    prefixIcon: Icon(
+                      FontAwesomeIcons.solidCalendarPlus,
+                      color: context.primaryColor,
+                      size: 16,
+                    ),
+                    prefixIconConstraints: BoxConstraints(minWidth: 30),
+                    hintStyle: context.fontStyleLato(Colors.grey, 14),
+                    focusedBorder: OutlineInputBorder(
+                        borderSide: BorderSide(color: context.primaryColor)),
+                    focusColor: context.primaryColor,
+                    isDense: true,
+                    hintText: "Başlangıç Tarihi ",
+                    border: const OutlineInputBorder(borderSide: BorderSide())),
+              ),
             )),
-        Spacer(
-          flex: 1,
-        ),
         Expanded(
-            flex: 15,
-            child: TextFormField(
-              controller: _endDateController,
-              readOnly: true,
-              onTap: () async {
-                _startDate = await showOmniDateTimePicker(
-                  context: context,
-                  primaryColor: context.primaryColor,
-                  backgroundColor: context.backgroundSoftColor,
-                  calendarTextColor: Colors.white,
-                  tabTextColor: Colors.white,
-                  unselectedTabBackgroundColor: context.backgroundSoftColor,
-                  buttonTextColor: Colors.white,
-                  timeSpinnerTextStyle:
-                      const TextStyle(color: Colors.white70, fontSize: 18),
-                  timeSpinnerHighlightedTextStyle:
-                      const TextStyle(color: Colors.white, fontSize: 24),
-                  is24HourMode: true,
-                  isShowSeconds: false,
-                  startFirstDate:
-                      DateTime(1600).subtract(const Duration(days: 3652)),
-                  startLastDate: DateTime.now().add(
-                    const Duration(days: 3652),
-                  ),
-                  borderRadius: const Radius.circular(16),
-                );
-              },
-              autofocus: false,
-              cursorColor: context.primaryColor,
-              cursorHeight: 25,
-              keyboardType: TextInputType.datetime,
-              /* validator: (value) {
-                if (value == null || value.isEmpty) {
-                  return 'emptyText'.tr();
-                }
-                return null;
-              },*/
-              decoration: InputDecoration(
-                  hintStyle: context.fontStyleLato(Colors.grey, 16),
-                  prefixIcon: Icon(FontAwesomeIcons.solidCalendarMinus,
-                      color: context.primaryColor),
-                  focusedBorder: OutlineInputBorder(
-                      borderSide: BorderSide(color: context.primaryColor)),
-                  focusColor: context.primaryColor,
-                  isDense: true,
-                  hintText: "Bitiş",
-                  border: const OutlineInputBorder(borderSide: BorderSide())),
+            flex: 1,
+            child: Padding(
+              padding: const EdgeInsets.only(left: 4.0),
+              child: TextFormField(
+                controller: _endDateController,
+                readOnly: true,
+                style: context.fontStyleLato(Colors.grey, 12.sp),
+                onTap: () async {
+                  _endDate = await showOmniDateTimePicker(
+                    context: context,
+                    primaryColor: context.primaryColor,
+                    backgroundColor: context.backgroundSoftColor,
+                    calendarTextColor: Colors.white,
+                    tabTextColor: Colors.white,
+                    unselectedTabBackgroundColor: context.backgroundSoftColor,
+                    buttonTextColor: Colors.white,
+                    timeSpinnerTextStyle:
+                        const TextStyle(color: Colors.white70, fontSize: 18),
+                    timeSpinnerHighlightedTextStyle:
+                        const TextStyle(color: Colors.white, fontSize: 24),
+                    is24HourMode: true,
+                    isShowSeconds: false,
+                    startFirstDate: DateTime.now(),
+                    startLastDate: DateTime.now().add(
+                      const Duration(days: 3652),
+                    ),
+                    borderRadius: const Radius.circular(16),
+                  );
+
+                  if (_endDate != null) {
+                    _endDateController.text = context.fomatDate(_endDate!) +
+                        " / " +
+                        context.fomatTime(_endDate!);
+                  }
+                },
+                autofocus: false,
+                cursorColor: context.primaryColor,
+                cursorHeight: 25,
+                keyboardType: TextInputType.datetime,
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return 'emptyText'.tr();
+                  }
+                  return null;
+                },
+                decoration: InputDecoration(
+                    hintStyle: context.fontStyleLato(Colors.grey, 14),
+                    prefixIcon: Icon(
+                      FontAwesomeIcons.solidCalendarPlus,
+                      color: context.primaryColor,
+                      size: 16,
+                    ),
+                    prefixIconConstraints: BoxConstraints(minWidth: 30),
+                    focusedBorder: OutlineInputBorder(
+                        borderSide: BorderSide(color: context.primaryColor)),
+                    focusColor: context.primaryColor,
+                    isDense: true,
+                    hintText: "Bitiş Tarihi",
+                    border: const OutlineInputBorder(borderSide: BorderSide())),
+              ),
             ))
       ],
     );
@@ -507,7 +591,7 @@ class _MainPageState extends State<MainPage> {
         Expanded(
             flex: 15,
             child: TextFormField(
-              controller: _startDateController,
+              controller: _catNameTextEditingController,
               readOnly: true,
               autofocus: false,
               onTap: () async {
@@ -523,10 +607,10 @@ class _MainPageState extends State<MainPage> {
                               "choise-add-category".tr(),
                               textAlign: TextAlign.center,
                             ),
-                            SizedBox(
+                            const SizedBox(
                               height: 10,
                             ),
-                            Divider(
+                            const Divider(
                               height: 2,
                             ),
                           ],
@@ -542,7 +626,8 @@ class _MainPageState extends State<MainPage> {
                                       stream:
                                           _categoryRepository.listenCategory(),
                                       builder: (context, snapshot) {
-                                        if (!snapshot.hasData) {
+                                        if (snapshot.data == null ||
+                                            snapshot.data!.isEmpty) {
                                           return Center(
                                             child: Column(
                                               mainAxisSize: MainAxisSize.min,
@@ -563,7 +648,17 @@ class _MainPageState extends State<MainPage> {
                                             itemBuilder: (context, index) {
                                               return GestureDetector(
                                                 onTap: () {
-                                                  _categoryid = index;
+                                                  _categoryid =
+                                                      snapshot.data![index].id;
+
+                                                  _categoryName = snapshot
+                                                      .data![index]
+                                                      .categoryName;
+                                                  _catNameTextEditingController
+                                                          .text =
+                                                      snapshot.data![index]
+                                                          .categoryName
+                                                          .toString();
 
                                                   Navigator.pop(context);
                                                 },
@@ -572,12 +667,12 @@ class _MainPageState extends State<MainPage> {
                                                     context: context,
                                                     builder: (context) {
                                                       return AlertDialog(
-                                                        title: Text(
+                                                        title: const Text(
                                                           "Categori Siliniyor",
                                                           textAlign:
                                                               TextAlign.center,
                                                         ),
-                                                        content: Text(
+                                                        content: const Text(
                                                             textAlign: TextAlign
                                                                 .center,
                                                             "Bu kategoriyi silmeniz halinde buna bağlı tüm görevlerde silinicektir onaylıyor musunuz ?"),
@@ -609,12 +704,13 @@ class _MainPageState extends State<MainPage> {
                                                                     Navigator.pop(
                                                                         context);
                                                                   },
-                                                                  child: Text(
+                                                                  child:
+                                                                      const Text(
                                                                     "Sil",
                                                                   ),
                                                                 ),
                                                               ),
-                                                              Spacer(
+                                                              const Spacer(
                                                                 flex: 1,
                                                               ),
                                                               Expanded(
@@ -633,7 +729,8 @@ class _MainPageState extends State<MainPage> {
                                                                     Navigator.pop(
                                                                         context);
                                                                   },
-                                                                  child: Text(
+                                                                  child:
+                                                                      const Text(
                                                                     "Kapat",
                                                                   ),
                                                                 ),
@@ -710,7 +807,7 @@ class _MainPageState extends State<MainPage> {
                                   child: Column(
                                     mainAxisAlignment: MainAxisAlignment.center,
                                     children: [
-                                      Text(
+                                      const Text(
                                           "Uzun basarak kategorileri silebilirsiniz."),
                                     ],
                                   ),
@@ -734,8 +831,8 @@ class _MainPageState extends State<MainPage> {
                                                   builder:
                                                       (BuildContext context) {
                                                     return AlertDialog(
-                                                      title:
-                                                          Text('Kategori Ekle'),
+                                                      title: const Text(
+                                                          'Kategori Ekle'),
                                                       content: Container(
                                                           height: ScreenUtil()
                                                                   .screenHeight /
@@ -761,7 +858,7 @@ class _MainPageState extends State<MainPage> {
                                                                 keyboardType:
                                                                     TextInputType
                                                                         .text,
-                                                                /*  validator:
+                                                                validator:
                                                                     (value) {
                                                                   if (value ==
                                                                           null ||
@@ -771,7 +868,7 @@ class _MainPageState extends State<MainPage> {
                                                                         .tr();
                                                                   }
                                                                   return null;
-                                                                },*/
+                                                                },
                                                                 decoration: InputDecoration(
                                                                     filled: true,
                                                                     fillColor: context.backgroundSoftColor,
@@ -802,7 +899,7 @@ class _MainPageState extends State<MainPage> {
                                                                     hintStyle: context.fontStyleLato(Colors.white, 14),
                                                                     border: const UnderlineInputBorder(borderSide: BorderSide())),
                                                               ),
-                                                              SizedBox(
+                                                              const SizedBox(
                                                                 height: 20,
                                                               ),
                                                               Row(
@@ -836,7 +933,7 @@ class _MainPageState extends State<MainPage> {
                                                                                       child: Column(
                                                                                         children: [
                                                                                           ColorPicker(
-                                                                                            actionButtons: ColorPickerActionButtons(closeButton: true, dialogActionButtons: true),
+                                                                                            actionButtons: const ColorPickerActionButtons(closeButton: true, dialogActionButtons: true),
                                                                                             color: _screenPickerColor,
                                                                                             onColorChanged: (value) {
                                                                                               setState(() {
@@ -875,7 +972,7 @@ class _MainPageState extends State<MainPage> {
                                                                       ),
                                                                     ),
                                                                   ),
-                                                                  Expanded(
+                                                                  const Expanded(
                                                                     flex: 1,
                                                                     child:
                                                                         SizedBox(
@@ -888,7 +985,7 @@ class _MainPageState extends State<MainPage> {
                                                                     child:
                                                                         ElevatedButton
                                                                             .icon(
-                                                                      icon: Icon(
+                                                                      icon: const Icon(
                                                                           Icons
                                                                               .select_all),
                                                                       style: ElevatedButton.styleFrom(
@@ -918,7 +1015,7 @@ class _MainPageState extends State<MainPage> {
                                                                   ),
                                                                 ],
                                                               ),
-                                                              SizedBox(
+                                                              const SizedBox(
                                                                 height: 20,
                                                               ),
                                                               ElevatedButton(
@@ -961,7 +1058,7 @@ class _MainPageState extends State<MainPage> {
                                             ),
                                           ),
                                         ),
-                                        Spacer(
+                                        const Spacer(
                                           flex: 1,
                                         ),
                                         Expanded(
@@ -994,15 +1091,15 @@ class _MainPageState extends State<MainPage> {
               cursorColor: context.primaryColor,
               cursorHeight: 25,
               keyboardType: TextInputType.datetime,
-              /* validator: (value) {
+              validator: (value) {
                 if (value == null || value.isEmpty) {
                   return 'emptyText'.tr();
                 }
                 return null;
-              },*/
+              },
               decoration: InputDecoration(
-                  prefixIcon: Icon(FontAwesomeIcons.solidCalendarPlus,
-                      color: context.primaryColor),
+                  prefixIcon:
+                      Icon(FontAwesomeIcons.tag, color: context.primaryColor),
                   focusedBorder: OutlineInputBorder(
                       borderSide: BorderSide(color: context.primaryColor)),
                   focusColor: context.primaryColor,
@@ -1011,13 +1108,13 @@ class _MainPageState extends State<MainPage> {
                   hintStyle: context.fontStyleLato(Colors.grey, 16),
                   border: const OutlineInputBorder(borderSide: BorderSide())),
             )),
-        Spacer(
+        const Spacer(
           flex: 1,
         ),
         Expanded(
             flex: 15,
             child: TextFormField(
-              controller: _endDateController,
+              controller: _priorityTextEditingController,
               readOnly: true,
               onTap: () async {
                 showDialog(
@@ -1055,6 +1152,8 @@ class _MainPageState extends State<MainPage> {
                                       return GestureDetector(
                                         onTap: () {
                                           _priority = index;
+                                          _priorityTextEditingController.text =
+                                              index.toString();
                                           Navigator.pop(context);
                                         },
                                         child: Padding(
@@ -1096,16 +1195,16 @@ class _MainPageState extends State<MainPage> {
               cursorColor: context.primaryColor,
               cursorHeight: 25,
               keyboardType: TextInputType.datetime,
-              /*  validator: (value) {
+              validator: (value) {
                 if (value == null || value.isEmpty) {
                   return 'emptyText'.tr();
                 }
                 return null;
-              },*/
+              },
               decoration: InputDecoration(
                   hintStyle: context.fontStyleLato(Colors.grey, 16),
-                  prefixIcon: Icon(FontAwesomeIcons.solidCalendarMinus,
-                      color: context.primaryColor),
+                  prefixIcon:
+                      Icon(FontAwesomeIcons.flag, color: context.primaryColor),
                   focusedBorder: OutlineInputBorder(
                       borderSide: BorderSide(color: context.primaryColor)),
                   focusColor: context.primaryColor,
@@ -1146,6 +1245,8 @@ class _MainPageState extends State<MainPage> {
             if (state is AddSuccessState) {
               _titleTextEditingController.clear();
               _descTextEditingController.clear();
+              _catNameTextEditingController.clear();
+              _priorityTextEditingController.clear();
               _priority = null;
               _categoryid = null;
               _startDate = null;
@@ -1160,12 +1261,12 @@ class _MainPageState extends State<MainPage> {
                       taskModel: TaskModel(
                           _titleTextEditingController.text,
                           _descTextEditingController.text,
-                          DateTime.now(),
-                          DateTime.now(),
+                          _startDate,
+                          _endDate,
                           _categoryid,
+                          _categoryName,
                           _priority,
-                          _switchValue,
-                          true)));
+                          false)));
                 }
               },
               icon: const Icon(

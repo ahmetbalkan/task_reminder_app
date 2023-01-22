@@ -40,3 +40,13 @@ class AddTestEvent extends TestEvent {
   final TaskModel taskModel;
   const AddTestEvent({required this.taskModel});
 }
+
+class EditTestEvent extends TestEvent {
+  final TaskModel taskModel;
+  const EditTestEvent({required this.taskModel});
+}
+
+class UpdateTestEvent extends TestEvent {
+  final TaskModel taskModel;
+  const UpdateTestEvent({required this.taskModel});
+}
