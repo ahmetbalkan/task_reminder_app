@@ -93,3 +93,9 @@ class SearchTaskUpdateEvent extends TestEvent {
   const SearchTaskUpdateEvent(
       {required this.updatedlist, required this.dropDownValue});
 }
+
+class UpdateButtonTaskEvent extends TestEvent {
+  final TaskModel updatedTask;
+
+  const UpdateButtonTaskEvent({required this.updatedTask});
+}

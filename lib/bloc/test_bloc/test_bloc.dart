@@ -35,6 +35,7 @@ class TestBloc extends Bloc<TestEvent, TestState> {
     on<TodayTaskUpdateEvent>(_todayTaskUpdateEvent);
     on<SearchTaskEvent>(_searchTaskEvent);
     on<SearchTaskUpdateEvent>(_searchTaskUpdateEvent);
+    on<UpdateButtonTaskEvent>(_updateButtonCompleteTaskEvent);
   }
 
   _deleteTaskEvent(DeleteTaskEvent event, Emitter<TestState> emit) async {
@@ -76,6 +77,13 @@ class TestBloc extends Bloc<TestEvent, TestState> {
 
       default:
     }
+  }
+
+  _updateButtonCompleteTaskEvent(
+      UpdateButtonTaskEvent event, Emitter<TestState> emit) {
+    event.updatedTask.complete == true;
+    _taskIsarRepository.completeTask(event.updatedTask);
+    emit(TestInitial());
   }
 
   _updateTestEvent(UpdateTestEvent event, Emitter<TestState> emit) async {

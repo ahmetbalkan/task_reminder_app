@@ -18,6 +18,7 @@ class TaskIsarRepository extends OpenDB {
     final isar = await _db;
     yield* isar.taskModels
         .filter()
+        .completeEqualTo(false)
         .titleContains(value)
         .watch(fireImmediately: true);
   }
@@ -31,6 +32,14 @@ class TaskIsarRepository extends OpenDB {
         .watch(fireImmediately: true);
   }
 
+  Future<void> completeTask(TaskModel user) async {
+    final isar = await _db;
+    user.complete = true;
+    await isar.writeTxn(() async {
+      await isar.taskModels.put(user);
+    });
+  }
+
   Stream<List<TaskModel>> listenTodayTask(String value) async* {
     final now = DateTime.now();
     final isar = await _db;
@@ -38,6 +47,7 @@ class TaskIsarRepository extends OpenDB {
         .filter()
         .startDateBetween(DateTime(now.year, now.month, now.day, 00, 00, 01),
             DateTime(now.year, now.month, now.day, 23, 59, 59))
+        .completeEqualTo(false)
         .titleContains(value)
         .watch(fireImmediately: true);
   }

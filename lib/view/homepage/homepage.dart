@@ -1,6 +1,7 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:task_reminder_app/bloc/categories_bloc/category_bloc.dart';
@@ -73,7 +74,7 @@ class _HomePageState extends State<HomePage> {
                             .listen((taskModel) {
                           print(taskModel.length);
                         });
-                        /*   for (var i = 0; i < 5; i++) {
+                        for (var i = 0; i < 5; i++) {
                           context.read<TestBloc>().add(AddTestEvent(
                               taskModel: TaskModel(
                                   "title" + i.toString(),
@@ -84,11 +85,11 @@ class _HomePageState extends State<HomePage> {
                                   i % 2 == 0
                                       ? DateTime.now().add(Duration(days: 3))
                                       : DateTime.now().add(Duration(days: 2)),
-                                  15,
-                                  "ahmet",
+                                  4,
+                                  "Spor",
                                   1,
                                   i % 2 == 0 ? true : false)));
-                        }*/
+                        }
                       },
                       child: Icon(FontAwesomeIcons.magnifyingGlass,
                           color: context.primaryColor),
@@ -314,15 +315,12 @@ class _HomePageState extends State<HomePage> {
                       topRight: Radius.circular(8),
                       bottomRight: Radius.circular(8)),
                   onPressed: (context) {
-                    context.read<TestBloc>().add(EditTestEvent(
-                        dropDownValue:
-                            context.read<DropDownNameCubit>().state.name,
-                        taskModel: currentSnapshot));
+                    showConfirmBotomSheet(false, currentSnapshot);
                   },
-                  backgroundColor: const Color(0xFF709FB0),
+                  backgroundColor: const Color(0xFF5AA469),
                   foregroundColor: Colors.white,
                   icon: Icons.edit,
-                  label: 'Düzenle',
+                  label: 'Tamamla',
                 ),
               ],
             ),
@@ -340,13 +338,23 @@ class _HomePageState extends State<HomePage> {
                       icon: Icons.delete,
                       label: 'Sil',
                       onPressed: (BuildContext context) {
-                        context
-                            .read<TestBloc>()
-                            .add(DeleteTaskEvent(currentSnapshot.id));
+                        showConfirmBotomSheet(true, currentSnapshot);
                       },
                     );
                   },
                 ),
+                SlidableAction(
+                  backgroundColor: const Color(0xFF709FB0),
+                  foregroundColor: Colors.white,
+                  icon: Icons.delete,
+                  label: 'Düzenle',
+                  onPressed: (BuildContext context) {
+                    context.read<TestBloc>().add(EditTestEvent(
+                        taskModel: currentSnapshot,
+                        dropDownValue:
+                            context.read<DropDownNameCubit>().state.name));
+                  },
+                )
               ],
             ),
             child: Container(
@@ -521,5 +529,105 @@ class _HomePageState extends State<HomePage> {
         );
       },
     );
+  }
+
+  showConfirmBotomSheet(bool isDelete, TaskModel task) {
+    showModalBottomSheet(
+        isDismissible: false,
+        useRootNavigator: true,
+        shape: const RoundedRectangleBorder(
+          borderRadius: BorderRadius.only(
+              topLeft: Radius.circular(20), topRight: Radius.circular(20)),
+        ),
+        isScrollControlled: true,
+        context: context,
+        builder: (context) {
+          return Padding(
+            padding: EdgeInsets.only(
+                bottom: MediaQuery.of(context).viewInsets.bottom),
+            child: SizedBox(
+                height: ScreenUtil().screenHeight / 1.7,
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(
+                      vertical: 10.0, horizontal: 20),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      Expanded(
+                        flex: 4,
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Image.asset(isDelete
+                                ? "assets/delete-task.png"
+                                : "assets/complete-task.png")
+                          ],
+                        ),
+                      ),
+                      Expanded(
+                        flex: 1,
+                        child: Text(
+                          isDelete
+                              ? "Görevi Silmek istediğinize emin misiniz?"
+                              : "Görevi Tamamlamak istediğinize emin misiniz?",
+                          textAlign: TextAlign.center,
+                          style: context.fontStyleLatoFontWeigt(
+                              Colors.white, 20, FontWeight.bold),
+                        ),
+                      ),
+                      Expanded(
+                        flex: 1,
+                        child: Row(
+                          children: [
+                            Expanded(
+                              flex: 15,
+                              child: ElevatedButton(
+                                  style: TextButton.styleFrom(
+                                    backgroundColor: context.primaryColor,
+                                    minimumSize: const Size.fromHeight(50),
+                                  ),
+                                  onPressed: () {
+                                    if (isDelete) {
+                                      context
+                                          .read<TestBloc>()
+                                          .add(DeleteTaskEvent(task.id));
+                                      Navigator.pop(context);
+                                    } else {
+                                      context.read<TestBloc>().add(
+                                          UpdateButtonTaskEvent(
+                                              updatedTask: task));
+                                      Navigator.pop(context);
+                                    }
+                                  },
+                                  child: Text(
+                                    isDelete ? "Sil" : "Tamamla",
+                                  )),
+                            ),
+                            Spacer(
+                              flex: 1,
+                            ),
+                            Expanded(
+                              flex: 15,
+                              child: ElevatedButton(
+                                  style: TextButton.styleFrom(
+                                    backgroundColor: context.primaryColor,
+                                    minimumSize: const Size.fromHeight(50),
+                                  ),
+                                  onPressed: () {
+                                    Navigator.pop(context);
+                                  },
+                                  child: Text(
+                                    "Kapat",
+                                  )),
+                            ),
+                          ],
+                        ),
+                      )
+                    ],
+                  ),
+                )),
+          );
+        });
   }
 }

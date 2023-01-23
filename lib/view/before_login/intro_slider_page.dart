@@ -37,26 +37,38 @@ class _IntroSliderPageState extends State<IntroSliderPage> {
   @override
   Widget build(BuildContext context) {
     return SafeArea(
-      child: Scaffold(
-          backgroundColor: context.backgroundColor,
-          body: Column(mainAxisAlignment: MainAxisAlignment.start, children: [
-            Expanded(flex: 10, child: skipButtonWidget(context)),
-            Expanded(
-              flex: 70,
-              child: centerPageViewWidget(context),
-            ),
-            Expanded(
-              flex: 10,
-              child: SmoothPageIndicator(
-                  controller: _pageController,
-                  count: 3,
-                  effect: ExpandingDotsEffect(
-                      dotColor: Colors.grey,
-                      activeDotColor: context.primaryColor)),
-            ),
-            Expanded(flex: 7, child: bottomButtonsWidget(context)),
-            const Expanded(flex: 5, child: Center()),
-          ])),
+      child: BlocListener<SplashLoadBloc, SplashLoadState>(
+        listener: (context, state) {
+          if (state.postStatus == PostStatus.gologin) {
+            Navigator.pushAndRemoveUntil(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => LoginPage(),
+                ),
+                (route) => false);
+          }
+        },
+        child: Scaffold(
+            backgroundColor: context.backgroundColor,
+            body: Column(mainAxisAlignment: MainAxisAlignment.start, children: [
+              Expanded(flex: 10, child: skipButtonWidget(context)),
+              Expanded(
+                flex: 70,
+                child: centerPageViewWidget(context),
+              ),
+              Expanded(
+                flex: 10,
+                child: SmoothPageIndicator(
+                    controller: _pageController,
+                    count: 3,
+                    effect: ExpandingDotsEffect(
+                        dotColor: Colors.grey,
+                        activeDotColor: context.primaryColor)),
+              ),
+              Expanded(flex: 7, child: bottomButtonsWidget(context)),
+              const Expanded(flex: 5, child: Center()),
+            ])),
+      ),
     );
   }
 
@@ -94,6 +106,7 @@ class _IntroSliderPageState extends State<IntroSliderPage> {
 
   PageView centerPageViewWidget(BuildContext context) {
     return PageView(
+      physics: const BouncingScrollPhysics(),
       controller: _pageController,
       children: [
         Column(
