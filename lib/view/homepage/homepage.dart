@@ -304,8 +304,8 @@ class _HomePageState extends State<HomePage> {
       itemBuilder: (context, index) {
         var currentSnapshot = list[index];
 
-        return TextButton(
-          onPressed: () {
+        return GestureDetector(
+          onTap: () {
             context.read<TestBloc>().add(EditTestEvent(
                 taskModel: currentSnapshot,
                 dropDownValue: context.read<DropDownNameCubit>().state.name));
