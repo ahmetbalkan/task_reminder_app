@@ -31,8 +31,9 @@ class EditTestEvent extends TestEvent {
 }
 
 class UpdateTestEvent extends TestEvent {
+  final String dropDownValue;
   final TaskModel taskModel;
-  const UpdateTestEvent({required this.taskModel});
+  const UpdateTestEvent({required this.taskModel, required this.dropDownValue});
 }
 
 class AllTaskEvent extends TestEvent {

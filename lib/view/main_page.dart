@@ -75,7 +75,7 @@ class _MainPageState extends State<MainPage> {
       child: BlocListener<TestBloc, TestState>(
         listener: (context, state) {
           if (state is EditTestState) {
-            _showAddBottomSheetWidget(state.updateTask);
+            _showBottomSheetWidget(state.updateTask, true);
           }
         },
         child: Scaffold(
@@ -184,7 +184,7 @@ class _MainPageState extends State<MainPage> {
         icon: const Icon(FontAwesomeIcons.plus, color: Colors.white),
         title: ("addtask".tr()),
         onPressed: (p0) {
-          _showAddBottomSheetWidget(null);
+          _showBottomSheetWidget(null, false);
         },
         activeColorPrimary: context.primaryColor,
         inactiveColorPrimary: CupertinoColors.systemGrey,
@@ -204,7 +204,7 @@ class _MainPageState extends State<MainPage> {
     ];
   }
 
-  _showAddBottomSheetWidget(TaskModel? task) {
+  _showBottomSheetWidget(TaskModel? task, bool isEdit) {
     if (task != null) {
       _titleTextEditingController.text = task.title!;
       _descTextEditingController.text = task.desc!;
@@ -222,6 +222,7 @@ class _MainPageState extends State<MainPage> {
 
       _priority = task.priority;
       _categoryid = task.categoryid;
+      _categoryName = task.categoryName;
       _startDate = task.startDate;
       _endDate = task.EndDate;
     }
@@ -239,7 +240,7 @@ class _MainPageState extends State<MainPage> {
             padding: EdgeInsets.only(
                 bottom: MediaQuery.of(context).viewInsets.bottom),
             child: SizedBox(
-                height: ScreenUtil().screenHeight / 1.7,
+                height: ScreenUtil().screenHeight / 1.5,
                 child: Padding(
                   padding: const EdgeInsets.symmetric(
                       vertical: 10.0, horizontal: 20),
@@ -256,117 +257,17 @@ class _MainPageState extends State<MainPage> {
                           ),
                         ),
                         Expanded(
-                          flex: 2,
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                children: [
-                                  Text(
-                                    "add-task".tr(),
-                                    style: context.fontStyleLatoFontWeigt(
-                                        Colors.white, 20, FontWeight.bold),
-                                  ),
-                                  BlocListener<TestBloc, TestState>(
-                                    listener: (context, state) {
-                                      if (state is AddSuccessState) {
-                                        _titleTextEditingController.clear();
-                                        _descTextEditingController.clear();
-                                        _catNameTextEditingController.clear();
-                                        _priorityTextEditingController.clear();
-                                        _startDateController.clear();
-                                        _endDateController.clear();
-                                        _priority = null;
-                                        _categoryid = null;
-                                        _startDate = null;
-                                        _endDate = null;
-                                        Navigator.of(context).pop(context);
-                                      }
-                                    },
-                                    child: BlocBuilder<TestBloc, TestState>(
-                                      builder: (context, state) {
-                                        return TextButton.icon(
-                                          icon: const Icon(
-                                            size: 22,
-                                            Icons.add,
-                                            color: Colors.white54,
-                                          ),
-                                          style: ElevatedButton.styleFrom(
-                                              backgroundColor: context
-                                                  .primaryColor
-                                                  .withOpacity(0.4)),
-                                          onPressed: () {
-                                            print(state);
-                                            if (_formKey.currentState!
-                                                .validate()) {
-                                              if (state is EditTestState) {
-                                                task?.title =
-                                                    _titleTextEditingController
-                                                        .text;
-                                                task?.desc =
-                                                    _descTextEditingController
-                                                        .text;
-                                                task?.startDate = _startDate;
-                                                task?.EndDate = _endDate;
-                                                task?.categoryid = _categoryid;
-                                                task?.categoryName =
-                                                    _categoryName;
-                                                task?.priority = _priority;
-                                                task?.complete = false;
-                                                BlocProvider.of<TestBloc>(
-                                                        context)
-                                                    .add(UpdateTestEvent(
-                                                        taskModel: task!));
-                                              } else {
-                                                if (_formKey.currentState!
-                                                    .validate()) {
-                                                  BlocProvider.of<TestBloc>(
-                                                          context)
-                                                      .add(AddTestEvent(
-                                                          taskModel: TaskModel(
-                                                              _titleTextEditingController
-                                                                  .text,
-                                                              _descTextEditingController
-                                                                  .text,
-                                                              _startDate,
-                                                              _endDate,
-                                                              _categoryid,
-                                                              _categoryName,
-                                                              _priority,
-                                                              false)));
-
-                                                  context.read<TestBloc>().add(
-                                                      TodayTaskEvent(
-                                                          dropDownValue: context
-                                                              .read<
-                                                                  DropDownNameCubit>()
-                                                              .state
-                                                              .name,
-                                                          searchValue: ""));
-                                                }
-                                              }
-                                            }
-                                          },
-                                          label: Padding(
-                                            padding: const EdgeInsets.only(
-                                                right: 15.0),
-                                            child: Text(
-                                              "Kaydet",
-                                              style: context.fontStyleLato(
-                                                  Colors.white, 12),
-                                            ),
-                                          ),
-                                        );
-                                      },
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ],
+                          child: Text(
+                            "add-task".tr(),
+                            style: context.fontStyleLatoFontWeigt(
+                                Colors.white, 20, FontWeight.bold),
                           ),
+                        ),
+                        Expanded(
+                          flex: 2,
+                          child: isEdit == true
+                              ? addTaskButtonWidget(task, true)
+                              : addTaskButtonWidget(task, false),
                         ),
                         Expanded(flex: 3, child: titleTextFieldMethod(context)),
                         Expanded(flex: 5, child: descTextfieldMethod(context)),
@@ -379,6 +280,134 @@ class _MainPageState extends State<MainPage> {
                 )),
           );
         });
+  }
+
+  Widget addTaskButtonWidget(TaskModel? task, bool isEdit) {
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.start,
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Row(
+          mainAxisAlignment: MainAxisAlignment.end,
+          children: [
+            Row(
+              children: [
+                Visibility(
+                  visible: isEdit,
+                  child: TextButton.icon(
+                    icon: const Icon(
+                      size: 22,
+                      Icons.delete,
+                      color: Colors.white54,
+                    ),
+                    style: TextButton.styleFrom(
+                        backgroundColor: context.primaryColor.withOpacity(0.4)),
+                    onPressed: () {},
+                    label: Text(
+                      "Tamamla",
+                      style: context.fontStyleLato(Colors.white, 12),
+                    ),
+                  ),
+                ),
+                SizedBox(
+                  width: 10,
+                ),
+                Visibility(
+                  visible: isEdit,
+                  child: TextButton.icon(
+                    icon: const Icon(
+                      size: 22,
+                      Icons.delete,
+                      color: Colors.white54,
+                    ),
+                    style: TextButton.styleFrom(
+                        backgroundColor: context.primaryColor.withOpacity(0.4)),
+                    onPressed: () {},
+                    label: Text(
+                      "Sil",
+                      style: context.fontStyleLato(Colors.white, 12),
+                    ),
+                  ),
+                ),
+                SizedBox(
+                  width: 10,
+                ),
+                BlocListener<TestBloc, TestState>(
+                  listener: (context, state) {
+                    if (state is AddSuccessState || state is UpdateTestEvent) {
+                      _titleTextEditingController.clear();
+                      _descTextEditingController.clear();
+                      _catNameTextEditingController.clear();
+                      _priorityTextEditingController.clear();
+                      _startDateController.clear();
+                      _endDateController.clear();
+                      _priority = null;
+                      _categoryid = null;
+                      _startDate = null;
+                      _endDate = null;
+                      Navigator.of(context).pop(context);
+                    }
+                  },
+                  child: BlocBuilder<TestBloc, TestState>(
+                    builder: (context, state) {
+                      return TextButton.icon(
+                        icon: const Icon(
+                          size: 22,
+                          Icons.add,
+                          color: Colors.white54,
+                        ),
+                        style: ElevatedButton.styleFrom(
+                            backgroundColor:
+                                context.primaryColor.withOpacity(0.4)),
+                        onPressed: () {
+                          print(state);
+                          if (_formKey.currentState!.validate()) {
+                            if (isEdit == true) {
+                              task?.title = _titleTextEditingController.text;
+                              task?.desc = _descTextEditingController.text;
+                              task?.startDate = _startDate;
+                              task?.EndDate = _endDate;
+                              task?.categoryid = _categoryid;
+                              task?.categoryName = _categoryName;
+                              task?.priority = _priority;
+                              task?.complete = false;
+                              BlocProvider.of<TestBloc>(context).add(
+                                  UpdateTestEvent(
+                                      taskModel: task!,
+                                      dropDownValue: context
+                                          .read<DropDownNameCubit>()
+                                          .state
+                                          .name));
+                            }
+                            if (isEdit == false) {
+                              BlocProvider.of<TestBloc>(context).add(
+                                  AddTestEvent(
+                                      taskModel: TaskModel(
+                                          _titleTextEditingController.text,
+                                          _descTextEditingController.text,
+                                          _startDate,
+                                          _endDate,
+                                          _categoryid,
+                                          _categoryName,
+                                          _priority,
+                                          false)));
+                            }
+                          }
+                        },
+                        label: Text(
+                          "Kaydet",
+                          style: context.fontStyleLato(Colors.white, 12),
+                        ),
+                      );
+                    },
+                  ),
+                ),
+              ],
+            ),
+          ],
+        ),
+      ],
+    );
   }
 
   TextFormField titleTextFieldMethod(BuildContext context) {
@@ -507,9 +536,14 @@ class _MainPageState extends State<MainPage> {
                 cursorHeight: 25,
                 keyboardType: TextInputType.datetime,
                 validator: (value) {
-                  if (value == null || value.isEmpty) {
+                  if (value == null || value.isEmpty || _startDate == null) {
                     return 'emptyText'.tr();
                   }
+
+                  if (_startDate!.compareTo(_endDate!) == 1) {
+                    return "Bitiş tarihinden küçük";
+                  }
+
                   return null;
                 },
                 decoration: InputDecoration(
