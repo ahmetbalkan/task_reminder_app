@@ -302,7 +302,10 @@ class _MainPageState extends State<MainPage> {
                     ),
                     style: TextButton.styleFrom(
                         backgroundColor: context.primaryColor.withOpacity(0.4)),
-                    onPressed: () {},
+                    onPressed: () {
+                      context.read<TestBloc>().add(DeleteTaskEvent(task!.id));
+                      Navigator.pop(context);
+                    },
                     label: Text(
                       "Tamamla",
                       style: context.fontStyleLato(Colors.white, 12),
@@ -322,7 +325,12 @@ class _MainPageState extends State<MainPage> {
                     ),
                     style: TextButton.styleFrom(
                         backgroundColor: context.primaryColor.withOpacity(0.4)),
-                    onPressed: () {},
+                    onPressed: () {
+                      context
+                          .read<TestBloc>()
+                          .add(UpdateButtonTaskEvent(updatedTask: task!));
+                      Navigator.pop(context);
+                    },
                     label: Text(
                       "Sil",
                       style: context.fontStyleLato(Colors.white, 12),
