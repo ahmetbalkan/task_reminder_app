@@ -22,38 +22,43 @@ const TaskModelSchema = CollectionSchema(
       name: r'EndDate',
       type: IsarType.dateTime,
     ),
-    r'categoryName': PropertySchema(
+    r'categoryColor': PropertySchema(
       id: 1,
+      name: r'categoryColor',
+      type: IsarType.long,
+    ),
+    r'categoryName': PropertySchema(
+      id: 2,
       name: r'categoryName',
       type: IsarType.string,
     ),
     r'categoryid': PropertySchema(
-      id: 2,
+      id: 3,
       name: r'categoryid',
       type: IsarType.long,
     ),
     r'complete': PropertySchema(
-      id: 3,
+      id: 4,
       name: r'complete',
       type: IsarType.bool,
     ),
     r'desc': PropertySchema(
-      id: 4,
+      id: 5,
       name: r'desc',
       type: IsarType.string,
     ),
     r'priority': PropertySchema(
-      id: 5,
+      id: 6,
       name: r'priority',
       type: IsarType.long,
     ),
     r'startDate': PropertySchema(
-      id: 6,
+      id: 7,
       name: r'startDate',
       type: IsarType.dateTime,
     ),
     r'title': PropertySchema(
-      id: 7,
+      id: 8,
       name: r'title',
       type: IsarType.string,
     )
@@ -106,13 +111,14 @@ void _taskModelSerialize(
   Map<Type, List<int>> allOffsets,
 ) {
   writer.writeDateTime(offsets[0], object.EndDate);
-  writer.writeString(offsets[1], object.categoryName);
-  writer.writeLong(offsets[2], object.categoryid);
-  writer.writeBool(offsets[3], object.complete);
-  writer.writeString(offsets[4], object.desc);
-  writer.writeLong(offsets[5], object.priority);
-  writer.writeDateTime(offsets[6], object.startDate);
-  writer.writeString(offsets[7], object.title);
+  writer.writeLong(offsets[1], object.categoryColor);
+  writer.writeString(offsets[2], object.categoryName);
+  writer.writeLong(offsets[3], object.categoryid);
+  writer.writeBool(offsets[4], object.complete);
+  writer.writeString(offsets[5], object.desc);
+  writer.writeLong(offsets[6], object.priority);
+  writer.writeDateTime(offsets[7], object.startDate);
+  writer.writeString(offsets[8], object.title);
 }
 
 TaskModel _taskModelDeserialize(
@@ -122,14 +128,15 @@ TaskModel _taskModelDeserialize(
   Map<Type, List<int>> allOffsets,
 ) {
   final object = TaskModel(
-    reader.readStringOrNull(offsets[7]),
-    reader.readStringOrNull(offsets[4]),
-    reader.readDateTimeOrNull(offsets[6]),
+    reader.readStringOrNull(offsets[8]),
+    reader.readStringOrNull(offsets[5]),
+    reader.readDateTimeOrNull(offsets[7]),
     reader.readDateTimeOrNull(offsets[0]),
-    reader.readLongOrNull(offsets[2]),
-    reader.readStringOrNull(offsets[1]),
-    reader.readLongOrNull(offsets[5]),
-    reader.readBoolOrNull(offsets[3]),
+    reader.readLongOrNull(offsets[3]),
+    reader.readStringOrNull(offsets[2]),
+    reader.readLongOrNull(offsets[1]),
+    reader.readLongOrNull(offsets[6]),
+    reader.readBoolOrNull(offsets[4]),
   );
   object.id = id;
   return object;
@@ -145,18 +152,20 @@ P _taskModelDeserializeProp<P>(
     case 0:
       return (reader.readDateTimeOrNull(offset)) as P;
     case 1:
-      return (reader.readStringOrNull(offset)) as P;
+      return (reader.readLongOrNull(offset)) as P;
     case 2:
-      return (reader.readLongOrNull(offset)) as P;
-    case 3:
-      return (reader.readBoolOrNull(offset)) as P;
-    case 4:
       return (reader.readStringOrNull(offset)) as P;
-    case 5:
+    case 3:
       return (reader.readLongOrNull(offset)) as P;
+    case 4:
+      return (reader.readBoolOrNull(offset)) as P;
+    case 5:
+      return (reader.readStringOrNull(offset)) as P;
     case 6:
-      return (reader.readDateTimeOrNull(offset)) as P;
+      return (reader.readLongOrNull(offset)) as P;
     case 7:
+      return (reader.readDateTimeOrNull(offset)) as P;
+    case 8:
       return (reader.readStringOrNull(offset)) as P;
     default:
       throw IsarError('Unknown property with id $propertyId');
@@ -315,6 +324,80 @@ extension TaskModelQueryFilter
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.between(
         property: r'EndDate',
+        lower: lower,
+        includeLower: includeLower,
+        upper: upper,
+        includeUpper: includeUpper,
+      ));
+    });
+  }
+
+  QueryBuilder<TaskModel, TaskModel, QAfterFilterCondition>
+      categoryColorIsNull() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(const FilterCondition.isNull(
+        property: r'categoryColor',
+      ));
+    });
+  }
+
+  QueryBuilder<TaskModel, TaskModel, QAfterFilterCondition>
+      categoryColorIsNotNull() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(const FilterCondition.isNotNull(
+        property: r'categoryColor',
+      ));
+    });
+  }
+
+  QueryBuilder<TaskModel, TaskModel, QAfterFilterCondition>
+      categoryColorEqualTo(int? value) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.equalTo(
+        property: r'categoryColor',
+        value: value,
+      ));
+    });
+  }
+
+  QueryBuilder<TaskModel, TaskModel, QAfterFilterCondition>
+      categoryColorGreaterThan(
+    int? value, {
+    bool include = false,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.greaterThan(
+        include: include,
+        property: r'categoryColor',
+        value: value,
+      ));
+    });
+  }
+
+  QueryBuilder<TaskModel, TaskModel, QAfterFilterCondition>
+      categoryColorLessThan(
+    int? value, {
+    bool include = false,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.lessThan(
+        include: include,
+        property: r'categoryColor',
+        value: value,
+      ));
+    });
+  }
+
+  QueryBuilder<TaskModel, TaskModel, QAfterFilterCondition>
+      categoryColorBetween(
+    int? lower,
+    int? upper, {
+    bool includeLower = true,
+    bool includeUpper = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.between(
+        property: r'categoryColor',
         lower: lower,
         includeLower: includeLower,
         upper: upper,
@@ -1080,6 +1163,18 @@ extension TaskModelQuerySortBy on QueryBuilder<TaskModel, TaskModel, QSortBy> {
     });
   }
 
+  QueryBuilder<TaskModel, TaskModel, QAfterSortBy> sortByCategoryColor() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'categoryColor', Sort.asc);
+    });
+  }
+
+  QueryBuilder<TaskModel, TaskModel, QAfterSortBy> sortByCategoryColorDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'categoryColor', Sort.desc);
+    });
+  }
+
   QueryBuilder<TaskModel, TaskModel, QAfterSortBy> sortByCategoryName() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'categoryName', Sort.asc);
@@ -1176,6 +1271,18 @@ extension TaskModelQuerySortThenBy
   QueryBuilder<TaskModel, TaskModel, QAfterSortBy> thenByEndDateDesc() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'EndDate', Sort.desc);
+    });
+  }
+
+  QueryBuilder<TaskModel, TaskModel, QAfterSortBy> thenByCategoryColor() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'categoryColor', Sort.asc);
+    });
+  }
+
+  QueryBuilder<TaskModel, TaskModel, QAfterSortBy> thenByCategoryColorDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'categoryColor', Sort.desc);
     });
   }
 
@@ -1284,6 +1391,12 @@ extension TaskModelQueryWhereDistinct
     });
   }
 
+  QueryBuilder<TaskModel, TaskModel, QDistinct> distinctByCategoryColor() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addDistinctBy(r'categoryColor');
+    });
+  }
+
   QueryBuilder<TaskModel, TaskModel, QDistinct> distinctByCategoryName(
       {bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
@@ -1341,6 +1454,12 @@ extension TaskModelQueryProperty
   QueryBuilder<TaskModel, DateTime?, QQueryOperations> EndDateProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addPropertyName(r'EndDate');
+    });
+  }
+
+  QueryBuilder<TaskModel, int?, QQueryOperations> categoryColorProperty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addPropertyName(r'categoryColor');
     });
   }
 

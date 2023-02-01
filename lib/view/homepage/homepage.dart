@@ -87,6 +87,7 @@ class _HomePageState extends State<HomePage> {
                                       : DateTime.now().add(Duration(days: 2)),
                                   4,
                                   "Spor",
+                                  4286644131,
                                   1,
                                   i % 2 == 0 ? true : false)));
                         }
@@ -183,7 +184,18 @@ class _HomePageState extends State<HomePage> {
                       Text(
                         "homepage-empty-list-desc".tr(),
                         style: context.fontStyleLato(Colors.white, 16),
-                      )
+                      ),
+                      TextButton.icon(
+                          onPressed: () {},
+                          icon: Icon(
+                            Icons.refresh,
+                            color: Colors.white,
+                            size: 50,
+                          ),
+                          label: Text(
+                            "Yenile",
+                            style: context.fontStyleLato(Colors.white, 15),
+                          ))
                     ],
                   ));
                 } else {
@@ -206,7 +218,18 @@ class _HomePageState extends State<HomePage> {
                       Text(
                         "homepage-empty-list-desc".tr(),
                         style: context.fontStyleLato(Colors.white, 16),
-                      )
+                      ),
+                      TextButton.icon(
+                          onPressed: () {},
+                          icon: Icon(
+                            Icons.refresh,
+                            color: Colors.white,
+                            size: 50,
+                          ),
+                          label: Text(
+                            "Yenile",
+                            style: context.fontStyleLato(Colors.white, 15),
+                          ))
                     ],
                   ));
                 } else {
@@ -225,7 +248,18 @@ class _HomePageState extends State<HomePage> {
                         Text(
                           "homepage-empty-list-desc".tr(),
                           style: context.fontStyleLato(Colors.white, 16),
-                        )
+                        ),
+                        TextButton.icon(
+                            onPressed: () {},
+                            icon: Icon(
+                              Icons.refresh,
+                              color: Colors.white,
+                              size: 50,
+                            ),
+                            label: Text(
+                              "Yenile",
+                              style: context.fontStyleLato(Colors.white, 15),
+                            ))
                       ],
                     ));
                   } else {
@@ -249,7 +283,18 @@ class _HomePageState extends State<HomePage> {
                       Text(
                         "homepage-empty-list-desc".tr(),
                         style: context.fontStyleLato(Colors.white, 16),
-                      )
+                      ),
+                      TextButton.icon(
+                          onPressed: () {},
+                          icon: Icon(
+                            Icons.refresh,
+                            color: Colors.white,
+                            size: 50,
+                          ),
+                          label: Text(
+                            "Yenile",
+                            style: context.fontStyleLato(Colors.white, 15),
+                          ))
                     ],
                   ));
                 } else {
@@ -263,8 +308,7 @@ class _HomePageState extends State<HomePage> {
                     mainAxisSize: MainAxisSize.min,
                     children: [
                       Text(
-                        "Arattırılan kelimede içerik bulunamadı. Lütfen tekrar deneyiniz.",
-                        textAlign: TextAlign.center,
+                        "homepage-empty-list-title".tr(),
                         style: context.fontStyleLato(Colors.white, 20),
                       ),
                       Image.asset(
@@ -273,7 +317,18 @@ class _HomePageState extends State<HomePage> {
                       Text(
                         "homepage-empty-list-desc".tr(),
                         style: context.fontStyleLato(Colors.white, 16),
-                      )
+                      ),
+                      TextButton.icon(
+                          onPressed: () {},
+                          icon: Icon(
+                            Icons.refresh,
+                            color: Colors.white,
+                            size: 50,
+                          ),
+                          label: Text(
+                            "Yenile",
+                            style: context.fontStyleLato(Colors.white, 15),
+                          ))
                     ],
                   ));
                 } else {
@@ -294,254 +349,275 @@ class _HomePageState extends State<HomePage> {
   }
 
   Widget ListviewMethod(List<TaskModel>? list) {
-    return ListView.builder(
-      physics: const BouncingScrollPhysics(),
-      addAutomaticKeepAlives: false,
-      addRepaintBoundaries: false,
-      addSemanticIndexes: false,
-      scrollDirection: Axis.vertical,
-      itemCount: list!.length,
-      itemBuilder: (context, index) {
-        var currentSnapshot = list[index];
+    return RefreshIndicator(
+      displacement: 20,
+      backgroundColor: context.backgroundSoftColor,
+      color: context.primaryColor,
+      strokeWidth: 3,
+      triggerMode: RefreshIndicatorTriggerMode.onEdge,
+      onRefresh: () async {
+        await Future.delayed(Duration(milliseconds: 1500));
+      },
+      child: ScrollConfiguration(
+        behavior: MyBehavior(),
+        child: ListView.builder(
+          physics: const AlwaysScrollableScrollPhysics(),
+          addAutomaticKeepAlives: false,
+          addRepaintBoundaries: false,
+          addSemanticIndexes: false,
+          scrollDirection: Axis.vertical,
+          itemCount: list!.length,
+          itemBuilder: (context, index) {
+            var currentSnapshot = list[index];
 
-        return GestureDetector(
-          onTap: () {
-            context.read<TestBloc>().add(EditTestEvent(
-                taskModel: currentSnapshot,
-                dropDownValue: context.read<DropDownNameCubit>().state.name));
-          },
-          child: Padding(
-            padding:
-                const EdgeInsets.symmetric(horizontal: 15.0, vertical: 6.0),
-            child: Slidable(
-              endActionPane: ActionPane(
-                motion: const StretchMotion(),
-                children: [
-                  SlidableAction(
-                    borderRadius: const BorderRadius.only(
-                        topRight: Radius.circular(8),
-                        bottomRight: Radius.circular(8)),
-                    onPressed: (context) {
-                      showConfirmBotomSheet(false, currentSnapshot);
-                    },
-                    backgroundColor: const Color(0xFF5AA469),
-                    foregroundColor: Colors.white,
-                    icon: Icons.edit,
-                    label: 'Tamamla',
-                  ),
-                ],
-              ),
-              startActionPane: ActionPane(
-                motion: const StretchMotion(),
-                children: [
-                  BlocBuilder<TestBloc, TestState>(
-                    builder: (context, state) {
-                      return SlidableAction(
+            return GestureDetector(
+              onTap: () {
+                context.read<TestBloc>().add(EditTestEvent(
+                    taskModel: currentSnapshot,
+                    dropDownValue:
+                        context.read<DropDownNameCubit>().state.name));
+              },
+              child: Padding(
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 15.0, vertical: 6.0),
+                child: Slidable(
+                  endActionPane: ActionPane(
+                    motion: const StretchMotion(),
+                    children: [
+                      SlidableAction(
                         borderRadius: const BorderRadius.only(
-                            topLeft: Radius.circular(8),
-                            bottomLeft: Radius.circular(8)),
-                        backgroundColor: const Color(0xFFD35D6E),
+                            topRight: Radius.circular(8),
+                            bottomRight: Radius.circular(8)),
+                        onPressed: (context) {
+                          showConfirmBotomSheet(false, currentSnapshot);
+                        },
+                        backgroundColor: const Color(0xFF5AA469),
+                        foregroundColor: Colors.white,
+                        icon: Icons.edit,
+                        label: 'Tamamla',
+                      ),
+                    ],
+                  ),
+                  startActionPane: ActionPane(
+                    motion: const StretchMotion(),
+                    children: [
+                      BlocBuilder<TestBloc, TestState>(
+                        builder: (context, state) {
+                          return SlidableAction(
+                            borderRadius: const BorderRadius.only(
+                                topLeft: Radius.circular(8),
+                                bottomLeft: Radius.circular(8)),
+                            backgroundColor: const Color(0xFFD35D6E),
+                            foregroundColor: Colors.white,
+                            icon: Icons.delete,
+                            label: 'Sil',
+                            onPressed: (BuildContext context) {
+                              showConfirmBotomSheet(true, currentSnapshot);
+                            },
+                          );
+                        },
+                      ),
+                      SlidableAction(
+                        backgroundColor: const Color(0xFF709FB0),
                         foregroundColor: Colors.white,
                         icon: Icons.delete,
-                        label: 'Sil',
+                        label: 'Düzenle',
                         onPressed: (BuildContext context) {
-                          showConfirmBotomSheet(true, currentSnapshot);
+                          context.read<TestBloc>().add(EditTestEvent(
+                              taskModel: currentSnapshot,
+                              dropDownValue: context
+                                  .read<DropDownNameCubit>()
+                                  .state
+                                  .name));
                         },
-                      );
-                    },
+                      )
+                    ],
                   ),
-                  SlidableAction(
-                    backgroundColor: const Color(0xFF709FB0),
-                    foregroundColor: Colors.white,
-                    icon: Icons.delete,
-                    label: 'Düzenle',
-                    onPressed: (BuildContext context) {
-                      context.read<TestBloc>().add(EditTestEvent(
-                          taskModel: currentSnapshot,
-                          dropDownValue:
-                              context.read<DropDownNameCubit>().state.name));
-                    },
-                  )
-                ],
-              ),
-              child: Container(
-                padding:
-                    const EdgeInsets.symmetric(vertical: 13, horizontal: 13),
-                decoration: BoxDecoration(
-                    color: context.backgroundsoft,
-                    borderRadius: const BorderRadius.all(Radius.circular(5))),
-                child: Column(
-                  children: [
-                    Row(
+                  child: Container(
+                    padding: const EdgeInsets.symmetric(
+                        vertical: 13, horizontal: 13),
+                    decoration: BoxDecoration(
+                        color: context.backgroundsoft,
+                        borderRadius:
+                            const BorderRadius.all(Radius.circular(5))),
+                    child: Column(
                       children: [
-                        Expanded(
-                          flex: 7,
-                          child: Column(
-                              mainAxisAlignment: MainAxisAlignment.start,
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(
-                                  list[index].title!,
-                                  style: context.fontStyleLatoFontWeigt(
-                                      context.primaryColor,
-                                      18,
-                                      FontWeight.bold),
-                                ),
-                                const SizedBox(
-                                  height: 5,
-                                ),
-                                Text(
-                                  list[index].desc!,
-                                  style:
-                                      context.fontStyleLato(Colors.white, 14),
-                                ),
-                                const SizedBox(
-                                  height: 10,
-                                ),
-                              ]),
-                        ),
-                        Expanded(
-                          child: Container(
-                            height: context.highHeight * 1.5,
-                            child: const VerticalDivider(
-                              width: 2,
+                        Row(
+                          children: [
+                            Expanded(
+                              flex: 7,
+                              child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.start,
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      list[index].title!,
+                                      style: context.fontStyleLatoFontWeigt(
+                                          context.primaryColor,
+                                          18,
+                                          FontWeight.bold),
+                                    ),
+                                    const SizedBox(
+                                      height: 5,
+                                    ),
+                                    Text(
+                                      list[index].desc!,
+                                      style: context.fontStyleLato(
+                                          Colors.white, 14),
+                                    ),
+                                    const SizedBox(
+                                      height: 10,
+                                    ),
+                                  ]),
                             ),
+                            Expanded(
+                              child: Container(
+                                height: context.highHeight * 1.5,
+                                child: const VerticalDivider(
+                                  width: 2,
+                                ),
+                              ),
+                            ),
+                            Expanded(
+                              flex: 1,
+                              child: StreamBuilder<List<CategoryModel>>(
+                                  stream:
+                                      _categoryIsarRepository.listenCategory(),
+                                  builder: (context, snapshot) {
+                                    if (snapshot.data == null ||
+                                        snapshot.data!.isEmpty) {
+                                      return Center();
+                                    } else {
+                                      CategoryModel? category =
+                                          snapshot.data?.firstWhere(
+                                        (element) =>
+                                            element.id ==
+                                            currentSnapshot.categoryid,
+                                      );
+                                      return Column(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.start,
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.center,
+                                        children: [
+                                          Icon(
+                                            IconData(category!.icon,
+                                                fontFamily: 'MaterialIcons'),
+                                            size: 40,
+                                            color:
+                                                Color(category.categoryColor),
+                                          ),
+                                          Text(
+                                            category.categoryName,
+                                            style: context.fontStyleLato(
+                                                Color(category.categoryColor),
+                                                10),
+                                            maxLines: 1,
+                                          )
+                                        ],
+                                      );
+                                    }
+                                  }),
+                            ),
+                          ],
+                        ),
+                        const SizedBox(
+                          height: 5,
+                        ),
+                        const SizedBox(
+                          height: 5,
+                        ),
+                        Container(
+                          height: 5,
+                          child: const Divider(
+                            height: 2,
                           ),
                         ),
-                        Expanded(
-                          flex: 1,
-                          child: StreamBuilder<List<CategoryModel>>(
-                              stream: _categoryIsarRepository.listenCategory(),
-                              builder: (context, snapshot) {
-                                if (snapshot.data == null ||
-                                    snapshot.data!.isEmpty) {
-                                  return Center();
-                                } else {
-                                  CategoryModel? category =
-                                      snapshot.data?.firstWhere(
-                                    (element) =>
-                                        element.id ==
-                                        currentSnapshot.categoryid,
-                                  );
-                                  return Column(
-                                    mainAxisAlignment: MainAxisAlignment.start,
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.center,
-                                    children: [
-                                      Icon(
-                                        IconData(category!.icon,
-                                            fontFamily: 'MaterialIcons'),
-                                        size: 40,
-                                        color: Color(category.categoryColor),
-                                      ),
-                                      Text(
-                                        category.categoryName,
-                                        style: context.fontStyleLato(
-                                            Color(category.categoryColor), 10),
-                                        maxLines: 1,
-                                      )
-                                    ],
-                                  );
-                                }
-                              }),
-                        ),
-                      ],
-                    ),
-                    const SizedBox(
-                      height: 5,
-                    ),
-                    const SizedBox(
-                      height: 5,
-                    ),
-                    Container(
-                      height: 5,
-                      child: const Divider(
-                        height: 2,
-                      ),
-                    ),
-                    const SizedBox(
-                      height: 5,
-                    ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      children: [
-                        Row(
-                          children: [
-                            FaIcon(
-                              FontAwesomeIcons.circlePlay,
-                              size: 18,
-                              color: context.primaryColor,
-                            ),
-                            const SizedBox(
-                              width: 5,
-                            ),
-                            Text(
-                              context.fomatDate(list[index].startDate!),
-                              style: context.fontStyleLatoFontWeigt(
-                                  Colors.grey, 10, FontWeight.w100),
-                            ),
-                          ],
+                        const SizedBox(
+                          height: 5,
                         ),
                         Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                           children: [
-                            FaIcon(
-                              FontAwesomeIcons.circlePlay,
-                              size: 18,
-                              color: context.primaryColor,
+                            Row(
+                              children: [
+                                FaIcon(
+                                  FontAwesomeIcons.circlePlay,
+                                  size: 18,
+                                  color: context.primaryColor,
+                                ),
+                                const SizedBox(
+                                  width: 5,
+                                ),
+                                Text(
+                                  context.fomatDate(list[index].startDate!),
+                                  style: context.fontStyleLatoFontWeigt(
+                                      Colors.grey, 10, FontWeight.w100),
+                                ),
+                              ],
                             ),
-                            const SizedBox(
-                              width: 5,
+                            Row(
+                              children: [
+                                FaIcon(
+                                  FontAwesomeIcons.circlePlay,
+                                  size: 18,
+                                  color: context.primaryColor,
+                                ),
+                                const SizedBox(
+                                  width: 5,
+                                ),
+                                Text(
+                                  context.fomatTime(list[index].startDate!),
+                                  style: context.fontStyleLatoFontWeigt(
+                                      Colors.grey, 10, FontWeight.w100),
+                                ),
+                              ],
                             ),
-                            Text(
-                              context.fomatTime(list[index].startDate!),
-                              style: context.fontStyleLatoFontWeigt(
-                                  Colors.grey, 10, FontWeight.w100),
+                            Row(
+                              children: [
+                                FaIcon(
+                                  FontAwesomeIcons.circleStop,
+                                  size: 18,
+                                  color: context.primaryColor,
+                                ),
+                                const SizedBox(
+                                  width: 5,
+                                ),
+                                Text(
+                                  context.fomatDate(list[index].EndDate!),
+                                  style: context.fontStyleLatoFontWeigt(
+                                      Colors.grey, 10, FontWeight.w100),
+                                ),
+                              ],
                             ),
-                          ],
-                        ),
-                        Row(
-                          children: [
-                            FaIcon(
-                              FontAwesomeIcons.circleStop,
-                              size: 18,
-                              color: context.primaryColor,
-                            ),
-                            const SizedBox(
-                              width: 5,
-                            ),
-                            Text(
-                              context.fomatDate(list[index].EndDate!),
-                              style: context.fontStyleLatoFontWeigt(
-                                  Colors.grey, 10, FontWeight.w100),
-                            ),
-                          ],
-                        ),
-                        Row(
-                          children: [
-                            FaIcon(
-                              FontAwesomeIcons.circleStop,
-                              size: 18,
-                              color: context.primaryColor,
-                            ),
-                            const SizedBox(
-                              width: 5,
-                            ),
-                            Text(
-                              context.fomatTime(list[index].EndDate!),
-                              style: context.fontStyleLatoFontWeigt(
-                                  Colors.grey, 10, FontWeight.w100),
+                            Row(
+                              children: [
+                                FaIcon(
+                                  FontAwesomeIcons.circleStop,
+                                  size: 18,
+                                  color: context.primaryColor,
+                                ),
+                                const SizedBox(
+                                  width: 5,
+                                ),
+                                Text(
+                                  context.fomatTime(list[index].EndDate!),
+                                  style: context.fontStyleLatoFontWeigt(
+                                      Colors.grey, 10, FontWeight.w100),
+                                ),
+                              ],
                             ),
                           ],
                         ),
                       ],
                     ),
-                  ],
+                  ),
                 ),
               ),
-            ),
-          ),
-        );
-      },
+            );
+          },
+        ),
+      ),
     );
   }
 
@@ -643,5 +719,13 @@ class _HomePageState extends State<HomePage> {
                 )),
           );
         });
+  }
+}
+
+class MyBehavior extends ScrollBehavior {
+  @override
+  Widget buildOverscrollIndicator(
+      BuildContext context, Widget child, ScrollableDetails details) {
+    return child;
   }
 }

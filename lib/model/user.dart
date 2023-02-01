@@ -8,6 +8,8 @@ class UserModel {
   bool isPremium;
   String userName;
   String userkey;
+  String ProfileURL;
 
-  UserModel(this.isLogin, this.userName, this.userkey, this.isPremium);
+  UserModel(this.isLogin, this.userName, this.userkey, this.isPremium,
+      this.ProfileURL);
 }

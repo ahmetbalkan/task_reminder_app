@@ -14,6 +14,14 @@ class TaskIsarRepository extends OpenDB {
   StreamController<List<TaskModel>> controller =
       StreamController<List<TaskModel>>();
 
+  Stream<List<TaskModel>> listenFullTask() async* {
+    final isar = await _db;
+    yield* isar.taskModels
+        .filter()
+        .titleContains("")
+        .watch(fireImmediately: true);
+  }
+
   Stream<List<TaskModel>> listenAllUserTask(String value) async* {
     final isar = await _db;
     yield* isar.taskModels

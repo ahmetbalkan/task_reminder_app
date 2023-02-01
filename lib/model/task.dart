@@ -10,9 +10,18 @@ class TaskModel {
   DateTime? EndDate;
   int? categoryid;
   String? categoryName;
+  int? categoryColor;
   int? priority;
   bool? complete;
 
-  TaskModel(this.title, this.desc, this.startDate, this.EndDate,
-      this.categoryid, this.categoryName, this.priority, this.complete);
+  TaskModel(
+      this.title,
+      this.desc,
+      this.startDate,
+      this.EndDate,
+      this.categoryid,
+      this.categoryName,
+      this.categoryColor,
+      this.priority,
+      this.complete);
 }

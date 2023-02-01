@@ -3,7 +3,9 @@ import 'dart:math';
 
 import 'package:equatable/equatable.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:syncfusion_flutter_calendar/calendar.dart';
 import 'package:task_reminder_app/model/category.dart';
 import 'package:task_reminder_app/model/task.dart';
 import 'package:task_reminder_app/repository/category_isar_repository.dart';

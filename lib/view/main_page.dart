@@ -1,3 +1,4 @@
+import 'package:awesome_notifications/awesome_notifications.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flex_color_picker/flex_color_picker.dart';
 import 'package:flutter/cupertino.dart';
@@ -8,6 +9,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:omni_datetime_picker/omni_datetime_picker.dart';
 import 'package:persistent_bottom_nav_bar/persistent_tab_view.dart';
+import 'package:task_reminder_app/bloc/calendar_bloc/calendar_bloc.dart';
 import 'package:task_reminder_app/bloc/test_bloc/cubit/dropdown_cubit.dart';
 import 'package:task_reminder_app/model/category.dart';
 import 'package:task_reminder_app/model/task.dart';
@@ -16,6 +18,7 @@ import 'package:task_reminder_app/tools/extention.dart';
 import '../bloc/categories_bloc/category_bloc.dart';
 import '../bloc/test_bloc/test_bloc.dart';
 import '../locator.dart';
+import '../notification_controller.dart';
 import 'calendar/calendar_page.dart';
 import 'group/group_page.dart';
 import 'homepage/homepage.dart';
@@ -43,6 +46,7 @@ DateTime? _startDate;
 DateTime? _endDate;
 int? _categoryid;
 String? _categoryName;
+int? _categoryColor;
 int? _priority;
 bool _switchValue = false;
 
@@ -52,6 +56,14 @@ class _MainPageState extends State<MainPage> {
   @override
   void initState() {
     super.initState();
+    AwesomeNotifications().setListeners(
+        onActionReceivedMethod: NotificationController.onActionReceivedMethod,
+        onNotificationCreatedMethod:
+            NotificationController.onNotificationCreatedMethod,
+        onNotificationDisplayedMethod:
+            NotificationController.onNotificationDisplayedMethod,
+        onDismissActionReceivedMethod:
+            NotificationController.onDismissActionReceivedMethod);
     _controller = PersistentTabController(initialIndex: 0);
     _descTextEditingController = TextEditingController();
     _titleTextEditingController = TextEditingController();
@@ -89,7 +101,29 @@ class _MainPageState extends State<MainPage> {
               leadingWidth: 100,
               leading: Row(children: [
                 const SizedBox(width: 15),
-                Center(child: Image.asset("assets/menu.png")),
+                GestureDetector(
+                    onTap: () async {
+                      await AwesomeNotifications().createNotification(
+                          content: NotificationContent(
+                            id: 1,
+                            channelKey: 'basic_channel',
+                            title: 'Just in time!',
+                            body: 'This notification was schedule to shows at ',
+                            wakeUpScreen: true,
+                            category: NotificationCategory.Reminder,
+                            notificationLayout: NotificationLayout.Default,
+                            payload: {'uuid': 'uuid-test'},
+                            autoDismissible: false,
+                          ),
+                          actionButtons: [
+                            NotificationActionButton(
+                                key: 'SHOW_SERVICE_DETAILS',
+                                label: 'Show details')
+                          ],
+                          schedule: NotificationCalendar.fromDate(
+                              date: DateTime.now().add(Duration(minutes: 15))));
+                    },
+                    child: Center(child: Image.asset("assets/menu.png"))),
                 const SizedBox(
                   width: 10,
                 ),
@@ -225,6 +259,7 @@ class _MainPageState extends State<MainPage> {
       _categoryName = task.categoryName;
       _startDate = task.startDate;
       _endDate = task.EndDate;
+      _categoryColor = task.categoryColor;
     }
     return showModalBottomSheet(
         isDismissible: false,
@@ -377,6 +412,7 @@ class _MainPageState extends State<MainPage> {
                               task?.EndDate = _endDate;
                               task?.categoryid = _categoryid;
                               task?.categoryName = _categoryName;
+                              task?.categoryColor = _categoryColor;
                               task?.priority = _priority;
                               task?.complete = false;
                               BlocProvider.of<TestBloc>(context).add(
@@ -397,8 +433,11 @@ class _MainPageState extends State<MainPage> {
                                           _endDate,
                                           _categoryid,
                                           _categoryName,
+                                          _categoryColor,
                                           _priority,
                                           false)));
+                              BlocProvider.of<CalendarBloc>(context)
+                                  .add(GetAppointmentEvent());
                             }
                           }
                         },
@@ -705,6 +744,9 @@ class _MainPageState extends State<MainPage> {
                                                   _categoryName = snapshot
                                                       .data![index]
                                                       .categoryName;
+                                                  _categoryColor = snapshot
+                                                      .data![index]
+                                                      .categoryColor;
                                                   _catNameTextEditingController
                                                           .text =
                                                       snapshot.data![index]
@@ -1316,6 +1358,7 @@ class _MainPageState extends State<MainPage> {
                           _endDate,
                           _categoryid,
                           _categoryName,
+                          _categoryColor,
                           _priority,
                           false)));
                 }

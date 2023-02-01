@@ -17,23 +17,28 @@ const UserModelSchema = CollectionSchema(
   name: r'UserModel',
   id: 7195426469378571114,
   properties: {
-    r'isLogin': PropertySchema(
+    r'ProfileURL': PropertySchema(
       id: 0,
+      name: r'ProfileURL',
+      type: IsarType.string,
+    ),
+    r'isLogin': PropertySchema(
+      id: 1,
       name: r'isLogin',
       type: IsarType.bool,
     ),
     r'isPremium': PropertySchema(
-      id: 1,
+      id: 2,
       name: r'isPremium',
       type: IsarType.bool,
     ),
     r'userName': PropertySchema(
-      id: 2,
+      id: 3,
       name: r'userName',
       type: IsarType.string,
     ),
     r'userkey': PropertySchema(
-      id: 3,
+      id: 4,
       name: r'userkey',
       type: IsarType.string,
     )
@@ -58,6 +63,7 @@ int _userModelEstimateSize(
   Map<Type, List<int>> allOffsets,
 ) {
   var bytesCount = offsets.last;
+  bytesCount += 3 + object.ProfileURL.length * 3;
   bytesCount += 3 + object.userName.length * 3;
   bytesCount += 3 + object.userkey.length * 3;
   return bytesCount;
@@ -69,10 +75,11 @@ void _userModelSerialize(
   List<int> offsets,
   Map<Type, List<int>> allOffsets,
 ) {
-  writer.writeBool(offsets[0], object.isLogin);
-  writer.writeBool(offsets[1], object.isPremium);
-  writer.writeString(offsets[2], object.userName);
-  writer.writeString(offsets[3], object.userkey);
+  writer.writeString(offsets[0], object.ProfileURL);
+  writer.writeBool(offsets[1], object.isLogin);
+  writer.writeBool(offsets[2], object.isPremium);
+  writer.writeString(offsets[3], object.userName);
+  writer.writeString(offsets[4], object.userkey);
 }
 
 UserModel _userModelDeserialize(
@@ -82,10 +89,11 @@ UserModel _userModelDeserialize(
   Map<Type, List<int>> allOffsets,
 ) {
   final object = UserModel(
-    reader.readBool(offsets[0]),
-    reader.readString(offsets[2]),
-    reader.readString(offsets[3]),
     reader.readBool(offsets[1]),
+    reader.readString(offsets[3]),
+    reader.readString(offsets[4]),
+    reader.readBool(offsets[2]),
+    reader.readString(offsets[0]),
   );
   object.id = id;
   return object;
@@ -99,12 +107,14 @@ P _userModelDeserializeProp<P>(
 ) {
   switch (propertyId) {
     case 0:
-      return (reader.readBool(offset)) as P;
+      return (reader.readString(offset)) as P;
     case 1:
       return (reader.readBool(offset)) as P;
     case 2:
-      return (reader.readString(offset)) as P;
+      return (reader.readBool(offset)) as P;
     case 3:
+      return (reader.readString(offset)) as P;
+    case 4:
       return (reader.readString(offset)) as P;
     default:
       throw IsarError('Unknown property with id $propertyId');
@@ -202,6 +212,140 @@ extension UserModelQueryWhere
 
 extension UserModelQueryFilter
     on QueryBuilder<UserModel, UserModel, QFilterCondition> {
+  QueryBuilder<UserModel, UserModel, QAfterFilterCondition> profileURLEqualTo(
+    String value, {
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.equalTo(
+        property: r'ProfileURL',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<UserModel, UserModel, QAfterFilterCondition>
+      profileURLGreaterThan(
+    String value, {
+    bool include = false,
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.greaterThan(
+        include: include,
+        property: r'ProfileURL',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<UserModel, UserModel, QAfterFilterCondition> profileURLLessThan(
+    String value, {
+    bool include = false,
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.lessThan(
+        include: include,
+        property: r'ProfileURL',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<UserModel, UserModel, QAfterFilterCondition> profileURLBetween(
+    String lower,
+    String upper, {
+    bool includeLower = true,
+    bool includeUpper = true,
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.between(
+        property: r'ProfileURL',
+        lower: lower,
+        includeLower: includeLower,
+        upper: upper,
+        includeUpper: includeUpper,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<UserModel, UserModel, QAfterFilterCondition>
+      profileURLStartsWith(
+    String value, {
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.startsWith(
+        property: r'ProfileURL',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<UserModel, UserModel, QAfterFilterCondition> profileURLEndsWith(
+    String value, {
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.endsWith(
+        property: r'ProfileURL',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<UserModel, UserModel, QAfterFilterCondition> profileURLContains(
+      String value,
+      {bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.contains(
+        property: r'ProfileURL',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<UserModel, UserModel, QAfterFilterCondition> profileURLMatches(
+      String pattern,
+      {bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.matches(
+        property: r'ProfileURL',
+        wildcard: pattern,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<UserModel, UserModel, QAfterFilterCondition>
+      profileURLIsEmpty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.equalTo(
+        property: r'ProfileURL',
+        value: '',
+      ));
+    });
+  }
+
+  QueryBuilder<UserModel, UserModel, QAfterFilterCondition>
+      profileURLIsNotEmpty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.greaterThan(
+        property: r'ProfileURL',
+        value: '',
+      ));
+    });
+  }
+
   QueryBuilder<UserModel, UserModel, QAfterFilterCondition> idEqualTo(
       Id value) {
     return QueryBuilder.apply(this, (query) {
@@ -545,6 +689,18 @@ extension UserModelQueryLinks
     on QueryBuilder<UserModel, UserModel, QFilterCondition> {}
 
 extension UserModelQuerySortBy on QueryBuilder<UserModel, UserModel, QSortBy> {
+  QueryBuilder<UserModel, UserModel, QAfterSortBy> sortByProfileURL() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'ProfileURL', Sort.asc);
+    });
+  }
+
+  QueryBuilder<UserModel, UserModel, QAfterSortBy> sortByProfileURLDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'ProfileURL', Sort.desc);
+    });
+  }
+
   QueryBuilder<UserModel, UserModel, QAfterSortBy> sortByIsLogin() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'isLogin', Sort.asc);
@@ -596,6 +752,18 @@ extension UserModelQuerySortBy on QueryBuilder<UserModel, UserModel, QSortBy> {
 
 extension UserModelQuerySortThenBy
     on QueryBuilder<UserModel, UserModel, QSortThenBy> {
+  QueryBuilder<UserModel, UserModel, QAfterSortBy> thenByProfileURL() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'ProfileURL', Sort.asc);
+    });
+  }
+
+  QueryBuilder<UserModel, UserModel, QAfterSortBy> thenByProfileURLDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'ProfileURL', Sort.desc);
+    });
+  }
+
   QueryBuilder<UserModel, UserModel, QAfterSortBy> thenById() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'id', Sort.asc);
@@ -659,6 +827,13 @@ extension UserModelQuerySortThenBy
 
 extension UserModelQueryWhereDistinct
     on QueryBuilder<UserModel, UserModel, QDistinct> {
+  QueryBuilder<UserModel, UserModel, QDistinct> distinctByProfileURL(
+      {bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addDistinctBy(r'ProfileURL', caseSensitive: caseSensitive);
+    });
+  }
+
   QueryBuilder<UserModel, UserModel, QDistinct> distinctByIsLogin() {
     return QueryBuilder.apply(this, (query) {
       return query.addDistinctBy(r'isLogin');
@@ -691,6 +866,12 @@ extension UserModelQueryProperty
   QueryBuilder<UserModel, int, QQueryOperations> idProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addPropertyName(r'id');
+    });
+  }
+
+  QueryBuilder<UserModel, String, QQueryOperations> ProfileURLProperty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addPropertyName(r'ProfileURL');
     });
   }
 
