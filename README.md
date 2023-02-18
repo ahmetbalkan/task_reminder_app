@@ -7,10 +7,10 @@ Henüz tamamlanmamış task management uygulamamı sizlerle paylaşıyorum.
 Bloc patern, Isar db ve awesome notification kullanılmıştır. 
 (Geliştirme süreci devam etmektedir.)
 
-| Giriş Bilgi Sayfası | Alarm Seçim Sayfası | Yön Değiştirme Uyarısı | Location Permission |
+| Giriş  | Şifremi Unuttum | Kayıt | Bireysel Task |
 | --- | --- | --- | --- |
 | <img src="https://live.staticflickr.com/65535/52696204043_e1bac7d33e_c.jpg" width="200"> |  <img src="https://live.staticflickr.com/65535/52695713796_7b18c92536_c.jpg" width="200">|<img src="https://live.staticflickr.com/65535/52695976649_bff4e0b846_c.jpg" width="200"> |  <img src="https://live.staticflickr.com/65535/52696128485_3f51125133_c.jpg" width="200">|
-| Takvim | Add Task | Datetime Picker | Öncelik |
+| Boş Task | Takvim | Datetime Picker | Öncelik |
 | <img src="https://live.staticflickr.com/65535/52696128475_84f79493e2_c.jpg" width="200"> |  <img src="https://live.staticflickr.com/65535/52696204018_f75bcfe425_c.jpg" width="200">|<img src="https://live.staticflickr.com/65535/52696128445_2e1d33d97b_c.jpg" width="200"> |  <img src="https://live.staticflickr.com/65535/52695713756_a69ef2d0b1_c.jpg" width="200">|
 | Kategori | Grup | Görev Düzenle  | Ayarlar |
 | <img src="https://live.staticflickr.com/65535/52695198432_1d8037f58e_h.jpg" width="200"> |  <img src="https://live.staticflickr.com/65535/52696128400_7368471cce_c.jpg" width="200">|<img src="https://live.staticflickr.com/65535/52695713751_7e25b4b678_c.jpg" width="200"> |  <img src="https://live.staticflickr.com/65535/52696203968_cee90b2b21_c.jpg" width="200">|
