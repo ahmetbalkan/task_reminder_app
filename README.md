@@ -2,7 +2,11 @@ Merhaba,
 
 (Geliştirme süreci devam etmektedir.)
 
-Henüz tamamlanmamış task management uygulamamı sizlerle paylaşıyorum. 
+Bireysel olarak bilgilerimi tazelemek ve yeni teknolojileri öğrenmek için geliştirdiğim task management uygulamamı sizlerle paylaşıyorum. 
+
+Örnek aldığım tasarım şablonu:
+
+https://www.figma.com/file/RVzRSUQQcsvch5N159HWKR/UpTodo---Todo-list-app-UI-Kit-(Community)?node-id=0%3A1&t=88MnzaXycal7DEFL-0
 
 Bloc patern, Isar db ve awesome notification kullanılmıştır. 
 (Geliştirme süreci devam etmektedir.)
