@@ -6,7 +6,7 @@ Bireysel olarak bilgilerimi tazelemek ve yeni teknolojileri öğrenmek için gel
 
 Örnek aldığım tasarım şablonu:
 
-https://www.figma.com/file/RVzRSUQQcsvch5N159HWKR/UpTodo---Todo-list-app-UI-Kit-(Community)?node-id=0%3A1&t=88MnzaXycal7DEFL-0
+[https://www.figma.com/file/RVzRSUQQcsvch5N159HWKR/UpTodo---Todo-list-app-UI-Kit-(Community)?node-id=0%3A1&t=88MnzaXycal7DEFL-0](https://www.figma.com/community/file/1083383246788717048)
 
 Bloc patern, Isar db ve awesome notification kullanılmıştır. 
 (Geliştirme süreci devam etmektedir.)
