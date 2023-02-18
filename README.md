@@ -9,6 +9,8 @@ Bloc patern, Isar db ve awesome notification kullanılmıştır.
 
 | Giriş Bilgi Sayfası | Alarm Seçim Sayfası | Yön Değiştirme Uyarısı | Location Permission |
 | --- | --- | --- | --- |
-| <img src="https://live.staticflickr.com/65535/52695941849_4838b7d255_k.jpg" width="200"> |  <img src="https://live.staticflickr.com/65535/52695679751_89474f301a_k.jpg" width="200">|<img src="https://live.staticflickr.com/65535/52695679796_66fa5dfa41_k.jpg" width="200"> |  <img src="https://live.staticflickr.com/65535/52696169738_eddca77907_k.jpg" width="200">|
-| Location Permission | Notification Permission |  |  |
-| <img src="https://live.staticflickr.com/65535/52696094410_a23c5202f9_k.jpg" width="200"> |  <img src="https://live.staticflickr.com/65535/52695164732_66cf48f397_k.jpg" width="200">|<img src="https://live.staticflickr.com/65535/52696169793_4d12473a20_k.jpg" width="200"> |  <img src="https://live.staticflickr.com/65535/52696094455_d6c930b1c2_k.jpg" width="200">|
+| <img src="https://live.staticflickr.com/65535/52696204043_e1bac7d33e_c.jpg" width="200"> |  <img src="https://live.staticflickr.com/65535/52695713796_7b18c92536_c.jpg" width="200">|<img src="https://live.staticflickr.com/65535/52695976649_bff4e0b846_c.jpg" width="200"> |  <img src="https://live.staticflickr.com/65535/52696128485_3f51125133_c.jpg" width="200">|
+| Takvim | Add Task | Datetime Picker | Öncelik |
+| <img src="https://live.staticflickr.com/65535/52696128475_84f79493e2_c.jpg" width="200"> |  <img src="https://live.staticflickr.com/65535/52696204018_f75bcfe425_c.jpg" width="200">|<img src="https://live.staticflickr.com/65535/52696128445_2e1d33d97b_c.jpg" width="200"> |  <img src="https://live.staticflickr.com/65535/52695713756_a69ef2d0b1_c.jpg" width="200">|
+| Kategori | Grup | Görev Düzenle  | Ayarlar |
+| <img src="https://live.staticflickr.com/65535/52695198432_1d8037f58e_h.jpg" width="200"> |  <img src="https://live.staticflickr.com/65535/52696128400_7368471cce_c.jpg" width="200">|<img src="https://live.staticflickr.com/65535/52695713751_7e25b4b678_c.jpg" width="200"> |  <img src="https://live.staticflickr.com/65535/52696203968_cee90b2b21_c.jpg" width="200">|
